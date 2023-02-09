@@ -194,10 +194,8 @@ def compress_output(outpath,year=0,logger=log):
     '''
     if os.path.exists(outpath):
         ftmp_name = "%s/%s-%s.nc" % (settings.DirWork,year,str(uuid.uuid1()))
-#HJP Dev 2020 Begin
-#       cmd = "nccopy -k 4 -d 4 %s %s" % (outpath,ftmp_name)
-        cmd = "nccopy -d 1 -s %s %s" % (outpath,ftmp_name)
-#HJP Dev 2020 End
+        cmd = "nccopy -k nc7 -d 1 -s %s %s" % (outpath,ftmp_name)
+        #cmd = "nccopy -k nc7 -d 1 %s %s" % (outpath,ftmp_name)
         retval=shell(cmd,logger=logger) 
         # remove help file
         os.remove(outpath)
@@ -469,7 +467,7 @@ def add_vertices(f_out,logger=log):
         if 'lat_vertices' in f_vert.variables.keys() and 'lat_vertices' not in f_out.variables.keys():
             lat_vertices = f_vert.variables['lat_vertices']
             # create lat_vertices in output
-            #var_out = f_out.createVariable('lat_vertices',datatype='f',dimensions=['rlat','rlon','vertices'])
+            #var_out = f_out.createVariable('lat_vertices',datatype='f',dimensions=['y','x','vertices'])
             var_out = f_out.createVariable('lat_vertices',datatype='d',dimensions=lat_vertices.dimensions)
             # copy content to new datatype
             if 'lat' in f_vert.variables.keys():
@@ -549,16 +547,16 @@ def get_attr_list(var_name,args=[]):
         if config.get_config_value('boolean','add_vertices') == True:
             att_lst['bounds'] = "lat_vertices"
 
-    elif var_name == 'rlon':
-        att_lst['standard_name'] = 'grid_longitude'
-        att_lst['long_name'] = 'longitude in rotated pole grid'
-        att_lst['units'] = 'degrees'
+    elif var_name == 'x':
+        att_lst['standard_name'] = 'projection_x_coordinate'
+        att_lst['long_name'] = 'X Coordinate Of Projection'
+        att_lst['units'] = 'm'
         att_lst['axis'] = 'X'
 
-    elif var_name == 'rlat':
-        att_lst['standard_name'] = 'grid_latitude'
-        att_lst['long_name'] = 'latitude in rotated pole grid'
-        att_lst['units'] = 'degrees'
+    elif var_name == 'y':
+        att_lst['standard_name'] = 'projection_y_coordinate'
+        att_lst['long_name'] = 'Y Coordinate Of Projection'
+        att_lst['units'] = 'm'
         att_lst['axis'] = 'Y'
         
     elif var_name == 'time':
@@ -568,11 +566,16 @@ def get_attr_list(var_name,args=[]):
         att_lst['calendar'] = args[1]
         att_lst['axis'] = 'T'
         
-    elif var_name == 'rotated_pole':
-        att_lst['long_name'] = 'coordinates of the rotated North Pole'
-        att_lst['grid_mapping_name'] = 'rotated_latitude_longitude'
-        att_lst['grid_north_pole_latitude'] = float(args[0])
-        att_lst['grid_north_pole_longitude'] = float(args[1])
+    elif var_name == 'Lambert_Conformal':
+        att_lst['grid_mapping_name'] = 'lambert_conformal_conic' ;
+        att_lst['standard_parallel'] = float(args[0]) ;
+        att_lst['longitude_of_central_meridian'] = float(args[1]) ;
+        att_lst['latitude_of_projection_origin'] = float(args[2]) ;
+        att_lst['false_easting'] = float(args[3]) ;
+        att_lst['false_northing'] = float(args[4]) ;
+        att_lst['earth_radius'] = float(args[5]) ;
+        att_lst['proj4'] = args[6] ;
+
         
     return att_lst
 
@@ -589,18 +592,18 @@ def copy_var(f_in,f_out,var_name,logger=log):
                 f_out.createDimension(var_dim,size=var_in.shape[j])
             j = j+1
 
-        if var_name in ['rlat','rlon','lat','lon','time','time_bnds']:
+        if var_name in ['x','y','lat','lon','time','time_bnds']:
             new_datatype = 'd'
-        elif var_name in ['rotated_latitude_longitude','rotated_pole']:
-            new_datatype = 'c'
+        elif var_name in ['Lambert_Conformal']:
+            new_datatype = 'i'
         else:
             new_datatype = 'f'
         var_out = f_out.createVariable(var_name,datatype=new_datatype,dimensions=var_in.dimensions )
         # set all as character converted with str() function
-        if var_name in ['lat','lon','rlon','rlat','time']:
+        if var_name in ['x','y','x','y','time']:
             att_lst = get_attr_list(var_name)
-        elif var_name == 'rotated_pole':
-            att_lst = get_attr_list(var_name,[var_in.grid_north_pole_latitude,var_in.grid_north_pole_longitude])
+        elif var_name == 'Lambert_Conformal':
+            att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
 
         else:
             att_lst = OrderedDict()
@@ -611,14 +614,14 @@ def copy_var(f_in,f_out,var_name,logger=log):
 
         var_out.setncatts(att_lst)
         # copy content to new datatype
-        if var_name not in ['rotated_latitude_longitude','rotated_pole']:
+        if var_name not in ['Lambert_Conformal']:
             var_out[:] = var_in[:]
         logger.info("Variable %s added" % var_name)
 
 # -----------------------------------------------------------------------------
 def add_coordinates(f_out,logger=log):
     '''
-    Add lat,lon and rotated_pole to output file from coordinates file if present there
+    Add lat,lon and Lambert_Conformal to output file from coordinates file if present there
     '''
     if os.path.isfile(settings.coordinates_file):
         f_coor = Dataset(settings.coordinates_file,'r')
@@ -627,13 +630,12 @@ def add_coordinates(f_out,logger=log):
             copy_var(f_coor,f_out,'lon',logger=logger)
             # copy lat
             copy_var(f_coor,f_out,'lat',logger=logger)
-            # copy rlon
-            copy_var(f_coor,f_out,'rlon',logger=logger)
-            # copy rlat
-            copy_var(f_coor,f_out,'rlat',logger=logger)
-            #copy rotated pole
-            copy_var(f_coor,f_out,'rotated_pole',logger=logger)
-            copy_var(f_coor,f_out,'rotated_latitude_longitude',logger=logger)
+            # copy x
+            copy_var(f_coor,f_out,'x',logger=logger)
+            # copy y
+            copy_var(f_coor,f_out,'y',logger=logger)
+            #copy Lambert_Conformal
+            copy_var(f_coor,f_out,'Lambert_Conformal',logger=logger)
 
             # commit changes
             f_out.sync()
@@ -725,11 +727,11 @@ def process_file_fix(params,in_file):
             continue
         var_in = f_in.variables[var_name]
         # create output variable
-        if var_name in ['rlon','rlat','lon','lat','time']:
+        if var_name in ['x','y','lon','lat','time']:
             data_type = 'd'
             mulc_fac = 1.0
-        elif var_name == 'rotated_pole':
-            data_type = 'c'
+        elif var_name == 'Lambert_Conformal':
+            data_type = 'i'
             mulc_fac = 1.0
         elif var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
             data_type = 'f'
@@ -764,10 +766,10 @@ def process_file_fix(params,in_file):
                 var_out = f_out.createVariable(var_name,datatype=data_type,dimensions=var_dims)
 
             change_fill=False
-            if var_name in ['lat','lon','rlat','rlon']:
+            if var_name in ['lat','lon','y','x']:
                 att_lst = get_attr_list(var_name)
-            elif var_name == 'rotated_pole':
-                att_lst = get_attr_list(var_name,[var_in.grid_north_pole_latitude,var_in.grid_north_pole_longitude])
+            elif var_name == 'Lambert_Conformal':
+                att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
             else:
                 att_lst = OrderedDict()
                 for k in var_in.ncattrs():
@@ -819,7 +821,7 @@ def process_file_fix(params,in_file):
 
     # set attributes missing_value and grid_mapping
     f_var.missing_value = settings.netCDF_attributes['missing_value']
-    f_var.setncattr('grid_mapping','rotated_pole')
+    f_var.setncattr('grid_mapping','Lambert_Conformal')
 
     # commit changes
     f_out.sync()
@@ -971,7 +973,7 @@ def proc_seasonal(params,year):
                 # commit changes
                 f_tmp.sync()
 
-                # now copy rotated pole variable to output
+                # now copy Lambert_Conformal variable to output
                 f_in = Dataset(f,'r')
 
                 # variable object
@@ -979,9 +981,9 @@ def proc_seasonal(params,year):
 
                 # copy variables from input file if they got lost in cdo commands
                 var_in = f_in.variables[var]
-                for var_name in ['rlon','rlat','lat','lon','rotated_pole','plev','height']:
+                for var_name in ['x','y','lat','lon','Lambert_Conformal','plev','height']:
                     copy_var(f_in,f_tmp,var_name,logger=logger)
-                f_var.setncattr('grid_mapping','rotated_pole')
+                f_var.setncattr('grid_mapping','Lambert_Conformal')
                 f_var.cell_methods = "time: %s" % (cm_type)
 
                 # commit changes
@@ -1024,13 +1026,6 @@ def proc_seasonal(params,year):
                 # set attributes
                 set_attributes_create(outpath,res,year,logger=logger)
                 
-#HJP
-                help_file = "%s/help-pole_%s.nc" % (outdir,outfile)
-                cmd="ncap2 -h -O -s 'rotated_pole=char(rotated_pole)' %s %s" % (outpath,help_file)
-                shell(cmd,logger=logger)
-                os.remove(outpath)
-                shell ("mv %s %s" % (help_file, outpath),logger=logger)
-#HJP
                 # compress output
                 if config.get_config_value('boolean','nc_compress') == True:
                     compress_output(outpath,year,logger=logger)
@@ -1279,47 +1274,6 @@ is here the time resolution of the input data in hours."
     dt_stop_in = str(dt_in[-1])
     dt_stop_in = dt_stop_in[:dt_stop_in.index(' ')].replace('-','')
 
-    #HJP Mar 2019 Begin
-    # for mrsol: select only the first soil level
-    if var in ['mrsol']:
-        f_in.close()
-
-        f_hlp = tempfile.NamedTemporaryFile(dir=settings.DirWork,delete=False,suffix=year)
-        retval = shell("cdo -f %s sellevidx,1 %s %s" %(config.get_config_value('settings', 'cdo_nctype'),in_file,f_hlp.name),logger=logger)
-        in_file = f_hlp.name
-        f_in = Dataset(in_file,"r")
-        #os.remove(f_hlp.name)
-    #HJP Mar 2019 End 
-
-    # for mrso and mrfso sum up desired soil levels
-    if var in ['mrso','mrfso']:
-        f_in.close()
-
-        # use start soil layer 1 
-        idx_from = 1
-        # take stop soil layer from table
-        idx_to = int(params[config.get_config_value('index','INDEX_VAL_LEV')].strip())
-        arr = {}
-        for i in range(idx_from,idx_to+1):
-            f_hlp = tempfile.NamedTemporaryFile(dir=settings.DirWork,delete=False,suffix=year)
-            arr[i] = f_hlp.name
-            retval = shell("cdo -f %s sellevidx,%d %s %s" %(config.get_config_value('settings', 'cdo_nctype'),i,in_file,arr[i]),logger=logger)
-
-        # now calculate the sum
-        f_hlp = tempfile.NamedTemporaryFile(dir=settings.DirWork,delete=False,suffix=year)
-        #write files of arr into str with whitespace separation for cdo command
-        files_str=" ".join(arr.values())
-        cmd = "cdo enssum %s %s" % (files_str,f_hlp.name)
-        retval = shell(cmd,logger=logger)
-        
-        # remove all help files
-        for i in range(idx_from,idx_to):
-            os.remove(arr[i])
-            
-        # switch from original in_file to the new in_file
-        in_file = f_hlp.name
-        f_in = Dataset(in_file,"r")
-    
     new_reslist=list(reslist) #remove resolutions from this list that are higher than the input data resolution
     # process all requested resolutions
     
@@ -1387,13 +1341,17 @@ is here the time resolution of the input data in hours."
 #        therefore, the follwing lines are commented out
         #conversion factor
 #       conv_factor = params[config.get_config_value('index','INDEX_CONVERT_FACTOR')].strip().replace(',','.')
+#       #MED>>if  conv_factor not in ['', '0', '1']:
 #       if  conv_factor not in ['', '0', '1', '-1']:
+#       #MED<<
 #           #change conversion factor for accumulated variables
 #           if params[config.get_config_value('index','INDEX_FRE_AGG')] == 'a':
 #               conv_factor = str(float(conv_factor) / input_res_hr)
 #           cmd_mul = ' -mulc,%s ' %  conv_factor
+#       #MED>>
 #       elif conv_factor == '-1':
 #           cmd_mul = ' -mulc,%s ' %  conv_factor
+#       #MED<<
 #       else:
 #           cmd_mul = ""
 #       logger.debug("Multiplicative conversion factor: %s" % cmd_mul)
@@ -1471,10 +1429,10 @@ is here the time resolution of the input data in hours."
         # copy variables from temp file
         for var_name in f_tmp.variables.keys():
 
-            if var_name in ['rlon','rlat','lon','lat','time']:
+            if var_name in ['x','y','lon','lat','time']:
                 data_type = 'd'
-            elif var_name == 'rotated_pole':
-                data_type = 'c'
+            elif var_name == 'Lambert_Conformal':
+                data_type = 'i'
             elif var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
                 data_type = 'f'
             else:
@@ -1508,10 +1466,10 @@ is here the time resolution of the input data in hours."
             
             # create attribute list
             change_fill=False
-            if var_name in ['lat','lon','rlon','rlat','time']:
+            if var_name in ['lat','lon','x','y','time']:
                 att_lst = get_attr_list(var_name,[time_in_units,in_calendar])
-            elif var_name == 'rotated_pole':
-                att_lst = get_attr_list(var_name,[var_in.grid_north_pole_latitude,var_in.grid_north_pole_longitude])
+            elif var_name == 'Lambert_Conformal':
+                att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
             else:
                 att_lst = OrderedDict()
                 for k in var_in.ncattrs():
@@ -1526,13 +1484,28 @@ is here the time resolution of the input data in hours."
 
             # copy content to new datatype
             logger.debug("Copy data from tmp file: %s" % (var_out.name))
-            if var_name not in ['rotated_latitude_longitude','rotated_pole']:
+
+            if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
+               # get the length of data array
+               # Split into slices if large (to prevent segmentation faults due to too large arrays)
+               data_len = var_in.shape[0]
+               if data_len > 1000:
+                   nof_slices = 10               
+                   splits = np.array_split(range(data_len),nof_slices)
+
+                   logger.debug("Split %s with length %s into %s parts" % (var_out.name,data_len,nof_slices))
+                   for s in range(nof_slices):
+                      var_out[splits[s],:,:] = var_in[splits[s],:,:]
+               else:  
+                   var_out[:] = var_in[:]
+
+            elif var_name not in ['Lambert_Conformal']:
                 var_out[:] = var_in[:]
 
 
-        # copy lon/lat and rlon/rlat from input if needed:
+        # copy lon/lat and x/y from input if needed:
         for var_name in f_in.variables.keys():
-            if (var_name in ['lon','lat','rlon','rlat','rotated_pole'] and var_name not in f_out.variables.keys() ):
+            if (var_name in ['lon','lat','x','y','Lambert_Conformal'] and var_name not in f_out.variables.keys() ):
                 var_in = f_in.variables[var_name]
                 j = 0
                 for var_dim in var_in.dimensions:
@@ -1543,14 +1516,14 @@ is here the time resolution of the input data in hours."
                 # create output variable
                 var_out = f_out.createVariable(var_name,datatype="d",dimensions=var_in.dimensions)
                 # create attribute list
-                if var_name in ['lat','lon','rlat','rlon']:
+                if var_name in ['lat','lon','y','x']:
                     att_lst = get_attr_list(var_name)
-                elif var_name == 'rotated_pole':
-                    att_lst = get_attr_list(var_name,[var_in.grid_north_pole_latitude,var_in.grid_north_pole_longitude])
+                elif var_name == 'Lambert_Conformal':
+                    att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
               
                 var_out.setncatts(att_lst)
                 # copy content to new datatype
-                if var_name not in ['rotated_latitude_longitude','rotated_pole']:
+                if var_name not in ['Lambert_Conformal']:
                     var_out[:] = var_in[:]
 
                 logger.debug("Copy from input: %s" % (var_out.name))
@@ -1693,7 +1666,7 @@ is here the time resolution of the input data in hours."
         
         f_var.coordinates = coordinates
         
-        # copy variables lon,lat,rlon,rlat,rotated_pole from extra file if needed
+        # copy variables lon,lat,x,y,Lambert_Conformal from extra file if needed
         add_coordinates(f_out,logger=logger)
 
         #TODO: what to do with this function?
@@ -1703,7 +1676,7 @@ is here the time resolution of the input data in hours."
         # set attribute missing_value
         f_var.missing_value = settings.netCDF_attributes['missing_value']
         
-        f_var.setncattr('grid_mapping','rotated_pole')
+        f_var.setncattr('grid_mapping','Lambert_Conformal')
 
        # commit changes
         f_out.sync()
@@ -1736,15 +1709,6 @@ is here the time resolution of the input data in hours."
             cmd="ncatted -a coordinates,%s,o,c,'%s' %s" % (var,coordinates,outpath)
             shell(cmd,logger=logger)    
 
-#HJP
-        help_file = "%s/help-pole-%s-%s-%s.nc" % (settings.DirWork,year,var,str(uuid.uuid1()))
-        cmd="ncap2 -h -O -s 'rotated_pole=char(rotated_pole)' %s %s" % (outpath,help_file)
-        shell(cmd,logger=logger)
-        os.remove(outpath)
-        shell ("mv %s %s" % (help_file, outpath),logger=logger)
-#HJP
-
-
         # ncopy file to correct output format
         if config.get_config_value('boolean','nc_compress') == True:
             compress_output(outpath,year,logger=logger)
@@ -1752,10 +1716,6 @@ is here the time resolution of the input data in hours."
         # set global attributes: frequency,tracking_id,creation_date
         set_attributes_create(outpath,res,year,logger=logger)
     
-    # delete help file
-    if var in ['mrso','mrfso'] and os.path.isfile(f_hlp.name):
-        os.remove(f_hlp.name)
-
     if config.get_config_value('boolean','use_alt_units'): 
         os.remove(temp_name)
     # close input file

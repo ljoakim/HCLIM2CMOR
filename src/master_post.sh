@@ -1,15 +1,9 @@
-#!/bin/ksh
-#SBATCH --account=pr04
-#SBATCH --nodes=1
-#SBATCH --time=06:00:00
-#SBATCH --constraint=gpu
-#SBATCH --output=../logs/shell/CMOR_sh_%j.out
-#SBATCH --error=../logs/shell/CMOR_sh_%j.err
-#SBATCH --job-name=CMOR_sh
+#!/bin/ksh 
 
+#module add nco cdo
 
 #Check if all functions are available
-funcs="ncrcat ncks ncap2 ncatted"
+funcs="ncrcat ncks ncap2 ncatted cdo"
 for f in $funcs
 do
   typ=$(type -p $f)
@@ -27,8 +21,8 @@ source ./settings.sh
 #default values
 overwrite=false #overwrite output if it exists
 n=true #normal printing mode
-v=false #verbose printing mode
-batch=true #create batch jobs continously always for one year
+v=true #verbose printing mode
+batch=false #create batch jobs continously always for one year
 stopex=false
 overwrite_arch=false
 args=""
@@ -101,8 +95,6 @@ do
   shift
 done
 
-EXPPATH=${GCM}/${EXP}
-
 #folders
 ARCHDIR=${ARCH_BASE}
 
@@ -169,81 +161,6 @@ else
   STOP_DATE=$(echo ${STOP_DATE} | cut -c1-6)
 fi
 
-
-#end year for extracting
-YYEext=$(echo ${STOP_DATE} | cut -c1-4)
-
-#if no archives have been extracted in the beginning:
-startex=${YYA}
-(( endex=YYA+num_extract-1 ))
-#limit to extraction to end year
-if [ ${endex} -gt ${YYEext} ]
-then
-  endex=${YYEext}
-fi
-
-if [ ${post_step} -ne 2 ] && ${batch} && ! ${stopex}
-then
-  while [ ${startex} -le ${endex} ]
-  do
-    if [ ! -d ${INDIR1}/${startex} ] || ${overwrite_arch}
-    then
-      echon "Extracting years ${startex} to ${endex} \n\n"
-      sbatch --job-name=CMOR_sh_${GCM}_${EXP} --error=${xfer}.${startex}.err --output=${xfer}.${startex}.out ${SRCDIR_POST}/xfer.sh -s ${startex} -e ${endex} -o ${INDIR1} -a ${ARCHDIR} -S ${SRCDIR_POST} -l ${xfer} -g ${GCM} -x ${EXP}
-      #abort running job and restart it after extraction is done
-      sbatch --dependency=singleton --job-name=CMOR_sh_${GCM}_${EXP} --error=${CMOR}.${YYA}.err --output=${CMOR}.${YYA}.out master_post.sh ${args} -s ${START_DATE} -F ${FIRST} --stopex 
-      exit
-    fi
-    (( startex=startex+1))
-  done
-fi
-(( NEXTYEAR=YYA+1 ))
-
-#for batch processing: process only one year per job
-if [ ${NEXTYEAR} -le ${YYE} ] && ${batch}  
-then
-  #Extract archived years every 10 years
-  (( d=YYA-FIRST ))
-  (( mod=d%num_extract ))
-  if [ $mod -eq 0 ] && [ ${post_step} -ne 2 ]
-  then
-    (( startex=YYA+num_extract ))
-    (( endex=YYA+2*num_extract-1 ))
-    #limit to extraction to end year
-    if [ ${endex} -gt ${YYEext} ]
-    then
-      endex=${YYEext}
-    fi
-    if [ ${startex} -le ${YYEext} ] 
-    then
-      while [ ${startex} -le ${endex} ]
-      do
-        if [ ! -d ${INDIR1}/${startex} ] || ${overwrite_arch}
-        then
-  
-          echon "Extracting years from ${startex} to  ${endex} \n\n"
-          sbatch  --job-name=CMOR_sh_${GCM}_${EXP} --error=${xfer}.${startex}.err --output=${xfer}.${startex}.out ${SRCDIR_POST}/xfer.sh -s ${startex} -e ${endex} -o ${INDIR1} -a ${ARCHDIR} -S ${SRCDIR_POST}  -l ${xfer} -g ${GCM} -x ${EXP}
-          #Submit job for the following year when all other jobs (to wait for extraction) are finished
-          sbatch --dependency=singleton --job-name=CMOR_sh_${GCM}_${EXP} --error=${CMOR}.${NEXTYEAR}.err --output=${CMOR}.${NEXTYEAR}.out master_post.sh ${args} -s ${NEXTYEAR} -F ${FIRST} 
-          (( startex=endex+1))
-        fi
-        (( startex=startex+1))
-      done
-    else
-       #Submit job for the following year without waiting
-      sbatch --job-name=CMOR_sh_${GCM}_${EXP} --error=${CMOR}.${NEXTYEAR}.err --output=${CMOR}.${NEXTYEAR}.out master_post.sh ${args} -s ${NEXTYEAR} -F ${FIRST} 
-    fi
-  else
-    #Submit job for the following year without waiting
-    sbatch --job-name=CMOR_sh_${GCM}_${EXP} --error=${CMOR}.${NEXTYEAR}.err --output=${CMOR}.${NEXTYEAR}.out master_post.sh ${args} -s ${NEXTYEAR} -F ${FIRST} 
-  fi
-  
-  #Set stop years to start years to process only one year per job
-  YYE=${YYA}
-  STOP_DATE=${NEXTYEAR}01
-fi
-
-
 if  [ ${post_step} -ne 2 ]
 then
   CURRENT_DATE=${START_DATE}
@@ -253,7 +170,6 @@ then
   echo "Start: " ${START_DATE}
   echo "Stop: " ${STOP_DATE}
   source ${SRCDIR_POST}/first.sh
-
 fi
 
 
@@ -266,23 +182,6 @@ then
   echo "Start: " ${YYA}
   echo "Stop: " ${YYE}
   source ${SRCDIR_POST}/second.sh
-fi
-
-#Delete input data
-if [ ${post_step} -ne 2 ]
-then
-  if ${batch} 
-  then
-    echo "deleting input data"
-    sbatch --job-name=delete --error=${delete}.${YYA}.err --output=${delete}.${YYA}.out ${SRCDIR_POST}/delete.sh -s ${YYA} -e ${YYE} -g ${GCM} -x ${EXP} -I ${INDIR1}
-  else
-    while [ ${YYA} -le ${YYE} ]
-    do
-      echo "Deleting ${INDIR1}/${YYA}" 
-      rm -r  ${INDIR1}/${YYA} 
-      (( YYA=YYA+1 ))
-    done
-   fi
 fi
 
 echo "######################################################"
