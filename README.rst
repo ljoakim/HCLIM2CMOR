@@ -1,10 +1,9 @@
-=====================================================================================
-This is merley an adaptation of the famous CCLM2CMOR to the HCLIM model.
-All credits go to the original developers!
-=====================================================================================
+=========================================================================
+This is merley an adaptation of the famous CCLM2CMOR to the HCLIM model. All credits go to the original developers!
+=========================================================================
 
-======
-The infomation below is directly taken from the original tool and posted here to help getting started.
+
+The infomation below is directly taken from the original tool and posted here for getting started.
 ======
 
 =====================================================================================
