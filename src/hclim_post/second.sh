@@ -20,13 +20,13 @@ export IGNORE_ATT_COORDINATES=0
 
 #variables
 # all HCLIM variables representing a time interval (min, max, average, accumulated)
-accu_list="evspsbl evspsbs evspsbl_P01 evspsbl_P02 hfls_eva hfls_sbl hfss mrrod mrros mrro prgrpl prrain prsnow rids rlds rlns rlnt rsdsdir rsds rsdt rsns rsnt tauu tauv pr hfls rlus rsus"
+accu_list="pr evspsbl clt rsds rlds prc prsn mrros mrro snm tauu tauv rsdsdir rsus rlus rlut rsdt rsut hfls hfss clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
-inst_list="albl cape cin clh cli100m cli200m cli300m cli400m cli50m clivi cll clm clt100m clt200m clt300m clt400m clt50m clt clw100m clw200m clw300m clw400m clw50m clwvi hurs hus1000 hus100m hus200 hus200m hus300m hus350 hus400m hus500 hus50m hus600 hus700 hus775 hus850 hus900 hus925 hus950 huss mrfso mrso p100m p200m p300m p400m p50m pcape pcin phi1000 phi200 phi350 phi500 phi600 phi700 phi775 phi850 phi900 phi925 phi950 prw ps psl sfcWindmax sic sncl snd_P01 snd_P02 snm snw_b_P01 snw_b_P02 sst ta1000 ta100m ta200 ta200m ta300m ta350 ta400m ta500 ta50m ta600 ta700 ta775 ta850 ta900 ta925 ta950 taL65 tas tas_nature tas_P01 tas_P02 tas_sea tas_town tas_water tg_L01_P01 tg_L01_P02 tg_L10_P01 tg_L10_P02 tg_L11_P01 tg_L11_P02 ticr tkeL65 ts_nature ts_rad ts ts_water tswi_L01_P01 tswi_L01_P02 tswil_L01 tswi twcr ua1000 ua100m ua200 ua200m ua300m ua350 ua400m ua500 ua50m ua600 ua700 ua775 ua850 ua900 ua925 ua950 uas va1000 va100m va200 va200m va300m va350 va400m va500 va50m va600 va700 va775 va850 va900 va925 va950 vas w1000 w200 w350 w500 w600 w700 w775 w850 w900 w925 w950 wsa_L01_P01 wsa_L01_P02 z0 zmla tasmax tasmin ugsm vgsm mrsol wsgsmax"
+inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts prhmax sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clwvi clivi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" #tsl mrfsos mrsfl mrsos mrsol
 
 # constant variables
-const_list=""
+const_list="" #"orog sftlf" Not yet implemented. #Include the following? sftgif (constant 0) mrsofc rootd sftlaf sfturf dtb areacella (constant 12.5 km x 12.5km)
 
 #additional variables
 add_list=""
@@ -180,7 +180,7 @@ do
       export SKIP_SAME_TIME=1
       cdo mergetime ${FILELIST} ${FILEIN}.tmp
       cdo setgrid,${DATADIR}/griddes.txt ${FILEIN}.tmp ${FILEIN}.tmp2
-      cdo selindexbox,9,581,9,493 ${FILEIN}.tmp2 ${FILEIN}
+      cdo selindexbox,9,461,9,461 ${FILEIN}.tmp2 ${FILEIN}
 
       [ -f ${FILEIN}.tmp ] && rm ${FILEIN}.tmp
       [ -f ${FILEIN}.tmp2 ] && rm ${FILEIN}.tmp2

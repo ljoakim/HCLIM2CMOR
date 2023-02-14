@@ -13,7 +13,7 @@ function constVar {
   if [ ! -f ${OUTDIR1}/$1.nc ] ||  ${overwrite}
   then
     echon "Building file for constant variable $1"
-    ncks -h -A -v $1,rotated_pole ${WORKDIR}/${EXPPATH}/cclm_const.nc ${OUTDIR1}/$1.nc
+    echon "TO BE DONE!!" #ncks -h -A -v $1,rotated_pole ${WORKDIR}/${EXPPATH}/cclm_const.nc ${OUTDIR1}/$1.nc
   else
     echov "File for constant variable $1 already exists. Skipping..."
   fi
@@ -22,151 +22,77 @@ function constVar {
 #... functions for building time series
 function timeseries {  # building a time series for a given quantity
   cd ${INDIR1}/${CURRDIR}
-  if [[ ${1} != "pr" && ${1} != "hfls" && ${1} != "rsus" && ${1} != "rlus" && ${1} != "wsgsmax" && ${1} != "mrro" && ${1} != "evspsbl" && ! -f ${1}_${2}_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
+  #Check whether necessary files exist
+  if [[ ${1} != @(mrro|prhmax|clwvi|sfcWindmax|siconca|sund|tasmax|tasmin|tos|ts_water|wsgsmax) ]] && [ ! -f ${1}_${2}_${NAMETAG}_?hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ]
   then
-    echo "No files found for variable $1 for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "pr"  && ! -f prrain_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f prgrpl_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f prsnow_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then 
-    echo "Not all files found to create pr for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "hfls"  && ! -f hfls_eva_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f hfls_sbl_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then
-    echo "Not all files found to create hfls for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "rsus"  && ! -f rsds_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f rsns_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then
-    echo "Not all files found to create rsus for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "rlus"  && ! -f rlds_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f rlns_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then 
-    echo "Not all files found to create rlus for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "mrro"  && ! -f mrros_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f mrrod_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then
-    echo "Not all files found to create mrro for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "wsgsmax"  && ! -f ugsm_fp_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f vgsm_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ]]
-  then
-    echo "Not all files found to create wsgsmax for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
-  elif [[ ${1} == "evspsbl"  && ! -f evspsbl_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f evspsbs_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc || ! -f ${OUTDIR1}/${YYYY_MM}/mrro_ts.nc ]]
-  then
-    echo "Not all files found to create evspsbl for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
+    echov "No sub-daily files found for variable $1 for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
 
+  elif [[ ${1} == "mrro" && ! -f mrros_sfx_${NAMETAG}_6hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc || ! -f mrrod_sfx_${NAMETAG}_6hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ]]
+  then
+    echov "Not all files found to create (6hr) mrro for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
 
+  elif [[ ${1} == "prhmax" && ! -f pr_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc  ]]
+  then
+    echov "Not all files found to create (1hr) prhmax for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
+
+  elif [[ ${1} == "clwvi" && ! -f clivi_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc || ! -f clqvi_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ]]
+  then
+    echov "Not all files found to create (1hr) clwvi for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
+
+  elif [[ ${1} == @(sfcWindmax|siconca|sund|tasmax|tasmin|tos|ts_water|wsgsmax) ]] && [ ! -f ${1}_${2}_${NAMETAG}_day_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ]
+  then
+    echov "No daily files found for variable $1 for current month in  ${INDIR1}/${CURRDIR}. Skipping month..." 
+
+  #Link/calulate
   elif [ ! -f ${OUTDIR1}/${YYYY_MM}/$1_ts.nc ] ||  ${overwrite}
   then
     echon "Linking/calculating time series for variable $1"
     
-    if [[ ${1} == "pr" ]]
+    if [[ ${1} == "mrro" ]]
     then
-     echon "Summing precipitaion parts and deccumulating (setting negative values to zero)"
-     file_prrain=prrain_fp_${NAMETAG}_${CURRENT_DATE}0100.nc
-     file_prsnow=${file_prrain/'prrain_'/'prsnow_'}
-     file_prgrpl=${file_prrain/'prrain_'/'prgrpl_'}
+     echon "Summing mrro parts"
+     cdo -f nc4c chname,mrros,mrro mrros_sfx_${NAMETAG}_6hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
+     cdo -f nc4c chname,mrrod,mrro mrrod_sfx_${NAMETAG}_6hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
 
-     cdo add $file_prgrpl $file_prsnow ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp0
-     cdo add $file_prrain ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp0 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp1
-     ncap2 -h -s 'pr=prrain(1:$time.size-1, :, :)-prrain(0:$time.size-2, :, :);' ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp2
-     cdo -r selname,pr ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp3
-     cdo -r delete,timestep=1 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp3 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp4
-     cdo -r setrtoc,-Inf,0,0 ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp4 ${OUTDIR1}/${YYYY_MM}/$1_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp0 ] && rm ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp0
-     [ -f ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp1
-     [ -f ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp2
-     [ -f ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp3 ] && rm ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp3
-     [ -f ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp4 ] && rm ${OUTDIR1}/${YYYY_MM}/pr_ts.nc.tmp4
-
-    elif [[ ${1} == @(hfss|hfls_eva|hfls_sbl|mrrod|mrros|rids|rlds|rlns|rlnt|rsdsdir|rsds|rsdt|rsns|rsnt|snm|prrain) ]]
-    then
-     echon "Deccumulating " ${1} 
-     cdo -r deltat ${1}_${2}_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-    elif [[ ${1} == "hfls" ]]
-    then
-     echon "Deccummulating and summing hfls parts "
-     cdo -f nc4c deltat hfls_eva_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     cdo chname,hfls_eva,hfls ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 
-
-     cdo -f nc4c deltat hfls_sbl_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3    
-     cdo chname,hfls_sbl,hfls ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-     cdo add ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
+     cdo add ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
 
      [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
      [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
 
-    elif [[ ${1} == "rsus" ]]
+    elif [[ ${1} == prhmax ]]
+    then 
+     echon "Calculating daily prhmax from hourly pr"
+     cdo -f nc4c daymax pr_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 
+     cdo -f nc4c chname,pr,prhmax ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1  ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
+
+     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
+
+    elif [[ ${1} == "clwvi" ]]
     then
-     echon "Deccummulating and subtracting rs parts"
-     cdo -f nc4c deltat rsds_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     cdo chname,rsds,rsus ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
+     echon "Summing clwvi parts"
+     cdo -f nc4c chname,clivi,clwvi clivi_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
+     cdo -f nc4c chname,clqvi,clwvi clqvi_fp_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
+
+     cdo add ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
+
+     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
+     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
+
+    elif [[ ${1} ==  mrs[fo]l* || ${1} ==  tsl*  ]] #SKIP FOR THE MOMENT. TO do: sum/merge layers. First 3 layers: hourly, rest 6-hourly
+    then
+     echov "Merging of mult-layer soil variable $1 not implemented yet"
+     #ln -s ${PWD}/${1}_${2}_${NAMETAG}_1hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/$1_ts.nc
      
-     cdo -f nc4c deltat rsns_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     cdo chname,rsns,rsus ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-     cdo sub ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-
-    elif [[ ${1} == "rlus" ]]
+    elif [[ ${1} == @(sfcWindmax|siconca|sund|tasmax|tasmin|tos|ts_water|wsgsmax) ]] #daily values
     then
-     echon "Deccummulating and subtracting rl parts"
-     cdo -f nc4c deltat rlds_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     cdo chname,rlds,rlus ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-
-     cdo -f nc4c deltat rlns_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     cdo chname,rlns,rlus ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-     cdo sub ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-    elif [[ ${1} == "mrro" ]]
-    then
-     echon "Deccummulating and adding mrro parts"
-     cdo -f nc4c deltat mrros_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     cdo chname,mrros,mrro ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-
-     cdo -f nc4c deltat mrrod_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     cdo chname,mrrod,mrro ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-     cdo add ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp3
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp4
-
-    elif [[ ${1} == "wsgsmax" ]]
-    then
-     echon "Adding wind gust parts"
-     cdo merge ugsm_fp_${NAMETAG}_${CURRENT_DATE}0100.nc vgsm_fp_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 
-     cdo expr,"wsgsmax=sqrt(ugsm*ugsm+vgsm*vgsm);" ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-
-    elif [[ ${1} == "evspsbl" ]]
-    then
-     echon "Deccummulating and adding evspsbl parts, and add time_bnds (from mrro_ts)"
-     cdo -f nc4c deltat evspsbl_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     cdo -f nc4c deltat evspsbs_sfx_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
-     cdo -ensmean ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-    
-     ncks -A -v time_bnds ${OUTDIR1}/${YYYY_MM}/mrro_ts.nc ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc
-
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp1
-     [ -f ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2 ] && rm ${OUTDIR1}/${YYYY_MM}/${1}_ts.nc.tmp2
+     ln -s ${PWD}/${1}_${2}_${NAMETAG}_day_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/$1_ts.nc
 
     else
-     ln -s ${PWD}/${1}_${2}_${NAMETAG}_${CURRENT_DATE}0100.nc ${OUTDIR1}/${YYYY_MM}/$1_ts.nc
+     ln -s ${PWD}/${1}_${2}_${NAMETAG}_?hr_${CURRENT_DATE}010000-${NEXT_DATE}010000.nc ${OUTDIR1}/${YYYY_MM}/$1_ts.nc
     fi
+
   else
-    echov "Time series for variable $1 already exists. Skipping..."
+    : #echov "Time series for variable $1 already exists. Skipping..."
   fi
 }
 
