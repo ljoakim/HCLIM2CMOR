@@ -7,7 +7,7 @@
 #
 #-------------------------------------------------------------------------
 
-post_step=1 # to limit post processing to step 1 or 2, for all other values both steps are executed
+post_step=2 # to limit post processing to step 1 or 2, for all other values both steps are executed
 
 # Simulation details used for creating a directory structure 
 GCM=CNRM-ESM2-1    # driving GCM

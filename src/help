@@ -14,7 +14,7 @@ echo "The script master_post.sh allows the following options:
 -S, --silent                  Reduce log output
 -V, --verbose                 Increase log output
 -O, --overwrite               Overwrite existing output
---no_batch                    Years are processed sequentially instead of continously starting one-year jobs with batch command  
---overwrite_arch              Overwrite existing raw data (from archives)" 
+--no_batch                    Years are processed sequentially instead of continously starting one-year jobs with batch command (DEFAULT!)
+-p, --proc_list               List of variables to process in second script; separated by spaces and in quotation marks, e.g -p 'pr tas'" 
 
 

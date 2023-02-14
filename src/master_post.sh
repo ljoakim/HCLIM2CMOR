@@ -21,7 +21,7 @@ source ./settings.sh
 #default values
 overwrite=false #overwrite output if it exists
 n=true #normal printing mode
-v=true #verbose printing mode
+v=false #verbose printing mode
 batch=false #create batch jobs continously always for one year
 stopex=false
 overwrite_arch=false
@@ -81,12 +81,11 @@ do
       batch=false
       args="${args} --no_batch"
       ;;
-      --stopex)
-      stopex=true
-      ;;
-      --overwrite_arch)
-      overwrite_arch=true
-      args="${args} --overwrite_arch"
+      -p|--proc_list)
+      proc_all=false
+      proc_list=$2
+      args="${args} -p $2"
+      shift
       ;;
       *)
       echo "unknown option!"
