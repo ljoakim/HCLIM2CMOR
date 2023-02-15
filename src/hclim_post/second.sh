@@ -179,6 +179,8 @@ do
       FILEIN=${FILEOUT}_${YY}${MA}-${YY}${ME}.nc
       export SKIP_SAME_TIME=1
       cdo mergetime ${FILELIST} ${FILEIN}.tmp
+      # set grid and cut boundaries
+      # currently hard-coded. TO DO: read numbers to cut from settings.sh
       cdo setgrid,${DATADIR}/griddes.txt ${FILEIN}.tmp ${FILEIN}.tmp2
       cdo selindexbox,9,461,9,461 ${FILEIN}.tmp2 ${FILEIN}
 
@@ -196,12 +198,15 @@ do
       TMA=$(echo ${VT[0]} | cut -c6-7)
       TDA=$(echo ${VT[0]} | cut -c9-10)
       THA=$(echo ${VT[0]} | cut -c12-13)
+      TmA=$(echo ${VT[0]} | cut -c15-16)
       TDN=$(echo ${VT[1]} | cut -c9-10)
       THN=$(echo ${VT[1]} | cut -c12-13)
       TYE=$(echo ${VT[-1]} | cut -c1-4)
       TME=$(echo ${VT[-1]} | cut -c6-7)
       TDE=$(echo ${VT[-1]} | cut -c9-10)
       THE=$(echo ${VT[-1]} | cut -c12-13)
+      TmE=$(echo ${VT[-1]} | cut -c15-16)
+
       (( DHH=(TDN-TDA)*24+THN-THA ))
       (( EHH=24-DHH ))
       (( DTS=DHH*1800 ))
@@ -216,58 +221,9 @@ do
       
       if [[ ${LACCU} -eq 1 ]] 
       then
-  #   Check dates in files for accumulated variables
-  #   if necessary: delete first date apend first date of next year
-        if [[ ${TDA} -eq 01 && ${THA} -eq 00 ]]
-        then
-          echov "Eliminating first time step from tmp1-File"
-          ncks -O -h -d time,1, ${FILEIN} ${FILEOUT}_tmp1_${YY}.nc
-        elif [[ ${TDA} -eq 01 &&  ${THA} -eq ${DHH} ]]
-        then
-          echov "Number of timesteps in tmp1-File is OK"
-          cp ${FILEIN} ${FILEOUT}_tmp1_${YY}.nc
-        else
-          echo "Error: Start date  ${TDA} ${THA}"
-          echo in "${FILEIN} "
-          echo "is not correct! Exiting..."
-          continue
-        fi
-        if [[ ${TDE} -ge 28 && ${THE} -eq ${EHH} ]]
-        then
-          YP=${YY}
-          (( MP=TME+1 ))
-          if [[ ${MP} -gt 12 ]] 
-          then
-            MP=01
-            (( YP=YP+1 ))
-          fi
-          FILENEXT=${INDIR2}/${YP}_${MP}/${FILEOUT}_ts.nc
-          if [[ -e ${FILENEXT} ]] 
-          then
-            echov "Append first date from next month's file to the end of current month"
-            ncks -O -h -d time,0 ${FILENEXT} ${FILEOUT}_tmp2_${YY}.nc
-            ncrcat -O -h  ${FILEOUT}_tmp1_${YY}.nc ${FILEOUT}_tmp2_${YY}.nc ${FILEOUT}_tmp3_${YY}.nc
-          else
-            echo "ERROR: Tried to append first date from next month's file but"
-            echo "${FILENEXT} does not exist. Skip year for this variable..."
-            continue
-          fi
-        elif [[ ${TDE} -eq 01 &&  ${THE} -eq 00 ]]
-        then
-          (( MP=TME ))
-          (( YP=TYE ))
-          echov "Last timestep in tmp3-File is OK"
-          mv ${FILEOUT}_tmp1_${YY}.nc ${FILEOUT}_tmp3_${YY}.nc
-        else
-          echo "ERROR: END date  ${TDE} ${THE}"
-          echo in "${FILEIN} "
-          echo "is not correct. Skip year for this variable..."
-          continue
-        fi
         ENDFILE=${OUTDIR2}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}00-${YP}${MP}0100.nc
-  #     shift time variable by half a timestep and set reference time       
-        echov "Modifying time and time_bnds values and attributes"
-        cdo shifttime,-${DTS}second ${FILEOUT}_tmp3_${YY}.nc ${ENDFILE}
+  #     set reference time       
+        echov "Modifying reference time"
         ncatted -O -h -a units,time,o,c,"${REFTIME}" -a units,time_bnds,o,c,"${REFTIME}" ${ENDFILE}
       else
   #   Check dates in files for instantaneous variables
