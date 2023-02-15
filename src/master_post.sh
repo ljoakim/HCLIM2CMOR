@@ -5,7 +5,6 @@
 #SBATCH -A rossby
 #SBATCH -t 03:00:00
 #SBATCH -o /home/sm_anddo/CMOR_HCLIM43/HCLIM2CMOR/logs/master_post_%j.out
-#SBATCH -e /home/sm_anddo/CMOR_HCLIM43/HCLIM2CMOR/logs/master_post_½j.err
 
 #module add nco cdo
 
