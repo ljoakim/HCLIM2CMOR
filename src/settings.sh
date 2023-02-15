@@ -50,7 +50,7 @@ OUTDIR_BASE2=${DATADIR}/work/input_CMORlight
 
 #-------------------------------------------
 # Special settings for second step
-
-proc_list="tas pr " # which variables to process (set proc_all=false for this to take effect); separated by spaces
+NBOUNDCUT=8          # number of boundary lines to be cut off in the time series data
+proc_list="tas pr"   # which variables to process (set proc_all=false for this to take effect); separated by spaces
 proc_all=false       # process all available variables (not only those in proc_list)
-LFILE=1             # set LFILE=1 IF ONLY primary fields (given out by COSMO) should be created and =2 for only secondary fields (additionally calculated for CORDEX); for any other number both types of fields are calculated
+LFILE=1              # set LFILE=1 IF ONLY primary fields (given out by COSMO) should be created and =2 for only secondary fields (additionally calculated for CORDEX); for any other number both types of fields are calculated

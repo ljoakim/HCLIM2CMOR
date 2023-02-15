@@ -143,7 +143,7 @@ do
       if [[ ${accu_list} =~ (^|[[:space:]])${varname}($|[[:space:]]) ]]
       then
         LACCU=1
-        echon "${varname} is accumulated variable"
+        echon "${varname} is an accumulated variable"
       elif [[ ${inst_list} =~ (^|[[:space:]])${varname}($|[[:space:]]) ]]
       then
         LACCU=0
@@ -179,8 +179,15 @@ do
       FILEIN=${FILEOUT}_${YY}${MA}-${YY}${ME}.nc
       export SKIP_SAME_TIME=1
       cdo mergetime ${FILELIST} ${FILEIN}.tmp
-      cdo setgrid,${DATADIR}/griddes.txt ${FILEIN}.tmp ${FILEIN}.tmp2
-      cdo selindexbox,9,461,9,461 ${FILEIN}.tmp2 ${FILEIN}
+      # cut boundaries
+      let "STARTIDX = NBOUNDCUT + 1"
+      XSIZE=`cdo griddes ${FILEIN}.tmp | head | grep xsize  | sed "s/.*= //g"`
+      YSIZE=`cdo griddes ${FILEIN}.tmp | head | grep ysize  | sed "s/.*= //g"`
+      let "ENDIDX = XSIZE - NBOUNDCUT"
+      let "ENDIDY = YSIZE - NBOUNDCUT"
+      echon "Cutting boundaries with $NBOUNDCUT lines."
+      echov "Original grid size: ${XSIZE}x${YSIZE}. Cutting ${STARTIDX}:${ENDIDX},${STARTIDX}:${ENDIDY} (x,y)"
+      cdo selindexbox,${STARTIDX},${ENDIDX},${STARTIDX},${ENDIDY} ${FILEIN}.tmp ${FILEIN}
 
       [ -f ${FILEIN}.tmp ] && rm ${FILEIN}.tmp
       [ -f ${FILEIN}.tmp2 ] && rm ${FILEIN}.tmp2
