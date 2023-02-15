@@ -227,9 +227,17 @@ do
       if [[ ${LACCU} -eq 1 ]] 
       then
         ENDFILE=${OUTDIR2}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}${THA}${TmA}-${TYE}${TME}${TDE}${THE}${TmE}.nc
-  #     set reference time       
-        echov "Modifying reference time"
-        ncatted -O -h -a units,time,o,c,"${REFTIME}" -a units,time_bnds,o,c,"${REFTIME}" ${FILEIN} ${ENDFILE}
+        if [[ ${FILEOUT} == @(pr|prsn|prc|prhmax) ]]
+        then
+        # set negative precip values to zero  
+          echon "Setting negative precipitation to zero"
+          cdo setrtoc,-Inf,0,0 ${FILEIN} ${ENDFILE} 
+          ncatted -O -h -a units,time,o,c,"${REFTIME}" -a units,time_bnds,o,c,"${REFTIME}" ${ENDFILE}
+        else
+        # set reference time       
+          echov "Modifying reference time"
+          ncatted -O -h -a units,time,o,c,"${REFTIME}" -a units,time_bnds,o,c,"${REFTIME}" ${FILEIN} ${ENDFILE}
+        fi
       else
   #   Check dates in files for instantaneous variables
         if [[ ${TDA} -eq 01 && ${THA} -eq 00 ]]
