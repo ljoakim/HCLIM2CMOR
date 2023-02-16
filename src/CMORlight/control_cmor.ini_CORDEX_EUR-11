@@ -6,6 +6,7 @@
 # 2016,2017 DKRZ, Hans Ramthun, ETHZ Matthias Göbel
 # 2020      MET Norway, Andreas Dobler
 #
+#
 ################################################################################################
 [settings]
 #tag used as extension for the simulation specific settings (e.g. settings_CCLM) lower down
@@ -16,7 +17,7 @@ simulation=HCLIM
 #change DataPath and BasePath; the other paths can be left as they are
 
 #base path for DirIn, DirOut, DirWork and DirDerotated; leave this empty if you want to specify absolute paths below
-DataPath=/home/sm_anddo/CORDEX-FPS/HCLIM2CMOR_clean/data
+DataPath=
 
 #base path for DirConfig and DirLog; leave this empty if you want to specify absolute paths below
 BasePath=/home/sm_anddo/CORDEX-FPS/HCLIM2CMOR_clean
