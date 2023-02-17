@@ -1,18 +1,19 @@
 #!/bin/ksh
-#SBATCH --account=pr04
-#SBATCH --nodes=1
-#SBATCH --time=08:00:00
-#SBATCH --constraint=gpu
-#SBATCH --output=../logs/cmorlight/master_py_%j.out
-#SBATCH --error=../logs/cmorlight/master_py_%j.err
-#SBATCH --job-name="master_py"
+#SBATCH -J master_CMOR
+#SBATCH -n 11
+#SBATCH -A rossby
+#SBATCH -t 12:00:00
+#SBATCH -o /home/sm_anddo/CMOR_HCLIM43/HCLIM2CMOR/logs/master_CMOR_%j.out
 
 source ./settings.sh
+#make temp folder for batch job
+mkdir -p $SNIC_TMP/temp
+ln -s $SNIC_TMP/temp /home/sm_anddo/CMOR_HCLIM43/HCLIM2CMOR/data/temp
 
 script_folder="${BASEDIR}/src/CMORlight"
 python_script="${script_folder}/cmorlight.py"
 dirlog="${BASEDIR}/logs/cmorlight/master_py"
-python="python3" #python command (e.g. python or python3)
+python="python" #python command (e.g. python or python3)
 
 #necessary for derotation
 export IGNORE_ATT_COORDINATES=1
