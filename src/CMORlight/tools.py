@@ -81,7 +81,7 @@ def set_attributes(params):
         try:
             settings.Global_attributes[name.strip()] = config.get_sim_value(name.strip())
         except:
-            raise("Global attribute %s is in global_attr_list but is not defined in the configuration file!")
+            raise Exception("Global attribute %s is in global_attr_list but is not defined in the configuration file!" % name.strip())
 
     #Invariant attributes
     #settings.Global_attributes['project_id']="CORDEX" #global attribute "project_id" should be variable, thus defined in the ini-file
@@ -1223,7 +1223,7 @@ def process_file(params,in_file,var,reslist,year,firstlast):
     if input_res_hr not in [1.,3.,6.,12.,24]:
         cmd = "Time resolution of input data must be 1,3,6,12 or 24 hours, found %s hours!" % (input_res_hr)
         logger.error(cmd)
-        raise(cmd) 
+        raise Exception(cmd) 
         
     logger.debug("Input data time interval: %shourly" % (str(input_res_hr)))
   
