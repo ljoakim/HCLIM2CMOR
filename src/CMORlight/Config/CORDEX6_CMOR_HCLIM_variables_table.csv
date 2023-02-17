@@ -1,0 +1,13 @@
+HCLIM variable name;HCLIM variable name (in model output file);output variable name;to be derived from;Derotate (CORDEX);Level;Conversion factor 1);Cell Method (additional subdaily,CORDEX);Cell Method (subdaily,CORDEX);Cell Method (daily,CORDEX);Cell Method (monthly,CORDEX);Cell Method (seasonal,CORDEX);Levelvalue (height, plev);units;"Additional subdaily frq
+[1/day]";"Subdaily frq
+[1/day]";ag;"Daily frq
+[1/day]";ag;"Monthly frq
+[1/mon]";ag;"Seasonal frq
+[1/sem]";ag;fx;long_name;comment;standard_name;direction of positive fluxes;"realm
+(not required, however, if included should have the value as in CMIP5)";"cell-method: area
+(optional)"
+tas;tas;tas;;;ModelLevel;1;;point;mean;mean;;2;K;;24;i;1;;1;;;;;Near-Surface Air Temperature;;air_temperature;;atmos;
+tasmax;tasmax;tasmax;;;ModelLevel;1;;;maximum;maximum within days time: mean over days;;2;K;;;a;1;;1;;;;;Daily Maximum Near-Surface Air Temperature;;air_temperature;;atmos;
+tasmin;tasmin;tasmin;;;ModelLevel;1;;;minimum;minimum within days time: mean over days;;2;K;;;a;1;;1;;;;;Daily Minimum Near-Surface Air Temperature;;air_temperature;;atmos;
+pr;pr;pr;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Precipitation;;precipitation_flux;;atmos;
+ps;ps;ps;;;ModelLevel;1;;point;mean;mean;;0;Pa;;24;i;1;;1;;;;;Surface Air Pressure;;surface_air_pressure;;atmos;
