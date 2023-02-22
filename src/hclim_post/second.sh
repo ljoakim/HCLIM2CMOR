@@ -7,6 +7,7 @@
 # K. Keuler, Matthias Göbel 
 # latest version: 15.09.2017
 # HCLIM Version: Autumn 2019, Andreas Dobler / MET Norway
+# HCLIM43 Version: Spring 2023, Andreas Dobler / MET Norway
 #-------------------------------------------------------------------------
 
 typeset -Z2 MM MA ME MP MMA MME DHH EHH
@@ -20,21 +21,21 @@ export IGNORE_ATT_COORDINATES=0
 
 #variables
 # all HCLIM variables representing a time interval (min, max, average, accumulated)
-accu_list="pr evspsbl clt rsds rlds prc prsn mrros mrro snm tauu tauv rsdsdir rsus rlus rlut rsdt rsut hfls hfss clh clm cll rsnscs rlnscs rsntcs rlntcs"
+accu_list="pr evspsbl clt rsds rlds prc prsn mrros snm tauu tauv rsdsdir rsus rlus rlut rsdt rsut hfls hfss clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
-inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts prhmax sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clwvi clivi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" #tsl mrfsos mrsfl mrsos mrsol
+inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clivi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" 
 
 # constant variables
-const_list="" #"orog sftlf" Not yet implemented. #Include the following? sftgif (constant 0) mrsofc rootd sftlaf sfturf dtb areacella (constant 12.5 km x 12.5km)
+const_list="" #"orog sftlf" TO BE ADDED, not implemented yet (connstant vars). #Include the following? sftgif (constant 0) mrsofc rootd sftlaf sfturf dtb areacella (constant 12.5 km x 12.5km)
 
 #additional variables
-add_list=""
+add_list="clwvi mrro prhmax" #tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
 
 #-----------------------------------------------------------------------
 
 # create subdirectory for full time series
-[[ -d ${OUTDIR2} ]] || mkdir -p  ${OUTDIR2}
+[[ -d ${OUTDIR} ]] || mkdir -p  ${OUTDIR}
 #Create and change to WORKDIR
 [[ -d ${WORKDIR} ]] || mkdir -p  ${WORKDIR} 
 cd ${WORKDIR}
@@ -44,13 +45,13 @@ YY=$YYA
 #copy constant variables
 for constVar in ${const_list}
 do 
-  if [[ ! -e ${OUTDIR2}/${constVar}/${constVar}.nc ]] || ${overwrite} 
+  if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
   then
     if [[ -e ${INDIR2}/${constVar}.nc ]]
     then
       echon "Copy constant variable ${constVar}.nc to output folder"
-      [[ -d ${OUTDIR2}/${constVar} ]] || mkdir ${OUTDIR2}/${constVar}
-      cp ${INDIR2}/${constVar}.nc ${OUTDIR2}/${constVar}/
+      [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
+      cp ${INDIR2}/${constVar}.nc ${OUTDIR}/${constVar}/
     else
       echo "Required constant variable file ${constVar}.nc is not in input folder ${INDIR2}! Skipping this variable..."
     fi
@@ -66,7 +67,7 @@ do
   echo "####################"
   DATE1=$(date +%s)
 	
-    #check if directories for all months exist
+  #check if directories for all months exist
   MMA=01 #first month of each yearly time-series
   MME=12 #last month of each yearly time-series
   MM=${MMA}
@@ -116,7 +117,7 @@ do
       #process variable if in proc_list or if proc_all is set
       if [[ ${proc_list} =~ (^|[[:space:]])${varname}($|[[:space:]]) ]] || ${proc_all}
       then
-        if ls ${OUTDIR2}/${FILEOUT}/${FILEOUT}_${YY}* 1> /dev/null 2>&1 
+        if ls ${OUTDIR}/${FILEOUT}/${FILEOUT}_${YY}* 1> /dev/null 2>&1 
         then
           if ${overwrite} 
           then    
@@ -222,11 +223,11 @@ do
       echov "New reference time: ${REFTIME}"
 
       #create output directory
-      [[ -d ${OUTDIR2}/${FILEOUT} ]] || mkdir ${OUTDIR2}/${FILEOUT}
+      [[ -d ${OUTDIR}/${FILEOUT} ]] || mkdir ${OUTDIR}/${FILEOUT}
       
       if [[ ${LACCU} -eq 1 ]] 
       then
-        ENDFILE=${OUTDIR2}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}${THA}${TmA}-${TYE}${TME}${TDE}${THE}${TmE}.nc
+        ENDFILE=${OUTDIR}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}${THA}${TmA}-${TYE}${TME}${TDE}${THE}${TmE}.nc
         if [[ ${FILEOUT} == @(pr|prsn|prc|prhmax) ]]
         then
         # set negative precip values to zero  
@@ -269,7 +270,7 @@ do
           echo ${EHH}
           continue       
         fi
-        ENDFILE=${OUTDIR2}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}0000-${YY}${ME}${TDE}${EHH}00.nc
+        ENDFILE=${OUTDIR}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}0000-${YY}${ME}${TDE}${EHH}00.nc
   #    remove time_bnds from instantaneous fields and set reference time
         echov "Modifying reference time"
         ncks -O -C -h -x -v time_bnds ${FILEOUT}_tmp3_${YY}.nc ${ENDFILE}
@@ -298,67 +299,35 @@ do
     name1=$1 #first input variable
     name2=$2 #second input variable
     name3=$3 #output variable
-    formula=$4 #formula how to create output variable
+    formula=$4 #formula how to create output variable; cdo command
     standard_name=$5
-    if [[ ${formula} == "add" ]]
-    then
-      formula="${name3}=${name1}+${name2}"
-    elif [[ ${formula} == "subs" ]]
-    then
-      formula="${name3}=${name1}-${name2}"
-    elif [[ ${formula} == "add_sqr" ]]
-    then
-      formula="${name3}=sqrt(${name1}^2+${name2}^2)"
-    #MED>>
-    elif [[ ${formula} == "snow_case" ]]
-    then
-      #MED: FR_SNOW=Max(0.01,Min(1.,W_SNOW/0.015))*H(x) with H(x)=1 if W_SNOW>0.5E-06, else H(x)=0
-      formula="SNOW_flg=float($name1>0.0000005);SNOW=float($name1/0.015);where(SNOW>1.0)SNOW=1.0f;where(SNOW<0.01)SNOW=0.01f;$name3=float(SNOW*SNOW_flg)"
-    #MED<<
-    else
-      echo "Formula ${formula} not known! Skipping"
-      return
-    fi
         
     if [[ ${proc_list} =~ (^|[[:space:]])${name3}($|[[:space:]]) ]] || ${proc_all}
     then
-      file1=$(ls ${OUTDIR2}/${name1}/${name1}_${YY}${MMA}0100*.nc) 
-      #MED>> file2=$(ls ${OUTDIR2}/${name2}/${name2}_${YY}${MMA}0100*.nc)
+      file1=$(ls ${OUTDIR}/${name1}/${name1}_${YY}${MMA}0100*.nc) 
       if [[ ${name2} == "" ]]
       then
         file2=""
       else
-        file2=$(ls ${OUTDIR2}/${name2}/${name2}_${YY}${MMA}0100*.nc)
+        file2=$(ls ${OUTDIR}/${name2}/${name2}_${YY}${MMA}0100*.nc)
       fi
-      #MED<<
       echov "Input files and formula:"
       echov "$file1"
       echov "$file2"
       echov "$formula"
 
-      #MED>> if [[ -f ${file1} && -f ${file2} ]] 
       if [[ -e ${file1} ]]
-      #MED<<
       then
         ((c1 = ${#file1}-23 )) 
         ((c2 = ${#file1}-3 ))
         DATE=$(ls ${file1} |cut -c${c1}-${c2})
-        file3=${OUTDIR2}/${name3}/${name3}_${DATE}.nc
+        file3=${OUTDIR}/${name3}/${name3}_${DATE}.nc
         if [[ ! -e ${file3} ]] ||  ${overwrite}
         then
           echon "Create ${name3}"
-          [[ -d ${OUTDIR2}/${name3} ]] || mkdir  ${OUTDIR2}/${name3} 
-          cp ${file1} temp1_${YY}.nc
-          #MED>>
-          if [[ -e ${file2} ]]
-          then
-            ncks -h --no_abc -A -v ${name2} ${file2} temp1_${YY}.nc
-          fi
-          #MED<<
-          ncap2 -h -O -s ${formula} temp1_${YY}.nc temp1_${YY}.nc 
-          #MED>>ncks -h -a -O -v ${name3},lat,lon,rotated_pole temp1_${YY}.nc ${file3}
-          ncks -h --no_abc -O -v ${name3},lat,lon,rotated_pole temp1_${YY}.nc ${file3}
-          #MED<<
+          [[ -d ${OUTDIR}/${name3} ]] || mkdir  ${OUTDIR}/${name3} 
+          cdo ${formula} ${file1} ${file2} temp1_${YY}.nc
+          cdo -f nc4c chname,${name1},${name3} temp1_${YY}.nc ${file3}
           ncatted -h -a long_name,${name3},d,, ${file3}
           ncatted -h -a standard_name,${name3},m,c,${standard_name} ${file3}
           chmod ${PERM} ${file3}
@@ -378,31 +347,14 @@ do
     echon ""
     echon " Create additional fields for CORDEX"
 
-    # Mean wind spdeed at 10m height: SP_10M
-    create_add_vars "U_10M" "V_10M" "SP_10M" "add_sqr" "wind_speed"
+    # Total runoff: mrro
+    create_add_vars "mrros" "mrrod" "mrro" "add" "total_runoff_flux"
     
-    # Total downward global radiation at the surface: ASWD_S
-    create_add_vars "ASWDIR_S" "ASWDIFD_S" "ASWD_S" "add" "averaged_downward_sw_radiation_sfc" 
+    # Total snow: clwvi
+    create_add_vars "clivi" "clqvi" "clwvi" "add" "atmosphere_mass_content_of_cloud_water"
     
-    # upward solar radiation at TOA: ASOU_T
-    create_add_vars "ASOD_T" "ASOB_T" "ASOU_T" "subs" "averaged_solar_upward_radiation_top" 
-    
-    # Total runoff: RUNOFF_T
-    create_add_vars "RUNOFF_S" "RUNOFF_G" "RUNOFF_T" "add" "total_runoff_amount"
-    
-    # Total convective precipitation: PREC_CON
-    create_add_vars "RAIN_CON" "SNOW_CON" "PREC_CON" "add" "convective_precipitation_amount"
-    
-    # Total snow: TOT_SNOW
-    create_add_vars "SNOW_GSP" "SNOW_CON" "TOT_SNOW" "add" "total_snowfall_amount"
-    
-    # cloud condensed water content TQW
-    create_add_vars "TQC" "TQI" "TQW" "add" "atmosphere_cloud_condensed_water_content"  
-
-    #MED>>
-    # Mean snow fraction: FR_SNOW
-    create_add_vars "W_SNOW" "" "FR_SNOW" "snow_case" "surface_snow_area_fraction" 
-    #MED<<
+    # Daily max hourly precip: prhmax
+    create_add_vars "pr" "" "prhmax" "daymax" "max_hourly_precipitation_flux" 
   fi
   
   (( YY=YY+1 ))
