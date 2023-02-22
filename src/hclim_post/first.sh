@@ -133,20 +133,6 @@ do
   echon "################################"
 
   skip=false
-  if [ ! -d ${INDIR1}/${YYYY} ]
-  then
-    echo "Cannot find input directory for year ${YYYY}. Transfering from ${ARCHDIR} ..."
-    if [ -d ${ARCHDIR}/${YYYY} ] 
-    then
-      ln -s ${ARCHDIR}/${YYYY} ${INDIR1}/${YYYY}
-    elif [ -f ${ARCHDIR}/*${YYYY}.tar ]
-    then
-      tar -xf ${ARCHDIR}/*${YYYY}.tar -C ${INDIR1}
-    else
-      echo "Cannot find .tar file or extracted archive in archive directory! Exiting..."
-      skip=true  
-    fi
-  fi
   # step ahead in time
   MMint=$(python -c "print(int("${MMint}")+1)")
   if [ ${MMint} -ge 13 ]

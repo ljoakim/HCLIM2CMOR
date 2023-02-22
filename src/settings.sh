@@ -29,7 +29,6 @@ YYE= # End year for processing YYYY
 
 export BASEDIR=${HOME}/CMOR_HCLIM43/HCLIM2CMOR    # directory where the scripts are placed 
 export DATADIR=${HOME}/CMOR_HCLIM43/HCLIM2CMOR/data       # directory where all the data will be placed (typically at /scratch/)
-ARCH_BASE= # directory where the raw data of the simulations are archived
 
 # scripts directory
 SRCDIR=${BASEDIR}/src                # directory where the post processing scripts are stored
@@ -39,7 +38,7 @@ WORKDIR=${DATADIR}/work/post/${GCM}_${EXP} # work directory, CAUTION: WITH OPTIO
 LOGDIR=${DATADIR}/work/logs         # logging directory
 
 # input/output directory for first step
-INDIR_BASE1=${DATADIR}/in                                 # base where the input is located; directory to where the raw data archives are extracted
+INDIR_BASE1=${DATADIR}/in                                 # base where the input is located 
 EXPPATH=EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist         # sub-directory of the experiment
 NAMETAG=EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist   # file nameing of the input files, i.e. var_NAMETAG_date.nc
 OUTDIR_BASE1=${DATADIR}/work/outputpost # output directory of the first step
