@@ -43,28 +43,31 @@ cd ${WORKDIR}
 YY=$YYA
 
 #constant variables
-for constVar in ${const_list}
-do 
-  if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
-  then
-    if [[ -e ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ]]
-    then
-      echon "Copy constant variable ${constVar}.nc to output folder"
-      [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
-      cp ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
-    elif [[ ${constVar} == "sftlf" ]]
+if ${create_const}
+then
+ for constVar in ${const_list}
+ do 
+   if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
+   then
+     if [[ -e ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ]]
      then
-      echon "Creating constant variable ${constVar}.nc in output folder (sftlf = sftnf + sfturf)"
-      [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
-      cdo add ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
-      ncrename -h -v sftnf,${constVar} ${OUTDIR}/${constVar}/${constVar}.nc
-      ncatted -h -a long_name,${constVar},o,c,"Percentage of the Grid Cell Occupied by Land" ${OUTDIR}/${constVar}/${constVar}.nc
-      ncatted -h -a standard_name,${constVar},o,c,"land_area_fraction" ${OUTDIR}/${constVar}/${constVar}.nc
-    else
-      echo "Required constant variable file(s) not in input folder ${FXDIR}! Skipping this variable..."
-    fi
-  fi
-done
+       echon "Copy constant variable ${constVar}.nc to output folder"
+       [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
+       cp ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+     elif [[ ${constVar} == "sftlf" ]]
+      then
+       echon "Creating constant variable ${constVar}.nc in output folder (sftlf = sftnf + sfturf)"
+       [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
+       cdo add ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+       ncrename -h -v sftnf,${constVar} ${OUTDIR}/${constVar}/${constVar}.nc
+       ncatted -h -a long_name,${constVar},o,c,"Percentage of the Grid Cell Occupied by Land" ${OUTDIR}/${constVar}/${constVar}.nc
+       ncatted -h -a standard_name,${constVar},o,c,"land_area_fraction" ${OUTDIR}/${constVar}/${constVar}.nc
+     else
+       echo "Required constant variable file(s) not in input folder ${FXDIR}! Skipping this variable..."
+     fi
+   fi
+ done
+fi
 
 
 while [[ ${YY} -le ${YYE} ]]      # year loop

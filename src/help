@@ -7,14 +7,12 @@ echo "The script master_post.sh allows the following options:
 -h, --help                    Show this help and exit
 -g GCM, --gcm GCM             Specify the driving GCM
 -x EXP, --exp EXP             Specify the driving experiment name
--s START, --start START       Specify the start date for post-processing (format YYYY[MM])
--e END, --end END             Specify the end date for post-processing (format YYYY[MM])
---first                       Execute only first script. Second script is skipped.
---second                      Execute only second script. First script is skipped.
+-s START, --start START       Specify the start date for post-processing (format YYYY)
+-e END, --end END             Specify the end date for post-processing (format YYYY)
 -S, --silent                  Reduce log output
 -V, --verbose                 Increase log output
 -O, --overwrite               Overwrite existing output
---no_batch                    Years are processed sequentially instead of continously starting one-year jobs with batch command (DEFAULT!)
--p, --proc_list               List of variables to process in second script; separated by spaces and in quotation marks, e.g -p 'pr tas'" 
+-C, --create_const            Create constant vraiables
+-p, --proc_list               List of variables to process; separated by spaces and in quotation marks, e.g -p 'pr tas'" 
 
 

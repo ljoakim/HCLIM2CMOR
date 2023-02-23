@@ -26,6 +26,7 @@ source ./settings.sh
 overwrite=false #overwrite output if it exists
 n=true #normal printing mode
 v=false #verbose printing mode
+create_const=false #create constant variables
 args=""
 while [[ $# -gt 0 ]]
 do
@@ -65,6 +66,10 @@ do
       -O|--overwrite)
       overwrite=true
       args="${args} -O"
+      ;;
+      -C|--create_const)
+      create_const=true
+      args="${args} -C"
       ;;
       -p|--proc_list)
       proc_all=false
