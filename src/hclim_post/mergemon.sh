@@ -24,13 +24,13 @@ export IGNORE_ATT_COORDINATES=0
 accu_list="pr evspsbl clt rsds rlds prc prsn mrros snm tauu tauv rsdsdir rsus rlus rlut rsdt rsut hfls hfss clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
-inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clivi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" 
+inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" 
 
 # constant variables
-const_list="orog sftnf sfturf sftlaf" #Include the following? sftgif (constant 0) mrsofc rootd dtb areacella (constant 12.5 km x 12.5km)
+const_list="orog sftlf sfturf sftlaf" #Include the following? sftgif (constant 0) mrsofc rootd dtb areacella (constant 12.5 km x 12.5km)
 
 #additional variables
-add_list="clwvi mrro prhmax sftlf" #sftlf = sftnf + sfturf; tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
+add_list="clwvi mrro prhmax" #tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
 
 #-----------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ cd ${WORKDIR}
 #################################################
 YY=$YYA
 
-#copy constant variables
+#constant variables
 for constVar in ${const_list}
 do 
   if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
@@ -52,8 +52,16 @@ do
       echon "Copy constant variable ${constVar}.nc to output folder"
       [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
       cp ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+    elif [[ ${constVar} == "sftlf" ]]
+     then
+      echon "Creating constant variable ${constVar}.nc in output folder (sftlf = sftnf + sfturf)"
+      [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
+      cdo add ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+      ncrename -h -v sftnf,${constVar} ${OUTDIR}/${constVar}/${constVar}.nc
+      ncatted -h -a long_name,${constVar},o,c,"Percentage of the Grid Cell Occupied by Land" ${OUTDIR}/${constVar}/${constVar}.nc
+      ncatted -h -a standard_name,${constVar},o,c,"land_area_fraction" ${OUTDIR}/${constVar}/${constVar}.nc
     else
-      echo "Required constant variable file ${constVar}.nc is not in input folder ${FXDIR}! Skipping this variable..."
+      echo "Required constant variable file(s) not in input folder ${FXDIR}! Skipping this variable..."
     fi
   fi
 done
@@ -227,7 +235,7 @@ do
       if [[ ${LACCU} -eq 1 ]] 
       then
         ENDFILE=${OUTDIR}/${FILEOUT}/${FILEOUT}_${TYA}${TMA}${TDA}${THA}${TmA}-${TYE}${TME}${TDE}${THE}${TmE}.nc
-        if [[ ${FILEOUT} == @(pr|prsn|prc|prhmax) ]]
+        if [[ ${FILEOUT} == @(pr|prsn|prc) ]]
         then
         # set negative precip values to zero  
           echon "Setting negative precipitation to zero"
@@ -317,22 +325,24 @@ do
 
       if [[ -e ${file1} ]]
       then
-        ((c1 = ${#file1}-23 )) 
+        ((c1 = ${#file1}-27 )) 
         ((c2 = ${#file1}-3 ))
         DATE=$(ls ${file1} |cut -c${c1}-${c2})
         file3=${OUTDIR}/${name3}/${name3}_${DATE}.nc
         if [[ ! -e ${file3} ]] ||  ${overwrite}
         then
-          echon "Create ${name3}"
+          echon "Create ${file3}"
           [[ -d ${OUTDIR}/${name3} ]] || mkdir  ${OUTDIR}/${name3} 
           cdo ${formula} ${file1} ${file2} temp1_${YY}.nc
           cdo -f nc4c chname,${name1},${name3} temp1_${YY}.nc ${file3}
           ncatted -h -a long_name,${name3},d,, ${file3}
+          ncatted -h -a FA_name,${name3},d,, ${file3}
+          ncatted -h -a par,${name3},d,, ${file3}
           ncatted -h -a standard_name,${name3},m,c,${standard_name} ${file3}
           chmod ${PERM} ${file3}
           rm temp1_${YY}.nc
         else
-          echov "$(basename ${file3})  already exists. Use option -o to overwrite. Skipping..."
+          echov "$(basename ${file3})  already exists. Use option -O to overwrite. Skipping..."
         fi
       else
         echo "Input Files for generating ${name3} are not available"
@@ -347,13 +357,13 @@ do
     echon " Create additional fields for CORDEX"
 
     # Total runoff: mrro
-    create_add_vars "mrros" "mrrod" "mrro" "add" "total_runoff_flux"
+    create_add_vars "mrros" "mrrod" "mrro" "add" "runoff_flux"
     
     # Total snow: clwvi
-    create_add_vars "clivi" "clqvi" "clwvi" "add" "atmosphere_mass_content_of_cloud_water"
+    create_add_vars "clivi" "clqvi" "clwvi" "add" "atmosphere_mass_content_of_cloud_condensed_water"
     
     # Daily max hourly precip: prhmax
-    create_add_vars "pr" "" "prhmax" "daymax" "max_hourly_precipitation_flux" 
+    create_add_vars "pr" "" "prhmax" "daymax" "precipitation_flux" 
   fi
   
   (( YY=YY+1 ))
@@ -361,24 +371,4 @@ do
 	SEC_TOTAL=$(python -c "print(${DATE2}-${DATE1})")
 	echon "Time for postprocessing: ${SEC_TOTAL} s"
   done                                      # year loopend
-
-
-
-  # Remove monthly subdirs YYYY_MM
-  #YY=${YYA}
-  #MM=${MMA}
-  #while [[ ${YY}${MM} -le ${YYE}${MME} ]]      # year loop
-  #do
-  #  Remove the input files if you are shure that they are no longer needed:
-  #  Files with monthly time series of single variables generated by subchain-script "post.job"
-  #
-  #  rm -rf ${YY}_${MM}
-   # (( MM=MM+1 ))
-    #if [[ ${MM} -gt 12 ]] 
-    #then
-    #  (( YY=YY+1 ))
-     # MM=1
-    #fi
-  #done
-
 
