@@ -6,8 +6,6 @@
 #SBATCH -t 03:00:00
 #SBATCH -o /home/sm_anddo/CMOR_HCLIM43/HCLIM2CMOR/logs/master_post_%j.out
 
-#module add nco cdo
-
 #Check if all functions are available
 funcs="ncrcat ncks ncap2 ncatted cdo"
 for f in $funcs
@@ -28,9 +26,7 @@ source ./settings.sh
 overwrite=false #overwrite output if it exists
 n=true #normal printing mode
 v=false #verbose printing mode
-batch=false #create batch jobs continously always for one year
 stopex=false
-overwrite_arch=false
 args=""
 while [[ $# -gt 0 ]]
 do
@@ -59,18 +55,6 @@ do
       args="${args} -e $2"
       shift
       ;;
-      -F|--first_year) #only needed internally
-      FIRST=$2
-      shift
-      ;;
-      --first)
-      post_step=1
-      args="${args} --first"
-      ;;
-      --second)
-      post_step=2
-      args="${args} --second"
-      ;;
       -S|--silent)
       n=false
       args="${args} -S"
@@ -82,10 +66,6 @@ do
       -O|--overwrite)
       overwrite=true
       args="${args} -O"
-      ;;
-      --no_batch)
-      batch=false
-      args="${args} --no_batch"
       ;;
       -p|--proc_list)
       proc_all=false
@@ -100,15 +80,6 @@ do
   shift
 done
 
-#folders
-ARCHDIR=${ARCH_BASE}
-
-INDIR1=${INDIR_BASE1}/${EXPPATH}
-OUTDIR1=${OUTDIR_BASE1}/${EXPPATH}
-
-INDIR2=${INDIR_BASE2}/${EXPPATH}
-OUTDIR2=${OUTDIR_BASE2}/${EXPPATH}
-
 #create logging directory
 if [ ! -d ${LOGDIR} ]
 then
@@ -122,8 +93,6 @@ fi
 
 #log base names
 CMOR=${LOGDIR}/${GCM}_${EXP}_CMOR_sh
-xfer=${LOGDIR}/${GCM}_${EXP}_xfer
-delete=${LOGDIR}/${GCM}_${EXP}_delete
 
 #printing modes
 function echov {
@@ -140,54 +109,19 @@ function echon {
   fi
 }
 
-#range for second script
-YYA=$(echo ${START_DATE} | cut -c1-4) 
-YYE=$(echo ${STOP_DATE} | cut -c1-4)
-
-#initialize first year
-if [ -z ${FIRST} ]  
-then
-  FIRST=${YYA}
-fi
-
-#if only years given: process from January of the year START_DATE to January of the year following STOP_DATE
-if [ ${#START_DATE} -eq 4 ]
-then
-  START_DATE="${START_DATE}01"
-else
-  START_DATE=$(echo ${START_DATE} | cut -c1-6)
-fi
-
-if [ ${#STOP_DATE} -eq 4 ]
-then
   (( STOP_DATE=STOP_DATE+1 ))
   STOP_DATE="${STOP_DATE}01"
 else
   STOP_DATE=$(echo ${STOP_DATE} | cut -c1-6)
 fi
 
-if  [ ${post_step} -ne 2 ]
-then
-  CURRENT_DATE=${START_DATE}
-  echo "######################################################"
-  echo "First processing step"
-  echo "######################################################"  
-  echo "Start: " ${START_DATE}
-  echo "Stop: " ${STOP_DATE}
-  source ${SRCDIR_POST}/first.sh
-fi
-
-
-if [ ${post_step} -ne 1 ]
-then
-  echo ""
-  echo "######################################################"
-  echo "Second processing step"
-  echo "######################################################"
-  echo "Start: " ${YYA}
-  echo "Stop: " ${YYE}
-  source ${SRCDIR_POST}/second.sh
-fi
+echo ""
+echo "######################################################"
+echo "Merging monthly time-series to annual ones"
+echo "######################################################"
+echo "Start: " ${START_DATE}
+echo "Stop: " ${STOP_DATE}
+source ${SRCDIR_POST}/mergemon.sh
 
 echo "######################################################"
 TIME2=$(date +%s)

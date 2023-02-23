@@ -1,6 +1,6 @@
 #!/bin/ksh
 #-------------------------------------------------------------------------
-# Concatenats monthly time series files produced by CCLM chain script post
+# Concatenats monthly time series files
 # to annual file for a given time period of years and creates additional 
 # fields required by CORDEX
 # 
@@ -27,10 +27,10 @@ accu_list="pr evspsbl clt rsds rlds prc prsn mrros snm tauu tauv rsdsdir rsus rl
 inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clivi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" 
 
 # constant variables
-const_list="" #"orog sftlf" TO BE ADDED, not implemented yet (connstant vars). #Include the following? sftgif (constant 0) mrsofc rootd sftlaf sfturf dtb areacella (constant 12.5 km x 12.5km)
+const_list="orog sftnf sfturf sftlaf" #Include the following? sftgif (constant 0) mrsofc rootd dtb areacella (constant 12.5 km x 12.5km)
 
 #additional variables
-add_list="clwvi mrro prhmax" #tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
+add_list="clwvi mrro prhmax sftlf" #sftlf = sftnf + sfturf; tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
 
 #-----------------------------------------------------------------------
 
@@ -47,13 +47,13 @@ for constVar in ${const_list}
 do 
   if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
   then
-    if [[ -e ${INDIR2}/${constVar}.nc ]]
+    if [[ -e ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ]]
     then
       echon "Copy constant variable ${constVar}.nc to output folder"
       [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
-      cp ${INDIR2}/${constVar}.nc ${OUTDIR}/${constVar}/
+      cp ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
     else
-      echo "Required constant variable file ${constVar}.nc is not in input folder ${INDIR2}! Skipping this variable..."
+      echo "Required constant variable file ${constVar}.nc is not in input folder ${FXDIR}! Skipping this variable..."
     fi
   fi
 done
@@ -75,9 +75,9 @@ do
   endmonth=${MME}
   while [[ ${MM} -le ${endmonth} ]] 
   do 
-    if [[ ! -d ${INDIR2}/${YY}_${MM} ]] 
+    if [[ ! -d ${INDIR_BASE}/${YY}/${MM}/01/00/ ]] 
     then
-      echo "Directory ${INDIR2}/${YY}_${MM} does not exist!"
+      echo "Directory ${INDIR_BASE}/${YY}/${MM}/01/00 does not exist!"
       if ${start}
       then
         (( MMA=MMA+1))
@@ -93,7 +93,7 @@ do
   then
     FILES=${proc_list} 
   else
-    FILES=$(ls ${INDIR2}/${YY}_${MMA}/*_ts.nc)
+    FILES=$(ls ${INDIR_BASE}/${YY}/${MMA}/01/00/*_${NAMETAG}.nc)
   fi
   
 
@@ -106,8 +106,7 @@ do
       
       if  ${proc_all}  
       then
-        (( c2 = ${#FILEIN}-6 ))
-        FILEOUT=$(echo ${FILEIN} | cut -c1-${c2}) # cut off "_ts.nc"
+        FILEOUT=$(echo ${FILEIN} | sed s/_.*//) # cut off everything after var name
       else
         FILEOUT=${FILE} 
       fi
@@ -166,12 +165,12 @@ do
        
       while [[ ${MM} -le ${ME} ]] 
       do 
-        if [[ ! -e ${INDIR2}/${YY}_${MM}/${FILEOUT}_ts.nc ]] 
+        if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc ] 
         then
-          echo "WARNING: File ${INDIR2}/${YY}_${MM}/${FILEOUT}_ts.nc does not exist! Continue anyway..."
+          echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc does not exist! Continue anyway..."
           #continue 2
         fi
-        FILELIST="$(echo ${FILELIST}) $(ls ${INDIR2}/${YY}_${MM}/${FILEOUT}_ts.nc)"
+        FILELIST="$(echo ${FILELIST}) $(ls ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc | head -n 1)" #only first one, i.e. with highest temporal frequency
         (( MM=MM+1 ))
       done
       echon "Concatenate files"

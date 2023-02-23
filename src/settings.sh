@@ -7,8 +7,6 @@
 #
 #-------------------------------------------------------------------------
 
-post_step=0 # to limit post processing to step 1 or 2, for all other values both steps are executed
-
 # Simulation details used for creating a directory structure 
 GCM=CNRM-ESM2-1    # driving GCM
 EXP=historical     # driving experiment name
@@ -17,8 +15,8 @@ EXP=historical     # driving experiment name
 # Time settings
 
 # processing range:
-START_DATE=195101 # Start year and month for processing (if not given in command line YYYYMM)
-STOP_DATE=201412  # End year and month for processing (if not given in command line YYYYMM)
+START_DATE=1951 # Start year for processing (if not given in command line YYYY)
+STOP_DATE=2014  # End year for processing (if not given in command line YYYY)
 
 #-------------------------------------------
 # Directory path settings
@@ -34,10 +32,10 @@ WORKDIR=${DATADIR}/work/post/${GCM}_${EXP} # work directory, CAUTION: WITH OPTIO
 LOGDIR=${DATADIR}/work/logs         # logging directory
 
 # input/output directories and name of files
-INDIR_BASE=/nobackup/rossby27/proj/rossby/joint_exp/cordex/202202/run/archive  # base where the input is located (in sub-directories YYYY/MM/01/00)
-FXDIR=/nobackup/rossby27/proj/rossby/joint_exp/cordex/202202/run/archive/1950/08/01/00/ #location of constant files (orog etc.)
-NAMETAG=EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist   # file nameing of the input files, i.e. var_NAMETAG_date.nc
-OUTDIR_BASE=${DATADIR}/work/input_CMORlight               # output directory for the annual files. Ready to be used as input to CMOR python tool
+INDIR_BASE=/nobackup/rossby27/proj/rossby/joint_exp/cordex/202202/run/archive           # base where the input is located (in sub-directories YYYY/MM/01/00)
+FXDIR=/nobackup/rossby27/proj/rossby/joint_exp/cordex/202202/run/archive/1950/08/01/00/ # location of constant files (orog etc.)
+NAMETAG=EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist                                 # file nameing of the input files, i.e. var_NAMETAG_date.nc
+OUTDIR=${DATADIR}/work/input_CMORlight/EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist       # output directory for the annual files (to be used as input to CMOR python tool)
 
 #-------------------------------------------
 # Other settings
