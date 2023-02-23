@@ -26,7 +26,6 @@ source ./settings.sh
 overwrite=false #overwrite output if it exists
 n=true #normal printing mode
 v=false #verbose printing mode
-stopex=false
 args=""
 while [[ $# -gt 0 ]]
 do
@@ -47,11 +46,11 @@ do
       shift
       ;;
        -s|--start)
-      START_DATE=$2
+      YYA=$2
       shift
       ;;
       -e|--end)
-      STOP_DATE=$2
+      YYE=$2
       args="${args} -e $2"
       shift
       ;;
@@ -109,18 +108,12 @@ function echon {
   fi
 }
 
-  (( STOP_DATE=STOP_DATE+1 ))
-  STOP_DATE="${STOP_DATE}01"
-else
-  STOP_DATE=$(echo ${STOP_DATE} | cut -c1-6)
-fi
-
 echo ""
 echo "######################################################"
 echo "Merging monthly time-series to annual ones"
 echo "######################################################"
-echo "Start: " ${START_DATE}
-echo "Stop: " ${STOP_DATE}
+echo "Start: " ${YYA}
+echo "Stop: " ${YYE}
 source ${SRCDIR_POST}/mergemon.sh
 
 echo "######################################################"
