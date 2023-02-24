@@ -21,10 +21,10 @@ export IGNORE_ATT_COORDINATES=0
 
 #variables
 # all HCLIM variables representing a time interval (min, max, average, accumulated)
-accu_list="pr evspsbl clt rsds rlds prc prsn mrros snm tauu tauv rsdsdir rsus rlus rlut rsdt rsut hfls hfss clh clm cll rsnscs rlnscs rsntcs rlntcs"
+accu_list="tasmax tasmin pr evspsbl clt rsds rlds prc prsn mrros mrrod snm tauu tauv sfcWindmax sund rsdsdir rsus rlus rlut rsdt rsut hfls hfss wsgsmax clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
-inst_list="tas tasmax tasmin huss hurs ps psl sfcWind uas vas ts sfcWindmax sund mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m wsgsmax z0 cape ua300m va300m" 
+inst_list="tas huss hurs ps psl sfcWind uas vas ts mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m z0 cape ua300m va300m" 
 
 # constant variables
 const_list="orog sftlf sfturf sftlaf" #Include the following? sftgif (constant 0) mrsofc rootd dtb areacella (constant 12.5 km x 12.5km)
@@ -314,6 +314,8 @@ do
         
     if [[ ${proc_list} =~ (^|[[:space:]])${name3}($|[[:space:]]) ]] || ${proc_all}
     then
+      echon ""
+      echon " Create additional fields for CORDEX"
       file1=$(ls ${OUTDIR}/${name1}/${name1}_${YY}${MMA}0100*.nc) 
       if [[ ${name2} == "" ]]
       then
@@ -356,16 +358,15 @@ do
   if [[ ${LFILE} -ne 1 ]] 
   then
     
-    echon ""
-    echon " Create additional fields for CORDEX"
+    #Additional fields for CORDEX not directly availabl directly available in the model output
 
     # Total runoff: mrro
     create_add_vars "mrros" "mrrod" "mrro" "add" "runoff_flux"
     
-    # Total snow: clwvi
+    # Cloud water: clwvi
     create_add_vars "clivi" "clqvi" "clwvi" "add" "atmosphere_mass_content_of_cloud_condensed_water"
     
-    # Daily max hourly precip: prhmax
+    # Daily max of hourly precip: prhmax
     create_add_vars "pr" "" "prhmax" "daymax" "precipitation_flux" 
   fi
   
