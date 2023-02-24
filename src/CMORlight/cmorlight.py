@@ -406,7 +406,7 @@ def main():
     # if nothing is set: exit the program
 
 
-    log.info("Configuration read from: %s" % os.path.abspath(vartable))
+    log.info("Configuration read from: %s" % (settings.DirConfig) + "/" + vartable)
     log.info("Variable(s): %s " % varlist)
     log.info("Requested time output resolution(s): %s " % reslist)
     if options.process_table_only:
