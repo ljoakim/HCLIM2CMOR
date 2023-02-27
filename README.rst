@@ -205,9 +205,10 @@ variables should be processed with what method at which resolution are
 taken from a modified version of the CORDEX variables requirement table
 (pdf version here: https://is-enes-data.github.io/CORDEX_variables_requirement_table.pdf).
 Here tables for the HCLIM, CCLM, and WRF model are included.
-Specify which table to use in the configuration file (*vartable*). For other models you have
+Specify which table to use in the configuration file (**vartable**). For other models you have
 to create your own table starting from the tables given here.
 Make sure to use the semicolon ";" as delimiter and include a header line.
+For a more detailed explanation, see https://github.com/doblerone/HCLIM2CMOR/blob/master/Documentation/Explaining_CSV_table.pdf
 
 If essential variables as *lon* or *lat* are missing in
 the data, the script tries to copy them from a file specified under
