@@ -2,7 +2,7 @@
 This is merley an adaptation of the famous CCLM2CMOR tool for the HCLIM model. It rewrites the model data to CORDEX standards. All credits go to the original developers!
 =========================================================================
 
-Most of the infomation below is taken from the original https://github.com/C2SM-RCM/CCLM2CMOR and posted here with some adaptations.
+Most of the infomation below is taken from the original text at https://github.com/C2SM-RCM/CCLM2CMOR and posted here with some adaptations.
 ======
 
 Worldwide coordinated projects for climate data like CMIP and CORDEX demand
@@ -42,7 +42,7 @@ The program has been tested with the following versions and might not work with 
 For the first part of the script (see below) you need ``ksh``. 
 For the Python packages please look into the *.py* source code files or
 just try to run the code to see which packages are missing.
-The code works with Python 2.7 and 3.6 (and maybe also older versions).
+The code works with Python 2.7 and 3.6 (and maybe also other versions).
 The easiest way to get all necessary Python packages is with Miniconda:
 Download it (https://conda.io/miniconda.html) and install it on your machine (no root rights necessary).
 Installing the package ``netCDF4`` with ``conda install netCDF4`` will then
