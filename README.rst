@@ -102,44 +102,44 @@ For the variable *pr* and the year 2007 the name would be the following:
 ``pr_200701010030-200712312330.nc``
 
 Note that this step is dependent on the regional climate model used. In this project the step is carried out for the **HCLIM43**
-model. The scripts referred to in this section are not directly applicable to other models, e.g. **CCLM**.
+model. The scripts referred to in this section are not directly applicable to other models, e.g. CCLM.
 
 For the HCLIM43 model the first step of CMOR can be achieved by calling the
-script *master_post.sh*. Before that, adjust the file *settings.sh* to
-your needs. You can change the name of the driving GCM and the driving
-experiment name, the time range for the post-processing, directory paths
-and some more specific settings which are explained later on.
+script **master_post.sh**. Before that, adjust the file **settings.sh** to
+your needs: Change the name of the driving GCM, the driving
+experiment name, the time range for the post-processing and directory paths.
+You also need to specify two values in *settings.sh*:
+
+1) **NBOUNDCUT**: The number of boundary lines (latitude and longitude) to be cut off from the data: 
+
+2) **LFILE**: Specify whether to create only primary fields (given out by HCLIM43 directly), only additional fields, or both. This is done by setting **LFILE** to 1, to 2, or to any other number, respectively.
+
+To set **NBOUNDCUT** you can look at the recommended extent of your domain in the CORDEX archive
+specifications (https://is-enes-data.github.io/cordex_archive_specifications.pdf).
+
+You can furhter specify whether all available variables are processed (**proc_all=true**) or only specific ones (**proc_list**).
+However, the list of variables to process can also be provided on the command line.
 
 The available command line options are displayed with the command
 ``ksh master_post.sh --help``. The script can either be called with the
 shell command ``ksh`` or with the job script command ``sbatch`` (if available on your machine) in the source directory.
 If using ``sbatch``, change the name of your account and the location of the log output etc.
-in the first few lines of *master_post.sh* or provide them when submitting as command line options, e.g.
+in the header of **master_post.sh** or provide them when submitting as command line options, e.g.
 ``sbatch -J step1_pr_tas_2000 -o $LOGDIR/step1_pr_tas_2000.out -t 01:00:00 master_post.sh -p 'pr tas' -s 2000 -e 2000 -V``
+(see also ``sbatch --help``).
 Try out first with ``ksh`` to see if the script runs and then use ``sbatch`` to have it most efficient.
 
-The master script calls the subscripts *mergemon.sh*. It concatenates
+The master script calls the subscript **mergemon.sh**. which concatenates
 monthly time-series data to annual files with different treatment of
 accumulated and instantaneous fields. Additionally, it manipulates
 the time variable and creates the additionally requested fields.
 
-You need to specify two values in *settings.sh*:
-
-1) The number of boundary lines (latitude and longitude) to be cut off from the data, **NBOUNDCUT**
-
-2) Tell the program to create only primary fields (given out by HCLIM43 directly), only additional fields, or both. This is done by setting **LFILE** to 1,2, or any other number respectively.
-
-To set **NBOUNDCUT** you can look at the recommended extent of your domain in the CORDEX archive
-specifications (https://is-enes-data.github.io/cordex_archive_specifications.pdf).
-
-You can also specify whether all available variables ar processed (*proc_all=true*) or only specific ones (*proc_list*).
-The list of variables to process can also be provided on the command line.
 
 Second step
 -----------
 
 The actual CMORization takes place in the second step. The Python script
-processes each variable at the required/desired resolution. It adds the correct 
+processes each variable at the required/desired time resolutions. It adds the correct 
 global attributes, variable attributes and time bounds, creates the correct directory
 structure and filenames. It can also derotate wind speed variables and concatenate the
 files to chunks depending on time resolution.
@@ -147,7 +147,7 @@ files to chunks depending on time resolution.
 Before running the program type ``export IGNORE_ATT_COORDINATES=1``
 into your terminal to make the derotation possible or include it in your
 terminal configuration file (e.g. .bashrc). If you use the job script 
-*master_cmor.sh* (explained  below), you do not need to do this.
+**master_cmor.sh** (explained  below), you do not need to do this.
 
 The script is run with ``python cmorlight.py [OPTIONS]``. All available
 command line options are displayed when using the ``--help`` option and
@@ -196,7 +196,7 @@ optional arguments:
                         which simulation specific settings to choose
 
 
-In a file, here called *control_cmor.ini*, processing options, paths and
+In a file, here called **control_cmor.ini**, processing options, paths and
 simulation details are set.  All lists in this file should
 be comma-separated and not contain spaces. In the last section
 (e.g. named *settings*) of this file you can set simulation specific
@@ -209,7 +209,7 @@ Specify which table to use in the configuration file (*vartable*). For other mod
 to create your own table starting from the tables given here.
 Make sure to use the semicolon ";" as delimiter and include a header line.
 
-If essential variables as *lon*, *lat* or *rotated_pole* are missing in
+If essential variables as *lon* or *lat* are missing in
 the data, the script tries to copy them from a file specified under
 *coordinates_file* in the configuration file. 
 Make sure to provide such a file suitable for your domain and resolution.
