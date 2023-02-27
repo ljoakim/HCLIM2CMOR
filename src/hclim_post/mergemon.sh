@@ -46,27 +46,50 @@ YY=$YYA
 if ${create_const}
 then
  for constVar in ${const_list}
- do 
+ do echon "Constant field: ${constVar}"
    if [[ ! -e ${OUTDIR}/${constVar}/${constVar}.nc ]] || ${overwrite} 
    then
      if [[ -e ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ]]
      then
-       echon "Copy constant variable ${constVar}.nc to output folder"
+       echon "Cutting boundaries with $NBOUNDCUT lines from ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc"
        [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
        cp ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
-     elif [[ ${constVar} == "sftlf" ]]
+       
+       # cut boundaries
+       let "STARTIDX = NBOUNDCUT + 1"
+       XSIZE=`cdo griddes ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc | head | grep xsize  | sed "s/.*= //g"`
+       YSIZE=`cdo griddes ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc | head | grep ysize  | sed "s/.*= //g"`
+       let "ENDIDX = XSIZE - NBOUNDCUT"
+       let "ENDIDY = YSIZE - NBOUNDCUT"
+       echov "Original grid size: ${XSIZE}x${YSIZE}. Cutting ${STARTIDX}:${ENDIDX},${STARTIDX}:${ENDIDY} (x,y)"
+       cdo selindexbox,${STARTIDX},${ENDIDX},${STARTIDX},${ENDIDY} ${FXDIR}/${constVar}_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+
+     elif [[ ${constVar} == "sftlf" && -e ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc && -e ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ]]
       then
        echon "Creating constant variable ${constVar}.nc in output folder (sftlf = sftnf + sfturf)"
+       echon "Cutting boundaries with $NBOUNDCUT lines."
+
        [[ -d ${OUTDIR}/${constVar} ]] || mkdir ${OUTDIR}/${constVar}
-       cdo add ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
+       # cut boundaries
+       let "STARTIDX = NBOUNDCUT + 1"
+       XSIZE=`cdo griddes ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc | head | grep xsize  | sed "s/.*= //g"`
+       YSIZE=`cdo griddes ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc | head | grep ysize  | sed "s/.*= //g"`
+       let "ENDIDX = XSIZE - NBOUNDCUT"
+       let "ENDIDY = YSIZE - NBOUNDCUT"
+       echov "Original grid size: ${XSIZE}x${YSIZE}. Cutting ${STARTIDX}:${ENDIDX},${STARTIDX}:${ENDIDY} (x,y)"
+       cdo selindexbox,${STARTIDX},${ENDIDX},${STARTIDX},${ENDIDY} -add ${FXDIR}/sftnf_clim_${NAMETAG}_fx.nc ${FXDIR}/sfturf_clim_${NAMETAG}_fx.nc ${OUTDIR}/${constVar}/${constVar}.nc
        ncrename -h -v sftnf,${constVar} ${OUTDIR}/${constVar}/${constVar}.nc
        ncatted -h -a long_name,${constVar},o,c,"Percentage of the Grid Cell Occupied by Land" ${OUTDIR}/${constVar}/${constVar}.nc
        ncatted -h -a standard_name,${constVar},o,c,"land_area_fraction" ${OUTDIR}/${constVar}/${constVar}.nc
      else
        echo "Required constant variable file(s) not in input folder ${FXDIR}! Skipping this variable..."
      fi
+   else
+     echon "${OUTDIR}/${constVar}/${constVar}.nc already exists. Use option -O to overwrite. Skipping..."
    fi
  done
+echon "Constant fields processed and execution stopped. Remove the -C option to process the time-series files."
+exit 0
 fi
 
 
@@ -136,7 +159,7 @@ do
             echon "File for variable ${FILEOUT} and year ${YY} already exists. Overwriting..."
           else
             echov ""
-            echov "File for variable ${FILEOUT} and year ${YY} already exists. Skipping..."
+            echov "File for variable ${FILEOUT} and year ${YY} already exists. Use option -O to overwrite. Skipping..."
             continue
           fi
         else
