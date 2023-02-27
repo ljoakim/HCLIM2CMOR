@@ -1,5 +1,5 @@
 =========================================================================
-This is merley an adaptation of the famous CCLM2CMOR tool for the HCLIM model to rewrite the model data to CORDEX standards. All credits go to the original developers!
+This is merley an adaptation of the famous CCLM2CMOR tool for the HCLIM model. It rewrites the model data to CORDEX standards. All credits go to the original developers!
 =========================================================================
 
 Most of the infomation below is taken from the original https://github.com/C2SM-RCM/CCLM2CMOR and posted here with some adaptations.
