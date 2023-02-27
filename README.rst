@@ -1,15 +1,10 @@
 =========================================================================
-This is merley an adaptation of the famous CCLM2CMOR to the HCLIM model. All credits go to the original developers!
+This is merley an adaptation of the famous CCLM2CMOR tool for the HCLIM model to rewrite the model data to CORDEX standards. All credits go to the original developers!
 =========================================================================
 
-
-The infomation below is directly taken from the original tool and posted here for getting started.
+Most of the infomation below is taken from the original https://github.com/C2SM-RCM/CCLM2CMOR and posted here with some adaptations.
 ======
 
-=====================================================================================
-CCLM2CMOR - Climate model output rewriting of COSMO-CLM climate model data for CORDEX
-=====================================================================================
- 
 Worldwide coordinated projects for climate data like CMIP and CORDEX demand
 that the data meet specific standards very strictly if they are supposed
 to be integrated and uploaded to an archive for a world wide distribution
@@ -19,23 +14,22 @@ to be transformed to meet these specific standards, and this process is
 often referred to as CMOR, which stands for Climate Model Output
 Rewriting.
 
-In this project we are developing a CMORization tool which works
+In the original project, a CMORization tool has been developped
 specifically for the COSMO-CLM (CCLM) model. However, the different
-processing steps are separated in such a way that it is also possible
-to use the tool with other models than the CCLM model.
+processing steps have been separated in such a way that it was possible
+to extend the tool to the HCLIM climate model, resulting in this code repository.
 
 We tried to implement all the details listed in the CORDEX archive specifications, version 3.1.
 Please read this document (https://is-enes-data.github.io/cordex_archive_specifications.pdf)
 carefully to become familiar with the required standards.
 
-Get the code from GitHub simply by typing ``git clone https://github.com/C2SM-RCM/CCLM2CMOR.git`` 
+Get the code from GitHub simply by typing ``git clone https://github.com/doblerone/HCLIM2CMOR.git`` 
 into your terminal.
 
 Requirements
 ============
 The tool is written for a Unix operating system.
-For it to work, a number of command line tools and Python packages are
-needed.
+For it to work, a number of command line tools and Python packages are needed.
 The command line programs you need are contained in the libraries NCO, netCDF and CDO:
 *ncrcat, ncks, ncap2, ncatted (all from NCO), nccopy (from netCDF)* and *cdo*
 
@@ -45,10 +39,7 @@ The program has been tested with the following versions and might not work with 
 - netCDF: 4.4.1.1
 - CDO: 1.9.0
 
-For the first part of the script (see below) you need ``ksh``. ``sbatch`` from the job scheduler *SLURM* is used
-to submit batch scripts. If your system is using a different job scheduler
-you have to modify this program.
-
+For the first part of the script (see below) you need ``ksh``. 
 For the Python packages please look into the *.py* source code files or
 just try to run the code to see which packages are missing.
 The code works with Python 2.7 and 3.6 (and maybe also older versions).
@@ -74,27 +65,18 @@ Filename                                  Location             Purpose
 master_post.sh                            .                    Job script that executes the first step of the CMORization
 settings.sh                               .                    Configuration file for this first step
 help                                      .                    Prints helping information on the command line options of *master_post.sh*
-first.sh                                  cclm_post            First subscript 
-timeseries.sh                             cclm_post            Variable information for first subscript
-second.sh                                 cclm_post            Second subscript
-xfer.sh                                   cclm_post            Job script to extract archives
-delete.sh                                 cclm_post            Job script to delete archives
+mergemon.sh                               hclim_post           Subscript to create the annual files for the second second step. Called by master_post.sh
 **SECOND STEP**                                                  
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-master_cmor.sh                               .                 Job script that executes the second step of the CMORization (the Python script)
+master_cmor.sh                            .                    Job script that executes the second step of the CMORization (the Python script)
 cmorlight.py                              CMORlight            Main script of the second CMOR step. Calls all other Python functions.
 control_cmor.ini                          CMORlight            Configuration file
 init_log.py                               CMORlight            Sets up custom logger
 get_configuration.py                      CMORlight            Reads in configuration from *control_cmor.ini* and provides functions to read or change the entries
 settings.py                               CMORlight            Processes some of the entries in the configuration file and reads in the variables table
 tools.py                                  CMORlight            Contains all the functions for processing the files
-CORDEX_CMOR_CCLM_variables_table.csv      CMORlight/Config     Variables table for the CCLM model controlling which variables are processed at what resolution          
-CORDEX_CMOR_WRF_variables_table.csv       CMORlight/Config     Variables table for the WRF model
+XXX_variables_table.csv                   CMORlight/Config     Variables table for different models and projects controlling which variables are processed at what time resolution          
 coordinates_cordex_eur11.nc               CMORlight/Config     NetCDF file containing e.g. latitude and longitude arrays for domain EUR-11
-coordinates_cordex_eur44.nc               CMORlight/Config     As above but for the domain EUR-44
-**ADDITIONAL**                                                  
----------------------------------------------------------------------------------------------------------------------------------------------------
-write_vars.py                             add_scripts          Python script to create the file *timeseries.sh* for the first CMOR step
 
 =======================================   ==================   ====================================================================================
 
@@ -113,104 +95,57 @@ difference between instantaneous and interval representing variables into accoun
 Additional required fields that are not contained in the model output
 have to be calculated. 
 For each variable a separate folder (named exactly as the variable) with 
-all the data files has to be created. The file names have to contain the
-variable name and the time range. For the variable *TOT_PREC* and the year
-2007 the name would be the following: 
+all the data files has to be created in the ``input_CMORlight`` folder.
+The file names have to contain the variable name and the time range.
+For the variable *pr* and the year 2007 the name would be the following: 
 
-``TOT_PREC_2007010100-2008010100.nc``
+``pr_200701010030-200712312330.nc``
 
-Note that this step is dependent on the regional climate
-model used. In this project the step is carried out for the **CCLM**
-model. The scripts referred to in this section are not directly applicable to other models.
+Note that this step is dependent on the regional climate model used. In this project the step is carried out for the **HCLIM43**
+model. The scripts referred to in this section are not directly applicable to other models, e.g. **CCLM**.
 
-For the CCLM model the first step of CMOR can be achieved by calling the
+For the HCLIM43 model the first step of CMOR can be achieved by calling the
 script *master_post.sh*. Before that, adjust the file *settings.sh* to
 your needs. You can change the name of the driving GCM and the driving
 experiment name, the time range for the post-processing, directory paths
 and some more specific settings which are explained later on.
+
 The available command line options are displayed with the command
 ``ksh master_post.sh --help``. The script can either be called with the
-shell command ``ksh`` or with the job script command ``sbatch`` (if available on your machine) in the source directory. If using ``sbatch``,
-change the name of your account and the location of the log output and
-error in the first few lines of *master_post.sh*. Without the option
-``--no_batch`` set, the script will continuously give out jobs using
-``sbatch`` for one year each to process as many years simultaneously
-as possible. Try out first with ``ksh`` and ``--no_batch`` to see if the script runs and then use ``sbatch`` to have it most efficient.  The program will extract (or just move if already extracted) the archived 
-year directories from the archive directory (*ARCHDIR*) to the input directory of this 
-first step (*INDIR1*). 
-In batch mode, it actually extracts a number of years at once
-(controlled with *num_extract* in *settings.sh*). The base path to the archives has to
-be specified in *settings.sh*, whereas the specific subdirectory
-*ARCH_SUB* for the chosen GCM and experiment is created in
-*master_post.sh* just after reading the command line arguments.
-How this subdirectory is created can be changed there. 
+shell command ``ksh`` or with the job script command ``sbatch`` (if available on your machine) in the source directory.
+If using ``sbatch``, change the name of your account and the location of the log output etc.
+in the first few lines of *master_post.sh* or provide them when submitting as command line options, e.g.
+``sbatch -J step1_pr_tas_2000 -o $LOGDIR/step1_pr_tas_2000.out -t 01:00:00 master_post.sh -p 'pr tas' -s 2000 -e 2000 -V``
+Try out first with ``ksh`` to see if the script runs and then use ``sbatch`` to have it most efficient.
 
-You can also declare the driving GCM and the driving experiment name on 
-the command line with the ``-g`` and ``-x`` option, respectively.
-
-The master script calls two subscripts: *first.sh* and *second.sh*. In
-the first script separate monthly time series files are generated for
-each variable. This script was extracted from the post-script routine
-of the subchain job-control from the CCLM starter package. Thus, if
-you use the post-processing of the starter package you do not need
-to carry out this step. Use the option ``--second`` to skip it. Otherwise
-you need to specify three values in *settings.sh*: The number of
-boundary lines (latitude and longitude) to be cut off from the data,
-*NBOUNDCUT* and the total number of grid points in longitudinal and
-latitudinal direction (before cut off) *IE_TOT* and *JE_TOT*. To set *NBOUNDCUT* you
-can look at the recommended extent of your domain in the CORDEX archive
-specifications (https://is-enes-data.github.io/cordex_archive_specifications.pdf).
-For the first script to work another file has to be modified: *timeseries.sh*.
-Here the timeseries function is called for all variables to be processed.
-The first argument is the variable name and the second the output stream
-in which the variable is located in the model output. For variables on
-several pressure levels the function *timeseriesp* is used. The pressure
-levels *PLEVS* on which the variable is extracted into separate files can
-be specified right before the function as you will see in the example file of this package. To create *timeseries.sh* you can use the Python script
-*write_vars.py*. This script reads in the *CORDEX_CMOR_CCLM_variables_table.csv*
-to obtain the required variables (and levels) and the CCLM file which contains the information on the output streams (e.g. *INPUT_IO.1949* in this package)
-and creates the file *timeseries.sh*. Specify the paths to the input
-files in *write_vars.py*.
-
-The second script invoked by *master_post.sh* (*second.sh*) concatenates
+The master script calls the subscripts *mergemon.sh*. It concatenates
 monthly time-series data to annual files with different treatment of
 accumulated and instantaneous fields. Additionally, it manipulates
-the time variable and creates the additional required fields.
-In *settings.sh* you can tell the program to process all available
-variables or restrict the processing to specific variables.
+the time variable and creates the additionally requested fields.
 
-Finally the extracted archives are deleted: in case of batch processing after every year
-and with ``ksh`` after the script has finished.
+You need to specify two values in *settings.sh*:
 
-**Examples:**
+1) The number of boundary lines (latitude and longitude) to be cut off from the data, **NBOUNDCUT**
 
-Testing program in the login shell by processing the year 2005 for the given GCM and driving experiment:
+2) Tell the program to create only primary fields (given out by HCLIM43 directly), only additional fields, or both. This is done by setting **LFILE** to 1,2, or any other number respectively.
 
-``ksh master_post.sh --no_batch -s 2006 -e 2006 -g ICHEC-EC-EARTH -x rcp85``
+To set **NBOUNDCUT** you can look at the recommended extent of your domain in the CORDEX archive
+specifications (https://is-enes-data.github.io/cordex_archive_specifications.pdf).
 
-Submit job for several years and overwrite output if already existent:
-
-``sbatch master_post.sh -s 2006 -e 2099 -O``
-
-Only run the second script, when first part was already carried out (e.g. by using the CCLM starter package):
-
-``sbatch master_post.sh -s 2006 -e 2099 -O --second``
-
-
-
+You can also specify whether all available variables ar processed (*proc_all=true*) or only specific ones (*proc_list*).
+The list of variables to process can also be provided on the command line.
 
 Second step
 -----------
 
 The actual CMORization takes place in the second step. The Python script
-processes each variable at the required/desired resolution. It derotates
-the wind speed variables, adds the correct 
-global attributes, variable attributes and time bounds, concatenates the
-files to chunks depending on resolution and creates the correct directory
-structure and filenames.
+processes each variable at the required/desired resolution. It adds the correct 
+global attributes, variable attributes and time bounds, creates the correct directory
+structure and filenames. It can also derotate wind speed variables and concatenate the
+files to chunks depending on time resolution.
 
 Before running the program type ``export IGNORE_ATT_COORDINATES=1``
-into your terminal to make the derotation possible or include it into your
+into your terminal to make the derotation possible or include it in your
 terminal configuration file (e.g. .bashrc). If you use the job script 
 *master_cmor.sh* (explained  below), you do not need to do this.
 
@@ -261,15 +196,15 @@ optional arguments:
                         which simulation specific settings to choose
 
 
-In a file here called *control_cmor.ini* processing options, paths and
+In a file, here called *control_cmor.ini*, processing options, paths and
 simulation details are set.  All lists in this file should
 be comma-separated and not contain spaces. In the last section
-(e.g. named *settings_CCLM*) of this file you can set simulation specific
+(e.g. named *settings*) of this file you can set simulation specific
 options such as global attributes. Note that some command line options can overwrite the settings in this file. Detailed instructions which
 variables should be processed with what method at which resolution are
 taken from a modified version of the CORDEX variables requirement table
 (pdf version here: https://is-enes-data.github.io/CORDEX_variables_requirement_table.pdf).
-Here a table for the CCLM model and for the WRF model are included.
+Here tables for the HCLIM, CCLM, and WRF model are included.
 Specify which table to use in the configuration file (*vartable*). For other models you have
 to create your own table starting from the tables given here.
 Make sure to use the semicolon ";" as delimiter and include a header line.
@@ -278,7 +213,7 @@ If essential variables as *lon*, *lat* or *rotated_pole* are missing in
 the data, the script tries to copy them from a file specified under
 *coordinates_file* in the configuration file. 
 Make sure to provide such a file suitable for your domain and resolution.
-Here, files for the domains EUR-11 and EUR-44 are provided.
+Here, files for the domains EUR-11 and ALP-3 are provided.
 
 If you want to process all variables in the table, use the ``--all`` option.
 Otherwise, specify the variables with ``--varlist`` (RCM or CORDEX names supported). You can also choose
@@ -306,34 +241,14 @@ After the processing you can concatenate the files to chunks by running
 the script again with the ``--chunk-var`` option. Add the option
 ``--remove`` to this call to delete the superfluent yearly files .
 
-**Examples**
-
-Process all variables fully declared in the variables table at all resolutions 
-specified in the configuration file (entry *reslist*):
-
-``python cmorlight.py --all``
-
-Process precipitation (pr) and surface air pressure (ps) at a resolution of 
-three hours (if declared in variables table for these variables) from 1949-12 to 2005-12 using 10 cores simultaneously for computing. Overwrite output if already existent:
-
-``python cmorlight.py -M 10 -s 194912 -e 2005 -v pr,ps -r 3hr -O``
-
-Concatenate all monthly files to chunks for all available variables and 
-delete original files afterwards
-
-``python cmorlight.py --chunk-var --remove -r mon``
-
-
 **More optional features**
 
 In the following some more advanced options are described:
 
 -  You can use the job script *master_cmor.sh* to run the job on a
    compute node with ``sbatch master_cmor.sh [OPTIONS]``. Specify your account
-   and the location of log output and error in this file. You can
-   directly pass the options of the python program. With the option
-   ``--batch`` you can run several jobs simultaneously, processing *cores*
-   years each (defined through the ``-M cores`` option).
+   and the location of log output etc. in the master_cmor.sh file or directly on the command line **before** master_cmor.sh.
+   You can also pass the options of the python program.
 
 -  If the units attribute of the time variable in your input data is not
    correct, you have to provide the correct time unit in the entry ``alt_units`` 
@@ -383,8 +298,7 @@ In the following some more advanced options are described:
 
 -  NetCDF compression can be switched on or off in the entry *nc_compress*.
 
--  If your wind speed variables are already derotated use the command line
-   option ``--no_derotate`` to skip the derotation
+-  The option --no_derotate forces no derotation for all variables. For single variables, the derotation can be set in the variable table.
 
 -  By default the input path *DirIn* is extended by the chosen GCM and experiment.
    If you do not want this to happen. Change the entry *extend_DirIn* to 
@@ -413,13 +327,12 @@ or create an issue yourself if you found one.
 Contact
 =======
 
-Currently the tool is administrated by Silje Sørland (ETH Zürich). You can contact her at:
-silje.soerland@env.ethz.ch
+Currently **THIS** tool (HCLIM43 version) is administrated by Andreas Dobler (MET Norway, andreasd@met.no)
 
 Involved people
 ===============
 
-In the development of this tool a number of people from different
+In the development of the original tool a number of people from different
 institutions were involved:
 
 - Matthias Göbel (Swiss Federal Institute of Technology (ETH), Zürich, Switzerland)
@@ -427,7 +340,6 @@ institutions were involved:
 - Hans-Jürgen Panitz (Karlsruhe Institute of Technology (KIT),Karlsruhe, Germany)
 - Klaus Keuler (Brandenburgische Technische Universität Cottbus-Senftenberg (BTU), Cottbus, Germany)
 - Christian Steger (Deutscher Wetterdienst (DWD), Offenbach, Germany)
-
 
 Hans-Jürgen Panitz, Klaus Keuler and Christian
 Steger initiated the development of the tool and decided on its
@@ -440,7 +352,7 @@ wrote the first version of this documentation. Silje Sørland,
 Daniel Lüthi (both ETH Zürich) and Hans-Jürgen Panitz helped him
 with that.
 
-Thanks to all these people for your work!
+**Thanks to all these people for your work!**
 
 
 
