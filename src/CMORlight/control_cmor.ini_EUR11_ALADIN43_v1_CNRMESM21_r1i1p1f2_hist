@@ -34,7 +34,7 @@ DirIn=work/input_CMORlight/EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist
 DirOut=OUT
 #directory for temporary files
 DirWork=temp
-#where the derotated
+#directory for derotated winds
 DirDerotated=work/output_derotated
 
 #######################################################################################################################################################################################
@@ -194,7 +194,7 @@ AGG_SEM = 10
 [settings_HCLIM]
 
 # file with lon/lat [and perhaps vertices]
-coordinates_file=coordinates_cordex_eur11.nc
+coordinates_file=coordinates_HCLIM_EUR11.nc
 
 # file with vertices [and perhaps lon/lat]
 vertices_file=
