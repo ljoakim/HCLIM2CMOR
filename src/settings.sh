@@ -28,7 +28,7 @@ export DATADIR=${HOME}/CMOR_HCLIM43/HCLIM2CMOR/data       # directory where all 
 SRCDIR=${BASEDIR}/src                # directory where the post processing scripts are stored
 SRCDIR_POST=${BASEDIR}/src/hclim_post # directory where the subscripts are stored
 
-WORKDIR=${DATADIR}/work/post/${GCM}_${EXP} # work directory, CAUTION: WITH OPTION "--clean" ALL FILES IN THIS FOLDER WILL BE DELETED AFTER PROCESSING!
+WORKDIR=${DATADIR}/work/post/${GCM}_${EXP} # work directory
 LOGDIR=${DATADIR}/work/logs         # logging directory
 
 # input/output directories and name of files
