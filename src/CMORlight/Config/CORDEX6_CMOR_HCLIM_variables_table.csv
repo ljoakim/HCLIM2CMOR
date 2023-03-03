@@ -11,3 +11,114 @@ tasmax;tasmax;tasmax;;;ModelLevel;1;;;maximum;maximum within days time: mean ove
 tasmin;tasmin;tasmin;;;ModelLevel;1;;;minimum;minimum within days time: mean over days;;2;K;;;a;1;;1;;;;;Daily Minimum Near-Surface Air Temperature;;air_temperature;;atmos;
 pr;pr;pr;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Precipitation;;precipitation_flux;;atmos;
 ps;ps;ps;;;ModelLevel;1;;point;mean;mean;;0;Pa;;24;i;1;;1;;;;;Surface Air Pressure;;surface_air_pressure;;atmos;
+evspsbl;evspsbl;evspsbl;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Evaporation including Sublimation and Transpiration;;water_evaporation_flux;;atmos;
+huss;huss;huss;;;ModelLevel;1;;point;mean;mean;;2;1;;24;i;1;;1;;;;;Near-Surface Specific Humidity;;specific_humidity;;atmos;
+hurs;hurs;hurs;;;ModelLevel;1;;point;mean;mean;;2;%;;24;i;1;;1;;;;;Near-Surface Relative Humidity;;relative_humidity;;atmos;
+psl;psl;psl;;;ModelLevel;1;;point;mean;mean;;0;Pa;;24;i;1;;1;;;;;Sea Level Pressure;;air_pressure_at_mean_sea_level;;atmos;
+sfcWind;sfcWind;sfcWind;;;ModelLevel;1;;point;mean;mean;;10;m s-1;;24;i;1;;1;;;;;Near-Surface Wind Speed;;wind_speed;;atmos;
+uas;uas;uas;;;ModelLevel;1;;point;mean;mean;;10;m s-1;;24;i;1;;1;;;;;Eastward Near-Surface Wind;;eastward_wind;;atmos;
+vas;vas;vas;;;ModelLevel;1;;point;mean;mean;;10;m s-1;;24;i;1;;1;;;;;Northward Near-Surface Wind;;northward_wind;;atmos;
+clt;clt;clt;;;ModelLevel;1;;mean;mean;mean;;0;%;;24;a;1;;1;;;;;Total Cloud Cover Percentage;;cloud_area_fraction;;atmos;
+rsds;rsds;rsds;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Downwelling Shortwave Radiation;;surface_downwelling_shortwave_flux_in_air;down;atmos;
+rlds;rlds;rlds;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Downwelling Longwave Radiation;;surface_downwelling_longwave_flux_in_air;down;atmos;
+orog;orog;orog;;;;1;;;;;;;m;;;;;;;;;;0;Surface Altitude;;surface_altitude;;atmos;
+sftlf;sftlf;sftlf;sftnf + sfturf;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Occupied by Land;;land_area_fraction;;atmos;
+ts;ts;ts;;;ModelLevel;1;;point;mean;mean;;0;K;;24;i;1;;1;;;;;Surface Temperature;;surface_temperature;;atmos;
+tsl;tsl;tsl;tsl_L01:L14;;ModelLevel;1;;point;mean;mean;;14;K;;4;i;1;;1;;;;;Temperature of Soil;;soil_temperature;;land;mean where land
+prc;prc;prc;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Convective Precipitation;;convective_precipitation_flux;;atmos;
+prhmax;prhmax;prhmax;daymax(pr);;ModelLevel;1;;;maximum;maximum;;0;kg m-2 s-1;;;a;1;;1;;;;;Daily Maximum Hourly Precipitation Rate;;precipitation_flux;;atmos;
+prsn;prsn;prsn;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Snowfall Flux;;snowfall_flux;;atmos;
+mrros;mrros;mrros;;;ModelLevel;;;mean;mean;mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Surface Runoff;;surface_runoff_flux;;land;mean where land
+mrro;mrro;mrro;mrrod + mrros;;ModelLevel;;;mean;mean;mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Total Runoff;;runoff_flux;;land;mean where land
+snm;snm;snm;;;ModelLevel;;;mean;mean;mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Surface Snow Melt;;surface_snow_melt_flux;;landIce land;mean where land
+tauu;tauu;tauu;;;ModelLevel;1;;mean;mean;mean;;0;Pa;;4;a;1;;1;;;;;Surface Downward Eastward Wind Stress;;surface_downward_eastward_stress;down;atmos;
+tauv;tauv;tauv;;;ModelLevel;1;;mean;mean;mean;;0;Pa;;4;a;1;;1;;;;;Surface Downward Northward Wind Stress;;surface_downward_northward_stress;down;atmos;
+sfcWindmax;sfcWindmax;sfcWindmax;;;ModelLevel;1;;;maximum;maximum within days time: mean over days;;10;m s-1;;;a;1;;1;;;;;Daily Maximum Near-Surface Wind Speed;;wind_speed;;atmos;
+wsgsmax;wsgsmax;wsgsmax;;;ModelLevel;1;;maximum;maximum;maximum within days time: mean over days;;10;m s-1;;8;a;1;;1;;;;;Daily Maximum Near-Surface Wind Speed of Gust;;wind_speed_of_gust;;atmos;
+sund;sund;sund;;;ModelLevel;1;;;sum;sum within days time: mean over days;;0;s;;;a;1;;1;;;;;Daily Duration of Sunshine;;duration_of_sunshine;;atmos;
+rsdsdir;rsdsdir;rsdsdir;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Direct Downwelling Shortwave Radiation;;surface_direct_downwelling_shortwave_flux_in air;;;
+rsus;rsus;rsus;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Upwelling Shortwave Radiation;;surface_upwelling_shortwave_flux_in_air;up;atmos;
+rlus;rlus;rlus;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Upwelling Longwave Radiation;;surface_upwelling_longwave_flux_in_air;up;atmos;
+rlut;rlut;rlut;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;TOA Outgoing Longwave Radiation;;toa_outgoing_longwave_flux;up;atmos;
+rsdt;rsdt;rsdt;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;TOA Incident Shortwave Radiation;;toa_incoming_shortwave_flux;down;atmos;
+rsut;rsut;rsut;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;TOA Outgoing Shortwave Radiation;;toa_outgoing_shortwave_flux;up;atmos;
+hfls;hfls;hfls;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Upward Latent Heat Flux;;surface_upward_latent_heat_flux;up;atmos;
+hfss;hfss;hfss;;;ModelLevel;1;;mean;mean;mean;;0;W m-2;;24;a;1;;1;;;;;Surface Upward Sensible Heat Flux;;surface_upward_sensible_heat_flux;up;atmos;
+mrfso;mrfso;mrfso;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Soil Frozen Water Content;max depth: 3.82 m;soil_frozen_water_content;;land landIce;mean where land
+mrfsos;mrfsos;mrfsos;Sum(mrsfl_L01:L03);;ModelLevel;1;;point;mean;mean;;3;kg m-2;;4;i;1;;1;;;;;Frozen Water Content in Upper Portion of Soil Column;max depth: 0.1m;frozen_water_content_of_soil_layer;;land landIce;mean where land
+mrsfl;mrsfl;mrsfl;mrsfl_L01:L14;;ModelLevel;1;;point;mean;mean;;14;kg m-2;;4;i;1;;1;;;;;Frozen Water Content of Soil Layer;;frozen_water_content_of_soil_layer;;land landIce;mean where land
+mrso;mrso;mrso;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Total Soil Moisture Content;max depth: 3.82 m;mass_content_of_water_in_soil;;land;mean where land
+mrsos;mrsos;mrsos;Sum(mrsol_L01:L03);;ModelLevel;1;;point;mean;mean;;3;kg m-2;;4;i;1;;1;;;;;Moisture in Upper Portion of Soil Column;max depth: 0.1 m;mass_content_of_water_in_soil_layer;;land;mean where land
+mrsol;mrsol;mrsol;mrsol_L01:L14;;ModelLevel;1;;point;mean;mean;;14;kg m-2;;4;i;1;;1;;;;;Total Water Content of Soil Layer;;mass_content_of_water_in_soil_layer;;land;mean where land
+snw;snw;snw;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Surface Snow Amount;;surface_snow_amount;;landIce land;mean where land
+snc;snc;snc;;;ModelLevel;1;;point;mean;mean;;0;%;;4;i;1;;1;;;;;Snow Area Percentage;;surface_snow_area_fraction;;landIce land;
+snd;snd;snd;;;ModelLevel;1;;point;mean;mean;;0;m;;4;i;1;;1;;;;;Snow Depth;;surface_snow_thickness;;landIce land;mean where land
+prw;prw;prw;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Water Vapor Path;;atmosphere_mass_content_of_water_vapor;;atmos;
+clwvi;clwvi;clwvi;clqvi + clivi;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Condensed Water Path;;atmosphere_mass_content_of_cloud_condensed_water;;atmos;
+clivi;clivi;clivi;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Ice Water Path;;atmosphere_mass_content_of_cloud_ice;;atmos;
+ua1000;ua1000;ua1000;;;PressureLevel;1;;point;mean;mean;;100000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua925;ua925;ua925;;;PressureLevel;1;;point;mean;mean;;92500;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua850;ua850;ua850;;;PressureLevel;1;;point;mean;mean;;85000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua700;ua700;ua700;;;PressureLevel;1;;point;mean;mean;;70000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua600;ua600;ua600;;;PressureLevel;1;;point;mean;mean;;60000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua500;ua500;ua500;;;PressureLevel;1;;point;mean;mean;;50000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua400;ua400;ua400;;;PressureLevel;1;;point;mean;mean;;40000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua300;ua300;ua300;;;PressureLevel;1;;point;mean;mean;;30000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua250;ua250;ua250;;;PressureLevel;1;;point;mean;mean;;25000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+ua200;ua200;ua200;;;PressureLevel;1;;point;mean;mean;;20000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
+va1000;va1000;va1000;;;PressureLevel;1;;point;mean;mean;;100000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va925;va925;va925;;;PressureLevel;1;;point;mean;mean;;92500;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va850;va850;va850;;;PressureLevel;1;;point;mean;mean;;85000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va700;va700;va700;;;PressureLevel;1;;point;mean;mean;;70000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va600;va600;va600;;;PressureLevel;1;;point;mean;mean;;60000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va500;va500;va500;;;PressureLevel;1;;point;mean;mean;;50000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va400;va400;va400;;;PressureLevel;1;;point;mean;mean;;40000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va300;va300;va300;;;PressureLevel;1;;point;mean;mean;;30000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va250;va250;va250;;;PressureLevel;1;;point;mean;mean;;25000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+va200;va200;va200;;;PressureLevel;1;;point;mean;mean;;20000;m s-1;;4;i;1;;1;;;;;Northward Wind;;northward_wind;;atmos;
+ta1000;ta1000;ta1000;;;PressureLevel;1;;point;mean;mean;;100000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta925;ta925;ta925;;;PressureLevel;1;;point;mean;mean;;92500;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta850;ta850;ta850;;;PressureLevel;1;;point;mean;mean;;85000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta700;ta700;ta700;;;PressureLevel;1;;point;mean;mean;;70000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta600;ta600;ta600;;;PressureLevel;1;;point;mean;mean;;60000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta500;ta500;ta500;;;PressureLevel;1;;point;mean;mean;;50000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta400;ta400;ta400;;;PressureLevel;1;;point;mean;mean;;40000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta300;ta300;ta300;;;PressureLevel;1;;point;mean;mean;;30000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta250;ta250;ta250;;;PressureLevel;1;;point;mean;mean;;25000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+ta200;ta200;ta200;;;PressureLevel;1;;point;mean;mean;;20000;K;;4;i;1;;1;;;;;Air Temperature;;air_temperature;;atmos;
+hus1000;hus1000;hus1000;;;PressureLevel;1;;point;mean;mean;;100000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus925;hus925;hus925;;;PressureLevel;1;;point;mean;mean;;92500;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus850;hus850;hus850;;;PressureLevel;1;;point;mean;mean;;85000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus700;hus700;hus700;;;PressureLevel;1;;point;mean;mean;;70000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus600;hus600;hus600;;;PressureLevel;1;;point;mean;mean;;60000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus500;hus500;hus500;;;PressureLevel;1;;point;mean;mean;;50000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus400;hus400;hus400;;;PressureLevel;1;;point;mean;mean;;40000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus300;hus300;hus300;;;PressureLevel;1;;point;mean;mean;;30000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus250;hus250;hus250;;;PressureLevel;1;;point;mean;mean;;25000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+hus200;hus200;hus200;;;PressureLevel;1;;point;mean;mean;;20000;1;;4;i;1;;1;;;;;Specific Humidity;;specific_humidity;;atmos;
+zg1000;zg1000;zg1000;;;PressureLevel;1;;point;mean;mean;;100000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_1000hPa;geopotential_height;;atmos;
+zg925;zg925;zg925;;;PressureLevel;1;;point;mean;mean;;92500;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_925hPa;geopotential_height;;atmos;
+zg850;zg850;zg850;;;PressureLevel;1;;point;mean;mean;;85000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_850hPa;geopotential_height;;atmos;
+zg700;zg700;zg700;;;PressureLevel;1;;point;mean;mean;;70000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_700hPa;geopotential_height;;atmos;
+zg600;zg600;zg600;;;PressureLevel;1;;point;mean;mean;;60000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_600hPa;geopotential_height;;atmos;
+zg500;zg500;zg500;;;PressureLevel;1;;point;mean;mean;;50000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_500hPa;geopotential_height;;atmos;
+zg400;zg400;zg400;;;PressureLevel;1;;point;mean;mean;;40000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_400hPa;geopotential_height;;atmos;
+zg300;zg300;zg300;;;PressureLevel;1;;point;mean;mean;;30000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_300hPa;geopotential_height;;atmos;
+zg250;zg250;zg250;;;PressureLevel;1;;point;mean;mean;;25000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_250hPa;geopotential_height;;atmos;
+zg200;zg200;zg200;;;PressureLevel;1;;point;mean;mean;;20000;m;;4;i;1;;1;;;;;Geopotential Height;geopotential_height_at_200hPa;geopotential_height;;atmos;
+ua100m;ua100m;ua100m;;;ModelLevel;1;;point;mean;mean;;100;m s-1;;24;i;1;;1;;;;;Eastward wind at 100 m;;eastward_wind;;atmos;
+va100m;va100m;va100m;;;ModelLevel;1;;point;mean;mean;;100;m s-1;;24;i;1;;1;;;;;Northward wind at 100 m;;northward_wind;;atmos;
+ua150m;ua150m;ua150m;;;ModelLevel;1;;point;mean;mean;;150;m s-1;;24;i;1;;1;;;;;Eastward wind at 150 m;;eastward_wind;;atmos;
+va150m;va150m;va150m;;;ModelLevel;1;;point;mean;mean;;150;m s-1;;24;i;1;;1;;;;;Northward wind at 150 m;;northward_wind;;atmos;
+ua50m;ua50m;ua50m;;;ModelLevel;1;;point;mean;mean;;50;m s-1;;24;i;1;;1;;;;;Eastward wind at 50 m;;eastward_wind;;atmos;
+va50m;va50m;va50m;;;ModelLevel;1;;point;mean;mean;;50;m s-1;;24;i;1;;1;;;;;Northward wind at 50 m;;northward_wind;;atmos;
+ta50m;ta50m;ta50m;;;ModelLevel;1;;point;mean;mean;;50;K;;24;i;1;;1;;;;;Air Temperature at 50m;;air_temperature;;atmos;
+hus50m;hus50m;hus50m;;;ModelLevel;1;;point;mean;mean;;50;1;;24;i;1;;1;;;;;Specific Humidity at 50m;;specific_humidity;;atmos;
+z0;z0;z0;;;ModelLevel;1;; ;maximum;maximum within days time: mean over days;;0;m;;;i;1;;1;;;;;Surface Roughness Length;;surface_roughness_length;;;
+cape;cape;CAPE;;;ModelLevel;1;;;maximum;;;0;J kg-1;;;a;1;;;;;;;2-D Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
+ua300m;ua300m;ua300m;;;ModelLevel;1;;point;mean;mean;;300;m s-1;;24;i;1;;1;;;;;Eastward wind at 300 m;;eastward_wind;;atmos;
+va300m;va300m;va300m;;;ModelLevel;1;;point;mean;mean;;300;m s-1;;24;i;1;;1;;;;;Northward wind at 300 m;;northward_wind;;atmos;
+sftgif;sftgif;sftgif;;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Covered by Glacier;;land_ice_area_fraction;;;
+sftlaf;sftlaf;sftlaf;;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Occupied by Lake;;lake_area_fraction;;;
+sfturf;sfturf;sfturf;;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Occupied by City;;urban_area_fraction;;;
+areacella;areacella;areacella;;;;1;;;;;;;m2;;;;;;;;;;0;Atmosphere Grid-Cell Area;;cell_area;;;
