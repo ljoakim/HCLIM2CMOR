@@ -58,8 +58,8 @@ tasmin;tasmin;tasmin;;;ModelLevel;1;;point;minimum;minimum within days time: mea
 clt;clt;clt;;;ModelLevel;100;;point;mean;mean;mean;0;%;;24;i;1;24;1;m*24;1;s*24;;Total Cloud Fraction;;cloud_area_fraction;;atmos;
 clwvi;clwvi;clwvi;;;ModelLevel;1;;point;mean;mean;mean;0;kg m-2;;24;i;1;24;1;m*24;1;s*24;;Condensed Water Path;;atmosphere_cloud_condensed_water_content;;atmos;
 clivi;clivi;clivi;;;ModelLevel;1;;point;mean;mean;mean;0;kg m-2;;24;i;1;24;1;m*24;1;s*24;;Ice Water Path;;atmosphere_cloud_ice_content;;atmos;
-pcin;pcin;CIN;;;ModelLevel;1;;point;maximum;;;0;J kg-1;;24;i;1;24;;;;;;2-D convective inhibition;pcin;atmosphere_convective_inhibition_wrt_surface;;atmos;
-pcape;pcape;CAPE;;;ModelLevel;1;;point;maximum;;;0;J kg-1;;24;i;1;24;;;;;;2-D convective available potential energy;pcape;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
+pcin;pcin;CIN;;;ModelLevel;1;;point;maximum;;;0;J kg-1;;24;i;1;24;;;;;;2-D Maximum convective inhibition;pcin;atmosphere_convective_inhibition_wrt_surface;;atmos;
+pcape;pcape;CAPE;;;ModelLevel;1;;point;maximum;;;0;J kg-1;;24;i;1;24;;;;;;2-D Maximum convective available potential energy;pcape;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
 hfls;hfls;hfls;;;ModelLevel;0.000277778;;mean;mean;mean;mean;0;W m-2;;24;a;;;;;;;;Surface Upward Latent Heat Flux;;surface_upward_latent_heat_flux;up;atmos;
 hfss;hfss;hfss;;;ModelLevel;0.000277778;;mean;mean;mean;mean;0;W m-2;;24;a;;;;;;;;Surface Upward Sensible Heat Flux;;surface_upward_sensible_heat_flux;up;atmos;
 hus1000;hus1000;hus1000;;;PressureLevel;1;;point;mean;mean;mean;100000;1;;8;i;1;8;1;m*8;1;s*8;;Specific Humidity;;specific_humidity;;atmos;
