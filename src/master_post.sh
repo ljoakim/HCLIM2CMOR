@@ -4,7 +4,7 @@
 #SBATCH --mem-per-cpu 20000
 #SBATCH -A rossby
 #SBATCH -t 03:00:00
-#SBATCH -o ${HCLIM_DIR}/postprocess/HCLIM2CMOR/logs/master_post_%j.out
+#SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_post_%j.out
 
 #Check if all functions are available
 funcs="ncrcat ncks ncap2 ncatted cdo"

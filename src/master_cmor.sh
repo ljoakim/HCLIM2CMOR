@@ -3,12 +3,12 @@
 #SBATCH -n 11
 #SBATCH -A rossby
 #SBATCH -t 12:00:00
-#SBATCH -o ${HCLIM_DIR}/postprocess/HCLIM2CMOR/logs/master_CMOR_%j.out
+#SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_CMOR_%j.out
 
 source ./settings.sh
 #make temp folder for batch job
 mkdir -p $SNIC_TMP/temp
-ln -s $SNIC_TMP/temp $HCLIM_DIR/postprocess/HCLIM2CMOR/data/temp
+ln -s $SNIC_TMP/temp $HCLIMDIR/postprocess/HCLIM2CMOR/data/temp
 
 script_folder="${BASEDIR}/src/CMORlight"
 python_script="${script_folder}/cmorlight.py"

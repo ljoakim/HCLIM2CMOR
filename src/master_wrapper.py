@@ -33,12 +33,38 @@ def read_simulation_config(config_file_path):
     return config
 
 
-def run_post(simulation, start_year, end_year, log_dir, simulation_config):
+def generate_control_cmor(simulation, simulation_config):
+    control_cmor_template_filename = os.path.join(
+        os.path.dirname(__file__), "../config/control_cmor_template.ini"
+    )
+    with open(control_cmor_template_filename) as in_file:
+        control_cmor_template = in_file.read()
+        format_dict = simulation_config.copy()
+        format_dict["simulation"] = simulation
+        format_dict["hclim_dir"] = os.environ["HCLIMDIR"]
+        control_cmor = control_cmor_template.format(**format_dict)
+
+    control_cmor_folder = os.path.join(os.path.dirname(__file__), "../control_cmor/")
+    if not os.path.exists(control_cmor_folder):
+        os.makedirs(control_cmor_folder)
+    control_cmor_filename = f"control_cmor_{simulation}.ini"
+    control_cmor_path = os.path.join(
+        control_cmor_folder, control_cmor_filename
+    )
+    with open(control_cmor_path, "w") as out_file:
+        out_file.write(control_cmor)
+
+    return control_cmor_filename
+
+
+def run_post(
+    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+):
     os.environ["OVERRIDE_SIMULATION"] = simulation
-    os.environ["OVERRIDE_GCM"] = str(simulation_config["gcm_name"])
-    os.environ["OVERRIDE_EXP"] = str(simulation_config["experiment"])
+    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
+    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
     os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
-    var_list = str(simulation_config["var_list"])
+    var_list = " ".join(str(simulation_config["var_list"]).split(","))
     post_command = (
         f"sbatch -J post_{simulation}_{start_year} -W"
         f" -o {log_dir}/post_{simulation}_{start_year}.out"
@@ -48,12 +74,14 @@ def run_post(simulation, start_year, end_year, log_dir, simulation_config):
     post_process.check_returncode()
 
 
-def run_cmor(simulation, start_year, end_year, log_dir, simulation_config):
-    var_list = ",".join(str(simulation_config["var_list"]).split())
+def run_cmor(
+    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+):
+    var_list = str(simulation_config["var_list"])
     cmor_command = (
-        f"sbatch -J cmor_{simulation}_{start_year} -n 10 -t 04:00:00 -W"
+        f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
         f" -o {log_dir}/cmor_{simulation}_{start_year}.out"
-        f" master_cmor.sh -i ../../config/control_cmor.ini -m {simulation}"
+        f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V"
     )
@@ -61,12 +89,14 @@ def run_cmor(simulation, start_year, end_year, log_dir, simulation_config):
     cmor_process.check_returncode()
 
 
-def run_chunk(simulation, start_year, end_year, log_dir, simulation_config):
-    var_list = ",".join(str(simulation_config["var_list"]).split())
+def run_chunk(
+    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+):
+    var_list = str(simulation_config["var_list"])
     chunk_command = (
-        f"sbatch -J chunk_{simulation}_{start_year} -n 10 -t 04:00:00 -W"
+        f"sbatch -J chunk_{simulation}_{start_year} -n 10 -W"
         f" -o {log_dir}/chunk_{simulation}_{start_year}.out"
-        f" master_cmor.sh -i ../../config/control_cmor.ini -m {simulation}"
+        f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -c --remove"
     )
@@ -82,10 +112,11 @@ if __name__ == "__main__":
     log_dir = config["log_dir"]
     simulation_config = config["simulations"][args.simulation]
 
+    control_cmor = generate_control_cmor(args.simulation, simulation_config)
+
     start_year = simulation_config["start_year"]
     end_year = simulation_config["end_year"]
     total_time_range = end_year - start_year
-
     time_step = 10
     parallel_processes_per_step = total_time_range // time_step + 1
 
@@ -96,6 +127,7 @@ if __name__ == "__main__":
             min(end_year, start_year + (t + 1) * time_step - 1),
             log_dir,
             simulation_config,
+            control_cmor,
         )
         for t in range(parallel_processes_per_step)
     ]
@@ -122,7 +154,9 @@ if __name__ == "__main__":
     # work with chunking rules.
     #
     print("Chunking...")
-    run_chunk(args.simulation, start_year, end_year, log_dir, simulation_config)
+    run_chunk(
+        args.simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+    )
     step3_time = time.time()
     print(f"Chunking took {step3_time - step2_time} seconds.")
 
