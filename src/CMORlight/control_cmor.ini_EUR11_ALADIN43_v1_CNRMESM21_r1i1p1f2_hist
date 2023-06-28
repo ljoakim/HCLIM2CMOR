@@ -41,10 +41,10 @@ DirDerotated=work/output_derotated
 #
 # IMPORTANT NOTE
 # The following list of global attributes
-# - contain the mandatory attributes necessary according to the CORDEX standard (see latest document on "CORDEX Arcive Desgin", March 2013
+# - contain the mandatory attributes necessary according to the CORDEX-CMIP6 standard (see latest document on "CORDEX-CMIP6 Arcive Desgin", February 2023)
 # - additional optional attributes "invented" by Hans-Juergen Panitz
 #
-# This control_ini file cannot be used together with that CCLM2CMOR tool version, which has been built to follow the CLM-Community suggestions
+# This control_ini file cannot be used together with that CCLM2CMOR tool version built to follow the CLM-Community suggestions
 # for extended directory- and filenmae structures and extended list of global attributes for CMORization of data from a double-nest simulation
 #
 # By the way, the latest official version is that, which gives the possibilty to consider an additional sub-daily frequency, an implementation by Marie-Estelle
@@ -54,13 +54,12 @@ DirDerotated=work/output_derotated
 #
 ########################################################################################################################################################################################
 
-#HJP March 2019 Begin
 #Global attributes that should be taken from this .ini file
 #----------------------------------------------------------
 # "global_attr_list" must not be empty.
 #
 # Mandatory attributes are:
-# project_id,mip_era,activity_id,driving_model_id,experiment_id,driving_experiment_name,driving_model_ensemble_member,CORDEX_domain,institute_id,model_id,rcm_version_id,contact
+# project_id,mip_era,activity_id,driving_source_id,driving_experiment_id,driving_variant_label,driving_institution_id,domain_id,institution_id,source_id,version_realisation,contact
 #
 # All other attributes are optional.
 # Entries for listed attributes are defined in section 'settings' below; each attribute set in "global_attr_list" needs an entry/"value", otherwise the tool will stop.
@@ -68,9 +67,8 @@ DirDerotated=work/output_derotated
 # The attributes set in "global_attr_list" appear in the global attributes of the final file
 # The sequence of appearance in the file is determined by the sequence of their setting in this list
 
-global_attr_list=Conventions,conventionsURL,title,project_id,mip_era,activity_id,CORDEX_domain,driving_model_id,driving_experiment_name,experiment_id,driving_experiment,driving_model_ensemble_member,experiment,model_id,institute_id,institution,rcm_version_id,contact,comment,source,references
+global_attr_list=Conventions,conventionsURL,title,project_id,mip_era,activity_id,driving_source_id,driving_experiment_id,driving_variant_label,driving_institution_id,domain_id,institution_id,source_id,version_realisation,contact,comment,references
 #
-#HJP March 2019 End
 
 #global attributes that should be taken from .nc files if present; will overwrite settings from global_attr_list!
 global_attr_file=
@@ -226,34 +224,32 @@ mip_era=CMIP6
 #             downscaling (ESD), Flagship Pilot Study (FPS) and bias adjustment (Adjust).
 activity_id=RCM
 
-#driving model id: gcm_institute id + '-' + gcm_model_id; usually from http://cordex.dmi.dk/joomla/images/CORDEX/GCMModelName.txt
-driving_model_id=CNRM-ESM2-1
+#driving model id: gcm_model_id; usually from http://cordex.dmi.dk/joomla/images/CORDEX/GCMModelName.txt
+driving_source_id=CNRM-ESM2-1
 
-#experiment_id: evaluation, historical, rcp85
-experiment_id=historical
+#driving_institution_id: an identifier of the institution that is responsible for the driving CMIP6 simulation
+driving_institution_id=CNRM-ESM2-1
 
-#driving_experiment_name: evaluation or the experiment_id of the used CMIP experiment
-driving_experiment_name=historical
+#driving_experiment_id: evaluation or the experiment_id of the used CMIP6 experiment
+driving_experiment_id=historical
 
-#ensemble member of the driving CMIP experiment; r1i1p1f1 for evaluation runs
-driving_model_ensemble_member=r1i1p1f2
+#variant label of the driving CMIP6 simulation; r1i1p1f1 for evaluation runs
+driving_variant_label=r1i1p1f2
 
 #domain name as provided by CORDEX
-#CORDEX_domain=ALP-3
-CORDEX_domain=EUR-11
+domain_id=EUR-11
 
-#institute id: usually from this list
-institute_id=HCLIMcom-SMHI
+#institution_id: usually from this list
+institution_id=HCLIMcom-SMHI
 
-#rcm_model_id: rcm_institute_id + '-' + rcm_model_acronym; usually from http://cordex.dmi.dk/joomla/images/CORDEX/RCMModelName.txt
-model_id=HCLIM43-ALADIN
+#source_id: rcm_model_acronym; usually from http://cordex.dmi.dk/joomla/images/CORDEX/RCMModelName.txt
+source_id=HCLIM43-ALADIN
 
 #contact: email address
 contact=rossby@smhi.se
 
-#rcm_version_id: identifies reruns with perturbed parameters or smaller RCM release upgrades;...
-#...differences between different rcm_version_id should be explained in the comments attribute or referred to in the source attribute
-rcm_version_id=v1
+#version_realisation: identifies version of CORDEX datasets and RCM realisations
+version_realisation=v1-r1
 
 # rcm_nesting_information within "rcm_version_id": 
 #  the contents of the mandatory attribute can be chosen freely.
@@ -288,10 +284,8 @@ rcm_version_id=v1
 
 driving_experiment=CNRM-ESM2-1, historical, r1i1p1f2
 
-experiment=Historical run with forcing from CNRM-ESM2-1
-
 #Conventions: used version of CF conventions
-Conventions=CF-1.4
+Conventions=CF-1.10
 
 
 #optional attributes:
@@ -318,11 +312,11 @@ source=HARMONIE Climate Modelling Community (HCLIM-Com)
 references=https://www.hirlam.org/trac/wiki/HarmonieClimate
 
 
-table_id=
-modeling_realm=
-initialization_method=
-physics_version=
-parent_id=
+#table_id=
+#modeling_realm=
+#initialization_method=
+#physics_version=
+#parent_id=
 
 #calendar: to specify calendar attribute of time variable IF NOT present or not correct in input files
 #calendar=360_day
