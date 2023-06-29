@@ -207,7 +207,7 @@ def compress_output(outpath,year=0,logger=log):
         logger.error("File does not exist: (%s)" % outpath)
 
 # -----------------------------------------------------------------------------
-def set_attributes_create(outpath,res=None,year=0,logger=log):
+def set_attributes_create(outpath,res=None,var=None,year=0,logger=log):
     '''
     Set and delete some (global) attributes
     '''
@@ -215,6 +215,9 @@ def set_attributes_create(outpath,res=None,year=0,logger=log):
         f_out = Dataset(outpath,'r+')
         if res:
             f_out.setncattr("frequency",res)
+
+	if var:
+            f_out.setncattr("variable_id",var)
 
         try: #delete unnecessary attribute
             f_out.variables["lon"].delncattr("_CoordinateAxisType")
@@ -405,7 +408,7 @@ def do_chunking(f_list,var,res,start_date, stop_date, outdir):
         retval=shell("ncrcat -h -O %s %s " % (flist,outpath))
 
         # set attributes
-        set_attributes_create(outpath,res)
+        set_attributes_create(outpath,res,var)
     else:
         log.info("Output file exist: %s, skipping!" % (outfile))
     # remove source files
@@ -832,7 +835,7 @@ def process_file_fix(params,in_file):
     f_out.close()
 
     # set attributes: frequency,tracking_id,creation_date
-    set_attributes_create(outpath,"fx")
+    set_attributes_create(outpath,"fx",var)
        # change fillvalue in file (not just attribute) if necessary
     if change_fill:
         #use help file as -O option for cdo does not seem to work here
@@ -1026,7 +1029,7 @@ def proc_seasonal(params,year):
 #               retval = shell("cp %s %s" % (ftmp_name,outpath))
 
                 # set attributes
-                set_attributes_create(outpath,res,year,logger=logger)
+                set_attributes_create(outpath,res,var,year,logger=logger)
                 
                 # compress output
                 if config.get_config_value('boolean','nc_compress') == True:
@@ -1715,8 +1718,8 @@ is here the time resolution of the input data in hours."
         if config.get_config_value('boolean','nc_compress') == True:
             compress_output(outpath,year,logger=logger)
         
-        # set global attributes: frequency,tracking_id,creation_date
-        set_attributes_create(outpath,res,year,logger=logger)
+        # set global attributes: frequency,tracking_id,creation_date,variable_id
+        set_attributes_create(outpath,res,var,year,logger=logger)
     
     if config.get_config_value('boolean','use_alt_units'): 
         os.remove(temp_name)
