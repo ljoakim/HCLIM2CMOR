@@ -20,6 +20,7 @@ def parse_args():
         default=None,
         help="simulation configuration to run",
     )
+    parser.add_argument("-C", "--create_const", action=argparse.BooleanOptionalAction)
     return parser.parse_args()
 
 
@@ -48,13 +49,51 @@ def generate_control_cmor(simulation, simulation_config):
     if not os.path.exists(control_cmor_folder):
         os.makedirs(control_cmor_folder)
     control_cmor_filename = f"control_cmor_{simulation}.ini"
-    control_cmor_path = os.path.join(
-        control_cmor_folder, control_cmor_filename
-    )
+    control_cmor_path = os.path.join(control_cmor_folder, control_cmor_filename)
     with open(control_cmor_path, "w") as out_file:
         out_file.write(control_cmor)
 
     return control_cmor_filename
+
+
+def run_constants(
+    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+):
+    # Runs both post and cmorization for constant variables
+    #
+
+    os.environ["OVERRIDE_SIMULATION"] = simulation
+    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
+    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
+    os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
+    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
+
+    fixed_vars = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
+    var_list = ",".join(
+        [
+            var
+            for var in str(simulation_config["var_list"]).split(",")
+            if var in fixed_vars
+        ]
+    )
+
+    post_command = (
+        f"sbatch -J post_C_{simulation}_{start_year} -W"
+        f" -o {log_dir}/post_C_{simulation}_{start_year}.out"
+        f" master_post.sh -C"
+    )
+    post_process = subprocess.run(post_command, shell=True)
+    post_process.check_returncode()
+
+    cmor_command = (
+        f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
+        f" -o {log_dir}/cmor_C_{simulation}_{start_year}.out"
+        f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
+        f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
+        f" -n latest -V"
+    )
+    cmor_process = subprocess.run(cmor_command, shell=True)
+    cmor_process.check_returncode()
 
 
 def run_post(
@@ -64,6 +103,7 @@ def run_post(
     os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
     os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
     os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
+    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
     var_list = " ".join(str(simulation_config["var_list"]).split(","))
     post_command = (
         f"sbatch -J post_{simulation}_{start_year} -W"
@@ -132,32 +172,56 @@ if __name__ == "__main__":
         for t in range(parallel_processes_per_step)
     ]
 
-    # Parallel sbatch post and cmor.
-    # Note: if program is stopped during run, the sbatch
-    # jobs will not be automatically stopped. Use the
-    # squeue/scancel to view and stop sbatch jobs.
-    #
-    start_time = time.time()
-    with Pool(parallel_processes_per_step) as p:
-        print("Running post process...")
-        p.starmap(run_post, post_process_args)
+    if args.create_const:
+        start_time = time.time()
+        print("Running post process and cmorization on constant fields...")
+        run_constants(
+            args.simulation,
+            start_year,
+            end_year,
+            log_dir,
+            simulation_config,
+            control_cmor,
+        )
         step1_time = time.time()
-        print(f"Post process took {step1_time - start_time} seconds.")
+        print(
+            f"Post process and cmorization of constant fields"
+            f" took {step1_time - start_time} seconds."
+        )
 
-        print("Running cmorization...")
-        p.starmap(run_cmor, post_process_args)
-        step2_time = time.time()
-        print(f"CMORization took {step2_time - step1_time} seconds.")
+    else:
+        # Parallel sbatch post and cmor.
+        # Note: if program is stopped during run, the sbatch
+        # jobs will not be automatically stopped. Use the
+        # squeue/scancel to view and stop sbatch jobs.
+        #
+        start_time = time.time()
 
-    # Chunking could also be done in parallel, but care
-    # must be taken to parallelize over time ranges that
-    # work with chunking rules.
-    #
-    print("Chunking...")
-    run_chunk(
-        args.simulation, start_year, end_year, log_dir, simulation_config, control_cmor
-    )
-    step3_time = time.time()
-    print(f"Chunking took {step3_time - step2_time} seconds.")
+        with Pool(parallel_processes_per_step) as p:
+            print("Running post process...")
+            p.starmap(run_post, post_process_args)
+            step1_time = time.time()
+            print(f"Post process took {step1_time - start_time} seconds.")
+
+            print("Running cmorization...")
+            p.starmap(run_cmor, post_process_args)
+            step2_time = time.time()
+            print(f"CMORization took {step2_time - step1_time} seconds.")
+
+        # Chunking could also be done in parallel, but care
+        # must be taken to parallelize over time ranges that
+        # work with chunking rules.
+        #
+        print("Chunking...")
+        run_chunk(
+            args.simulation,
+            start_year,
+            end_year,
+            log_dir,
+            simulation_config,
+            control_cmor,
+        )
+        step3_time = time.time()
+        print(f"Chunking took {step3_time - step2_time} seconds.")
 
     print("Done.")
