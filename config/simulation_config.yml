@@ -26,7 +26,6 @@ simulations:
     driving_institution_id: "ECMWF"
     start_year: 1980
     end_year: 2021
-    var_list: "tas,tasmax,tasmin,pr"
 
   "202202":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist"
@@ -37,4 +36,3 @@ simulations:
     driving_institution_id: "CNRM-CERFACS"
     start_year: 1951
     end_year: 2014
-    var_list: "tas,tasmax,tasmin,pr"

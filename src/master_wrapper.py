@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import os
 import subprocess
 import time
@@ -12,15 +13,29 @@ def parse_args():
         "-f",
         "--file",
         default=None,
-        help="file containing the simulation configuration",
+        help="File containing the simulation configuration.",
     )
     parser.add_argument(
         "-s",
         "--simulation",
-        default=None,
-        help="simulation configuration to run",
+        required=True,
+        help="Simulation configuration to run.",
     )
-    parser.add_argument("-C", "--create_const", action=argparse.BooleanOptionalAction)
+    parser.add_argument(
+        "-v",
+        "--variables",
+        required=True,
+        help=(
+            "Comma separated list of variables to CMORize."
+            " No spaces, e.g. 'tas,tasmin,tasmax'."
+        ),
+    )
+    parser.add_argument(
+        "-C",
+        "--create_const",
+        action=argparse.BooleanOptionalAction,
+        help="CMORize constant variables.",
+    )
     return parser.parse_args()
 
 
@@ -34,7 +49,7 @@ def read_simulation_config(config_file_path):
     return config
 
 
-def generate_control_cmor(simulation, simulation_config):
+def generate_control_cmor(simulation, var_list, simulation_config):
     control_cmor_template_filename = os.path.join(
         os.path.dirname(__file__), "../config/control_cmor_template.ini"
     )
@@ -43,12 +58,14 @@ def generate_control_cmor(simulation, simulation_config):
         format_dict = simulation_config.copy()
         format_dict["simulation"] = simulation
         format_dict["hclim_dir"] = os.environ["HCLIMDIR"]
+        format_dict["var_list"] = var_list
         control_cmor = control_cmor_template.format(**format_dict)
 
     control_cmor_folder = os.path.join(os.path.dirname(__file__), "../control_cmor/")
     if not os.path.exists(control_cmor_folder):
         os.makedirs(control_cmor_folder)
-    control_cmor_filename = f"control_cmor_{simulation}.ini"
+    varstr = "_".join(var_list.split(","))
+    control_cmor_filename = f"control_cmor_{simulation}_{varstr}.ini"
     control_cmor_path = os.path.join(control_cmor_folder, control_cmor_filename)
     with open(control_cmor_path, "w") as out_file:
         out_file.write(control_cmor)
@@ -56,8 +73,14 @@ def generate_control_cmor(simulation, simulation_config):
     return control_cmor_filename
 
 
+def generate_log_filename(prefix, simulation, start_year, var_list):
+    t = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    varstr = "_".join(var_list.split(","))
+    return f"{prefix}_{simulation}_{start_year}_{varstr}_{t}.out"
+
+
 def run_constants(
-    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
 ):
     # Runs both post and cmorization for constant variables
     #
@@ -72,22 +95,24 @@ def run_constants(
     var_list = ",".join(
         [
             var
-            for var in str(simulation_config["var_list"]).split(",")
+            for var in var_list.split(",")
             if var in fixed_vars
         ]
     )
 
+    log_file = generate_log_filename("post_C", simulation, start_year, var_list)
     post_command = (
         f"sbatch -J post_C_{simulation}_{start_year} -W"
-        f" -o {log_dir}/post_C_{simulation}_{start_year}.out"
+        f" -o {log_dir}/{log_file}"
         f" master_post.sh -C"
     )
     post_process = subprocess.run(post_command, shell=True)
     post_process.check_returncode()
 
+    log_file = generate_log_filename("cmor_C", simulation, start_year, var_list)
     cmor_command = (
         f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/cmor_C_{simulation}_{start_year}.out"
+        f" -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V"
@@ -97,30 +122,31 @@ def run_constants(
 
 
 def run_post(
-    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
 ):
     os.environ["OVERRIDE_SIMULATION"] = simulation
     os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
     os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
     os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
     os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
-    var_list = " ".join(str(simulation_config["var_list"]).split(","))
+    log_file = generate_log_filename("post", simulation, start_year, var_list)
+    spaced_var_list = " ".join(var_list.split(","))
     post_command = (
         f"sbatch -J post_{simulation}_{start_year} -W"
-        f" -o {log_dir}/post_{simulation}_{start_year}.out"
-        f" master_post.sh -p '{var_list}' -s {start_year} -e {end_year} -V"
+        f" -o {log_dir}/{log_file}"
+        f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V"
     )
     post_process = subprocess.run(post_command, shell=True)
     post_process.check_returncode()
 
 
 def run_cmor(
-    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
 ):
-    var_list = str(simulation_config["var_list"])
+    log_file = generate_log_filename("cmor", simulation, start_year, var_list)
     cmor_command = (
         f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/cmor_{simulation}_{start_year}.out"
+        f" -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V"
@@ -130,12 +156,12 @@ def run_cmor(
 
 
 def run_chunk(
-    simulation, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
 ):
-    var_list = str(simulation_config["var_list"])
+    log_file = generate_log_filename("chunk", simulation, start_year, var_list)
     chunk_command = (
         f"sbatch -J chunk_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/chunk_{simulation}_{start_year}.out"
+        f" -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -c --remove"
@@ -152,7 +178,7 @@ if __name__ == "__main__":
     log_dir = config["log_dir"]
     simulation_config = config["simulations"][args.simulation]
 
-    control_cmor = generate_control_cmor(args.simulation, simulation_config)
+    control_cmor = generate_control_cmor(args.simulation, args.variables, simulation_config)
 
     start_year = simulation_config["start_year"]
     end_year = simulation_config["end_year"]
@@ -163,6 +189,7 @@ if __name__ == "__main__":
     post_process_args = [
         (
             args.simulation,
+            args.variables,
             start_year + t * time_step,
             min(end_year, start_year + (t + 1) * time_step - 1),
             log_dir,
@@ -177,6 +204,7 @@ if __name__ == "__main__":
         print("Running post process and cmorization on constant fields...")
         run_constants(
             args.simulation,
+            args.variables,
             start_year,
             end_year,
             log_dir,
@@ -215,6 +243,7 @@ if __name__ == "__main__":
         print("Chunking...")
         run_chunk(
             args.simulation,
+            args.variables,
             start_year,
             end_year,
             log_dir,
