@@ -1,0 +1,38 @@
+# This is the main configuration file for the master_wrapper.py script.
+#
+# To run the script the $HCLIMDIR environment variable must be defined and
+# should point to a directory with simulations and postprocess folders:
+#
+# $HCLIMDIR/
+#   202201/
+#   202202/
+#   ...
+#   postprocess/
+#
+# To run postprocessing for a simulation, configuration for the simulation
+# must be specified in this file.
+#
+---
+log_dir: "${HCLIMDIR}/postprocess/HCLIM2CMOR/data/work/logs"
+
+simulations:
+
+  "202201":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ERA5_r1i1p1f1_eval"
+    driving_source_id: "ECMWF-ERA5"
+    driving_experiment_id: "evaluation"
+    driving_experiment: "ECMWF-ERA5, evaluation, r1i1p1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "ECMWF"
+    start_year: 1980
+    end_year: 2021
+
+  "202202":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist"
+    driving_source_id: "CNRM-ESM2-1"
+    driving_experiment_id: "historical"
+    driving_experiment: "CNRM-ESM2-1, historical, r1i1p1f2"
+    driving_variant_label: "r1i1p1f2"
+    driving_institution_id: "CNRM-CERFACS"
+    start_year: 1951
+    end_year: 2014
