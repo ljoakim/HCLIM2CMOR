@@ -339,12 +339,12 @@ do
     then
       echon ""
       echon " Create additional fields for CORDEX"
-      file1=$(ls ${OUTDIR}/${name1}/${name1}_${YY}${MMA}0100*.nc) 
+      file1=$(ls ${OUTDIR}/${name1}/${name1}_${YY}${MMA}01????-*.nc) 
       if [[ ${name2} == "" ]]
       then
         file2=""
       else
-        file2=$(ls ${OUTDIR}/${name2}/${name2}_${YY}${MMA}0100*.nc)
+        file2=$(ls ${OUTDIR}/${name2}/${name2}_${YY}${MMA}01????-*.nc)
       fi
       echov "Input files and formula:"
       echov "$file1"
