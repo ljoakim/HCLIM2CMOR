@@ -8,7 +8,10 @@
 source ./settings.sh
 #make temp folder for batch job
 mkdir -p $SNIC_TMP/temp
-ln -s $SNIC_TMP/temp $HCLIMDIR/postprocess/HCLIM2CMOR/data/temp
+if [ ! -L $HCLIMDIR/postprocess/HCLIM2CMOR/data/temp ]
+then
+  ln -s $SNIC_TMP/temp $HCLIMDIR/postprocess/HCLIM2CMOR/data/temp
+fi
 
 script_folder="${BASEDIR}/src/CMORlight"
 python_script="${script_folder}/cmorlight.py"
