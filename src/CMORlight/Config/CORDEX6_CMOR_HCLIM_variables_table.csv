@@ -26,7 +26,7 @@ sftlf;sftlf;sftlf;sftnf + sfturf;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid C
 ts;ts;ts;;;ModelLevel;1;;point;mean;mean;;0;K;;24;i;1;;1;;;;;Surface Temperature;;surface_temperature;;atmos;
 tsl;tsl;tsl;tsl_L01:L14;;ModelLevel;1;;point;mean;mean;;14;K;;4;i;1;;1;;;;;Temperature of Soil;;soil_temperature;;land;mean where land
 prc;prc;prc;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Convective Precipitation;;convective_precipitation_flux;;atmos;
-prhmax;prhmax;prhmax;daymax(pr);;ModelLevel;1;;;maximum;maximum;;0;kg m-2 s-1;;;a;1;;1;;;;;Daily Maximum Hourly Precipitation Rate;;precipitation_flux;;atmos;
+prhmax;prhmax;prhmax;daymax(pr);;ModelLevel;1;;;maximum;maximum within days time: mean over days;;0;kg m-2 s-1;;;a;1;;1;;;;;Daily Maximum Hourly Precipitation Rate;;precipitation_flux;;atmos;
 prsn;prsn;prsn;;;ModelLevel;1;;mean;mean;mean;;0;kg m-2 s-1;;24;a;1;;1;;;;;Snowfall Flux;;snowfall_flux;;atmos;
 mrros;mrros;mrros;;;ModelLevel;;;mean;mean;mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Surface Runoff;;surface_runoff_flux;;land;mean where land
 mrro;mrro;mrro;mrrod + mrros;;ModelLevel;;;mean;mean;mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Total Runoff;;runoff_flux;;land;mean where land
@@ -53,6 +53,8 @@ mrsol;mrsol;mrsol;mrsol_L01:L14;;ModelLevel;1;;point;mean;mean;;14;kg m-2;;4;i;1
 snw;snw;snw;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Surface Snow Amount;;surface_snow_amount;;landIce land;mean where land
 snc;snc;snc;;;ModelLevel;1;;point;mean;mean;;0;%;;4;i;1;;1;;;;;Snow Area Percentage;;surface_snow_area_fraction;;landIce land;
 snd;snd;snd;;;ModelLevel;1;;point;mean;mean;;0;m;;4;i;1;;1;;;;;Snow Depth;;surface_snow_thickness;;landIce land;mean where land
+siconca;siconca;siconca;;;ModelLevel;1;;;mean;mean;;0;%;;;i;1;;1;;;;;Sea-Ice Area Percentage (Atmospheric Grid);;sea_ice_area_fraction;;seaIce ocean;
+zmla;zmla;zmla;;;ModelLevel;1;;point;mean;mean;;0;m;;24;i;1;;1;;;;;Height of Boundary Layer;;atmosphere_boundary_layer_thickness;;atmos;
 prw;prw;prw;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Water Vapor Path;;atmosphere_mass_content_of_water_vapor;;atmos;
 clwvi;clwvi;clwvi;clqvi + clivi;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Condensed Water Path;;atmosphere_mass_content_of_cloud_condensed_water;;atmos;
 clivi;clivi;clivi;;;ModelLevel;1;;point;mean;mean;;0;kg m-2;;4;i;1;;1;;;;;Ice Water Path;;atmosphere_mass_content_of_cloud_ice;;atmos;
