@@ -317,7 +317,7 @@ do
   #
   #   clean temporary files
       rm -f ${FILEOUT}_tmp?_${YY}.nc
-      #rm ${FILEIN}
+      rm ${FILEIN}
 
     done                    # var name loopende
 #
