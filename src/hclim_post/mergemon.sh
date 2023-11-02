@@ -127,7 +127,7 @@ do
   then
     FILES=${proc_list} 
   else
-    FILES=$(ls ${INDIR_BASE}/${YY}/${MMA}/01/00/*_${NAMETAG}.nc)
+    FILES=$(ls ${INDIR_BASE}/${YY}/${MMA}/01/00/*_${NAMETAG}_*.nc)
   fi
   
 
@@ -381,7 +381,7 @@ do
   if [[ ${LFILE} -ne 1 ]] 
   then
     
-    #Additional fields for CORDEX not directly availabl directly available in the model output
+    #Additional fields for CORDEX not directly available directly available in the model output
 
     # Total runoff: mrro
     create_add_vars "mrros" "mrrod" "mrro" "add" "runoff_flux"
