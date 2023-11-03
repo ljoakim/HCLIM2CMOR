@@ -24,13 +24,12 @@ export IGNORE_ATT_COORDINATES=0
 accu_list="tasmax tasmin pr evspsbl clt rsds rlds prc prsn mrros mrrod snm tauu tauv sfcWindmax sund rsdsdir rsus rlus rlut rsdt rsut hfls hfss wsgsmax clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
-inst_list="tas huss hurs ps psl sfcWind uas vas ts mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m z0 cape ua300m va300m" 
-
+inst_list="tas huss hurs ps psl sfcWind uas vas ts mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m z0 cape ua300m va300m tsl mrsos mrsol mrfsos mrsfl" #last 5 are multi-layer vars
 # constant variables
 const_list="orog sftlf sfturf sftlaf" #Include the following? sftgif (constant 0) mrsofc rootd dtb areacella (constant 12.5 km x 12.5km)
 
 #additional variables
-add_list="clwvi mrro prhmax" #tsl mrfsos mrsfl mrsos mrsol: TO BE ADDED, not implemented yet (multi-layer vars)
+add_list="clwvi mrro prhmax"
 
 #-----------------------------------------------------------------------
 
@@ -199,16 +198,88 @@ do
        
       while [[ ${MM} -le ${ME} ]] 
       do 
-        if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc ] 
+        ## mrsos: top 3 layer (10 cm) sum of soil water content (all phases) 
+        if [[ ${FILEOUT} == @(mrsos) ]] 
         then
-          echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc does not exist! Continue anyway..."
-          #continue 2
+         if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/mrsol_*_${NAMETAG}_1hr*.nc ]
+         then
+           echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/mrsol_*_${NAMETAG}_1hr*.nc does not exist! Continue anyway..."
+           #continue 2
+         fi
+         FILE2MERG="$(ls ${INDIR_BASE}/${YY}/${MM}/01/00/mrsol_*_${NAMETAG}_1hr*.nc )"
+         echon "Merging uppermost 3 soil layer files"
+         echov "${FILE2MERG}"
+         echov "here: $PWD"
+
+         # merging files 
+         cdo merge ${FILE2MERG} ${FILEOUT}_${YY}${MM}_mrg.nc
+         cdo varssum ${FILEOUT}_${YY}${MM}_mrg.nc ${FILEOUT}_${YY}${MM}_sum.nc
+         cdo -O setmissval,1.e+20 -setname,${FILEOUT} ${FILEOUT}_${YY}${MM}_sum.nc ${FILEOUT}_${YY}${MM}.nc
+         [ -f ${FILEOUT}_${YY}${MM}_mrg.nc ] && rm ${FILEOUT}_${YY}${MM}_mrg.nc
+         [ -f ${FILEOUT}_${YY}${MM}_sum.nc ] && rm ${FILEOUT}_${YY}${MM}_sum.nc
+   
+         FILELIST="$(echo ${FILELIST}) $(ls ${FILEOUT}_${YY}${MM}.nc )" 
+
+        ## mrfsos: top 3 layer (10 cm) sum of frozen soil water content 
+        elif  [[ ${FILEOUT} == @(mrfsos) ]] #top 3 layer sum
+        then
+         if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/mrsfl_*_${NAMETAG}_1hr*.nc ]
+         then
+           echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/mrsfl_*_${NAMETAG}_1hr*.nc does not exist! Continue anyway..."
+           #continue 2
+         fi
+
+         FILE2MERG="$(ls ${INDIR_BASE}/${YY}/${MM}/01/00/mrsfl_*_${NAMETAG}_1hr*.nc )"
+         echon "Merging uppermost 3 soil layer files"
+         echov "${FILE2MERG}"
+         echov "here: $PWD"
+
+         # merging files 
+         cdo merge ${FILE2MERG} ${FILEOUT}_${YY}${MM}_mrg.nc
+         cdo varssum ${FILEOUT}_${YY}${MM}_mrg.nc ${FILEOUT}_${YY}${MM}_sum.nc
+         cdo -O setmissval,1.e+20 -setname,${FILEOUT} ${FILEOUT}_${YY}${MM}_sum.nc ${FILEOUT}_${YY}${MM}.nc
+         [ -f ${FILEOUT}_${YY}${MM}_mrg.nc ] && rm ${FILEOUT}_${YY}${MM}_mrg.nc
+         [ -f ${FILEOUT}_${YY}${MM}_sum.nc ] && rm ${FILEOUT}_${YY}${MM}_sum.nc
+
+         FILELIST="$(echo ${FILELIST}) $(ls ${FILEOUT}_${YY}${MM}.nc )"
+
+        ## 3D vars: soil temperature, water (all phases) and frozen water content
+        elif  [[ ${FILEOUT} == @(tsl|mrsol|mrsfl) ]] #3D vars
+        then
+         if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}_6hr*.nc ]
+         then
+           echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}_6hr*.nc does not exist! Continue anyway..."
+           #continue 2
+         fi
+         FILE2MERG="$(ls ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}_6hr*.nc)" 
+         echon "Merging all soil layer files"
+         echov "${FILE2MERG}"
+         echov "here: $PWD"
+
+         # merging files 
+         echov "Defining 3D var"
+         ncap2 -O -v -s "defdim(\"depth\",14);lon=lon;lat=lat;Lambert_Conformal=Lambert_Conformal;${FILEOUT}[\$time,\$depth,\$y,\$x]=${FILEOUT}_L01" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L01_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc
+         echov "Fetching data for soil levels"
+         for i in {2..9}; do ncap2 -F -A -v -s "${FILEOUT}(:,$i,:,:)=${FILEOUT}_L0${i}" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L0${i}_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc ;done
+         for i in {10..14}; do ncap2 -F -A -v -s "${FILEOUT}(:,$i,:,:)=${FILEOUT}_L${i}" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L${i}_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc ;done
+
+         FILELIST="$(echo ${FILELIST}) $(ls ${FILEOUT}_${YY}${MM}.nc )"
+
+        else
+         if [ ! -f ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc ]
+         then
+           echo "WARNING: File ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc does not exist! Continue anyway..."
+           #continue 2
+         fi
+
+         FILELIST="$(echo ${FILELIST}) $(ls ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc | head -n 1)" #only first one, i.e. with highest temporal frequency
         fi
-        FILELIST="$(echo ${FILELIST}) $(ls ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_*_${NAMETAG}*.nc | head -n 1)" #only first one, i.e. with highest temporal frequency
+
         (( MM=MM+1 ))
       done
       echon "Concatenate files"
       echov "${FILELIST}"
+      
       # concatenate monthly files to yearly file
       FILEIN=${FILEOUT}_${YY}${MA}-${YY}${ME}.nc
       export SKIP_SAME_TIME=1
@@ -316,7 +387,7 @@ do
       chmod ${PERM} ${ENDFILE}
   #
   #   clean temporary files
-      rm -f ${FILEOUT}_tmp?_${YY}.nc
+      rm -f ${FILEOUT}_tmp?_${YY}.nc ${FILEOUT}_${YY}??.nc
       rm ${FILEIN}
 
     done                    # var name loopende
