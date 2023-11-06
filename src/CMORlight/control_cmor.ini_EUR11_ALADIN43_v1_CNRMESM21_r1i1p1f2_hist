@@ -242,7 +242,7 @@ driving_source_id=CNRM-ESM2-1
 driving_experiment_id=historical
 
 #driving_experiment: short description of the reanalysis-driven experiment or the driving CMIP6 experiment 
-driving_experiment=scenario reaching 7.0 based on SSP3
+driving_experiment=all-forcing simulation of the recent past
 
 #variant label of the driving CMIP6 simulation; r1i1p1f1 for evaluation runs
 driving_variant_label=r1i1p1f2
