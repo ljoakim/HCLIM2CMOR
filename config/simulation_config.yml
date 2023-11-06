@@ -21,7 +21,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_ERA5_r1i1p1f1_eval"
     driving_source_id: "ECMWF-ERA5"
     driving_experiment_id: "evaluation"
-    driving_experiment: "ECMWF-ERA5, evaluation, r1i1p1"
+    driving_experiment: "reanalysis"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "ECMWF"
     start_year: 1980
@@ -31,7 +31,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist"
     driving_source_id: "CNRM-ESM2-1"
     driving_experiment_id: "historical"
-    driving_experiment: "CNRM-ESM2-1, historical, r1i1p1f2"
+    driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
     start_year: 1951
@@ -41,7 +41,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp370"
     driving_source_id: "CNRM-ESM2-1"
     driving_experiment_id: "ssp370"
-    driving_experiment: "CNRM-ESM2-1, ssp370, r1i1p1f2"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
     start_year: 2015
@@ -51,7 +51,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp126"
     driving_source_id: "CNRM-ESM2-1"
     driving_experiment_id: "ssp126"
-    driving_experiment: "CNRM-ESM2-1, ssp126, r1i1p1f2"
+    driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
     start_year: 2015
@@ -61,7 +61,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_hist"
     driving_source_id: "MIROC6"
     driving_experiment_id: "historical"
-    driving_experiment: "MIROC6, historical, r1i1p1f1"
+    driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
     start_year: 1951
@@ -71,7 +71,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp370"
     driving_source_id: "MIROC6"
     driving_experiment_id: "ssp370"
-    driving_experiment: "MIROC6, ssp370, r1i1p1f1"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
     start_year: 2015
@@ -81,7 +81,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp126"
     driving_source_id: "MIROC6"
     driving_experiment_id: "ssp126"
-    driving_experiment: "MIROC6, ssp126, r1i1p1f1"
+    driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
     start_year: 2015
@@ -101,7 +101,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp370"
     driving_source_id: "NorESM2-MM"
     driving_experiment_id: "ssp370"
-    driving_experiment: "scenario reaching 7.0 based on SSP3"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "NCC"
     start_year: 2015
@@ -111,7 +111,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_hist"
     driving_source_id: "EC-Earth3-Veg"
     driving_experiment_id: "historical"
-    driving_experiment: "EC-Earth3-Veg, historical, r1i1p1f1"
+    driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
     start_year: 1951
@@ -121,7 +121,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_hist"
     driving_source_id: "EC-Earth3-Veg"
     driving_experiment_id: "historical"
-    driving_experiment: "EC-Earth3-Veg, historical, r2i1p1f1"
+    driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r2i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
     start_year: 1951
@@ -131,7 +131,7 @@ simulations:
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp126"
     driving_source_id: "EC-Earth3-Veg"
     driving_experiment_id: "ssp126"
-    driving_experiment: "EC-Earth3-Veg, ssp126, r1i1p1f1"
+    driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
     start_year: 2015
