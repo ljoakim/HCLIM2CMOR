@@ -37,6 +37,56 @@ simulations:
     start_year: 1951
     end_year: 2014
 
+  "202203":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp370"
+    driving_source_id: "CNRM-ESM2-1"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "CNRM-ESM2-1, ssp370, r1i1p1f2"
+    driving_variant_label: "r1i1p1f2"
+    driving_institution_id: "CNRM-CERFACS"
+    start_year: 2015
+    end_year: 2100
+
+  "202204":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp126"
+    driving_source_id: "CNRM-ESM2-1"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "CNRM-ESM2-1, ssp126, r1i1p1f2"
+    driving_variant_label: "r1i1p1f2"
+    driving_institution_id: "CNRM-CERFACS"
+    start_year: 2015
+    end_year: 2100
+
+  "202205":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_hist"
+    driving_source_id: "MIROC6"
+    driving_experiment_id: "historical"
+    driving_experiment: "MIROC6, historical, r1i1p1f1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "MIROC"
+    start_year: 1951
+    end_year: 2014
+
+  "202206":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp370"
+    driving_source_id: "MIROC6"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "MIROC6, ssp370, r1i1p1f1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "MIROC"
+    start_year: 2015
+    end_year: 2100
+
+  "202207":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp126"
+    driving_source_id: "MIROC6"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "MIROC6, ssp126, r1i1p1f1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "MIROC"
+    start_year: 2015
+    end_year: 2100
+
   "202301":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_hist"
     driving_source_id: "NorESM2-MM"
@@ -57,3 +107,32 @@ simulations:
     start_year: 2015
     end_year: 2100
 
+  "202304":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_hist"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "historical"
+    driving_experiment: "EC-Earth3-Veg, historical, r1i1p1f1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 1951
+    end_year: 2014
+
+  "202306":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_hist"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "historical"
+    driving_experiment: "EC-Earth3-Veg, historical, r2i1p1f1"
+    driving_variant_label: "r2i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 1951
+    end_year: 2014
+
+  "202309":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp126"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "EC-Earth3-Veg, ssp126, r1i1p1f1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
