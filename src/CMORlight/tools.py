@@ -1628,7 +1628,7 @@ is here the time resolution of the input data in hours."
         #HJP Mar 2019 End
 
         #create pressure/height variables for variables which are not at the surface
-        if int(params[config.get_config_value('index','INDEX_VAL_LEV')].strip()) > 0 and not var in ['mrfso','mrso']:
+        if int(params[config.get_config_value('index','INDEX_VAL_LEV')].strip()) > 0 :
             if params[config.get_config_value('index','INDEX_MODEL_LEVEL')] == config.get_config_value('settings','PModelType'):
                 if not 'plev' in f_out.variables:
                     var_out = f_out.createVariable('plev',datatype='d')
@@ -1668,6 +1668,52 @@ is here the time resolution of the input data in hours."
             #HJP Mar 2019 End
         else:
             coordinates = 'lat lon'
+
+        # create soil depth variables for mrsos & mrfsos (top 10cm)
+        if var in ['mrsos','mrfsos']:
+            if ( not 'depth' in f_out.variables ) and ( not 'depth_bnds' in f_out.variables ):
+                ## create an additional dimension to handle depth_bnds
+                f_out.createDimension('bnds', 2)
+                # create depth and depth_bnds variables with attributes
+                var_outs = f_out.createVariable('depth',datatype="d")
+                var_outsbnd = f_out.createVariable('depth_bnds',datatype="d",dimensions=('bnds'))
+                var_outs.units = "m"
+                var_outsbnd.units = "m"
+                var_outs.axis = "Z"
+                var_outs.positive = "down"
+                var_outs.long_name = "depth of soil layers"
+                var_outsbnd.long_name = "boundaries of soil layers"
+                var_outs.standard_name = "depth"
+                var_outs.bounds = "depth_bnds"
+                # set soil values
+                var_outs[:] = [0.05] #5cm: middle
+                var_outsbnd[:] = [0.0, 0.1]
+                coordinates = 'lat lon'
+                logger.debug("Create top soil depths in %s" % (var_out.name))
+
+        # set soil depth variables for mrsol, mrsfl & tsl (3D)
+        if var in ['mrsol','mrsfl','tsl']:
+            if ( not 'depth' in f_out.variables ) and ( not 'depth_bnds' in f_out.variables ):
+                ## create an additional dimension to handle depth_bnds
+                if ( not 'bnds' in f_out.dimensions ):
+                    f_out.createDimension('bnds', 2)
+
+                # create depth and depth_bnds variables with attributes
+                var_outs = f_out.createVariable('depth',datatype="d",dimensions=('depth'))
+                var_outsbnd = f_out.createVariable('depth_bnds',datatype="d",dimensions=('depth','bnds'))
+                var_outs.units = "m"
+                var_outsbnd.units = "m"
+                var_outs.axis = "Z"
+                var_outs.positive = "down"
+                var_outs.long_name = "depth of soil layers"
+                var_outsbnd.long_name = "boundaries of soil layers"
+                var_outs.standard_name = "depth"
+                var_outs.bounds = "depth_bnds"
+                # set soil values
+                var_outs[:] = [0.005,0.025,0.07,0.15,0.3,0.5,0.7,0.9,1.25,1.75,2.5,4,6.5,10]
+                var_outsbnd[:] = [[0,0.01],[0.01,0.04],[0.04,0.1],[0.1,0.2],[0.2,0.4],[0.4,0.6],[0.6,0.8],[0.8,1.0],[1.0,1.5],[1.5,2.0],[2.0,3.0],[3.0,5.0],[5.0,8.0],[8.0,12.0]]
+                coordinates = 'lat lon'
+                logger.debug("Set soil depths in %s" % (var_out.name))
         
         f_var.coordinates = coordinates
         
