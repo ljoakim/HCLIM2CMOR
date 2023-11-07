@@ -131,8 +131,13 @@ def run_post(
     os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
     log_file = generate_log_filename("post", simulation, start_year, var_list)
     spaced_var_list = " ".join(var_list.split(","))
+    test_list=['tsl','mrsol','mrsfl']
+    if [ele for ele in test_list if(ele in spaced_var_list)]:
+       timelimstr = '-t 12:00:00' #increase processing time for 3D vars
+    else:
+       timelimstr = ''
     post_command = (
-        f"sbatch -J post_{simulation}_{start_year} -W"
+        f"sbatch -J post_{simulation}_{start_year} -W {timelimstr}"
         f" -o {log_dir}/{log_file}"
         f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V"
     )
