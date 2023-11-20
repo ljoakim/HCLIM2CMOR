@@ -9,6 +9,9 @@
 #   ...
 #   postprocess/
 #
+# Also, $HCLIM2CMORDIR must be defined and point to the folder containing
+# the HCLIM2CMOR source root.
+#
 # To run postprocessing for a simulation, configuration for the simulation
 # must be specified in this file.
 #

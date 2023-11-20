@@ -58,6 +58,7 @@ def generate_control_cmor(simulation, var_list, simulation_config):
         format_dict = simulation_config.copy()
         format_dict["simulation"] = simulation
         format_dict["hclim_dir"] = os.environ["HCLIMDIR"]
+        format_dict["hclim2cmor_dir"] = os.environ["HCLIM2CMORDIR"]
         format_dict["var_list"] = var_list
         control_cmor = control_cmor_template.format(**format_dict)
 
