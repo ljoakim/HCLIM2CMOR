@@ -139,3 +139,104 @@ simulations:
     driving_institution_id: "EC-Earth-Consortium"
     start_year: 2015
     end_year: 2100
+
+  "202310":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp370"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
+
+  "202311":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp126"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "update of RCP2.6 based on SSP1"
+    driving_variant_label: "r2i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
+
+  "202312":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp370"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
+    driving_variant_label: "r2i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
+
+  "202313":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_hist"
+    driving_source_id: "MPI-ESM1-2-HR"
+    driving_experiment_id: "historical"
+    driving_experiment: "all-forcing simulation of the recent past"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "MPI-M"
+    start_year: 1951
+    end_year: 2014
+
+  "202314":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp126"
+    driving_source_id: "MPI-ESM1-2-HR"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "update of RCP2.6 based on SSP1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "DKRZ"
+    start_year: 1951
+    end_year: 2014
+
+  "202315":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp370"
+    driving_source_id: "MPI-ESM1-2-HR"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "DKRZ"
+    start_year: 1951
+    end_year: 2014
+
+  "202316":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_hist"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "historical"
+    driving_experiment: "all-forcing simulation of the recent past"
+    driving_variant_label: "r3i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 1951
+    end_year: 2014
+
+  "202317":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp126"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "update of RCP2.6 based on SSP1"
+    driving_variant_label: "r3i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
+
+  "202318":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp370"
+    driving_source_id: "EC-Earth3-Veg"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
+    driving_variant_label: "r3i1p1f1"
+    driving_institution_id: "EC-Earth-Consortium"
+    start_year: 2015
+    end_year: 2100
+
+  "202319":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp126"
+    driving_source_id: "NorESM2-MM"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "update of RCP2.6 based on SSP1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "NCC"
+    start_year: 2015
+    end_year: 2100
+
