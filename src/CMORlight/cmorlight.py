@@ -363,8 +363,7 @@ def main():
     LOG_BASE = settings.DirLog
     if os.path.isdir(LOG_BASE) == False:
         print("Create logging directory: %s" % LOG_BASE)
-        if not os.path.isdir(LOG_BASE):
-            os.makedirs(LOG_BASE)
+        os.makedirs(LOG_BASE, exist_ok=True)
     #LOG_FILENAME = os.path.join(LOG_BASE,'CMORlight.')+config.get_sim_value('driving_source_id')+"_"+config.get_sim_value('driving_experiment_id')+"."
     LOG_FILENAME = os.path.join(LOG_BASE,'CMORlight.')+config.get_sim_value('driving_source_id')+"_"+config.get_sim_value('driving_experiment_id')+"_"+varlist[0]+"."
     logext = datetime.datetime.now().strftime("%d-%m-%Y")+'.log'
@@ -390,13 +389,11 @@ def main():
     # creating working directory if not existent
     if not os.path.isdir(settings.DirWork):
         log.debug("Working directory does not exist, creating: %s" % (settings.DirWork))
-        if not os.path.isdir(settings.DirWork):
-            os.makedirs(settings.DirWork)
+        os.makedirs(settings.DirWork, exist_ok=True)
 
     if not os.path.isdir(settings.DirOut):
         log.debug("Output directory does not exist, creating: %s" % (settings.DirOut))
-        if not os.path.isdir(settings.DirOut):
-            os.makedirs(settings.DirOut)
+        os.makedirs(settings.DirOut, exist_ok=True)
 
     if config.get_config_value('boolean','add_version_to_outpath'):
         settings.use_version = options.use_version
