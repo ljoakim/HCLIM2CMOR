@@ -393,7 +393,7 @@ def do_chunking(f_list,var,res,start_date, stop_date, outdir):
     # generate outpath with outfile and outdir
 
     if not os.path.isdir(outdir):
-        os.makedirs(outdir)
+        os.makedirs(outdir, exist_ok=True)
     outpath = "%s/%s" % (outdir,outfile)
 
     # generate input filelist

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import datetime
 import os
@@ -93,37 +95,43 @@ def run_constants(
     os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
 
     fixed_vars = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
-    var_list = ",".join(
-        [
-            var
-            for var in var_list.split(",")
-            if var in fixed_vars
-        ]
-    )
+    var_list = ",".join([var for var in var_list.split(",") if var in fixed_vars])
 
     log_file = generate_log_filename("post_C", simulation, start_year, var_list)
     post_command = (
-        f"sbatch -J post_C_{simulation}_{start_year} -W"
+        f"sbatch -J post_C_{simulation}_{start_year}"
         f" -o {log_dir}/{log_file}"
         f" master_post.sh -C"
     )
-    post_process = subprocess.run(post_command, shell=True)
-    post_process.check_returncode()
+    post_process = subprocess.run(
+        post_command, shell=True, capture_output=True, text=True
+    )
+    post_job_id = post_process.stdout.strip().split(" ")[-1]
+    print(f"Submitted sbatch job (post): {post_job_id}")
 
     log_file = generate_log_filename("cmor_C", simulation, start_year, var_list)
     cmor_command = (
-        f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/{log_file}"
+        f"sbatch -J cmor_{simulation}_{start_year} -n 10"
+        f" -d afterok:{post_job_id} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V"
     )
-    cmor_process = subprocess.run(cmor_command, shell=True)
-    cmor_process.check_returncode()
+    cmor_process = subprocess.run(
+        cmor_command, shell=True, capture_output=True, text=True
+    )
+    cmor_job_id = cmor_process.stdout.strip().split(" ")[-1]
+    print(f"Submitted dependent sbatch job (cmor): {cmor_job_id}")
 
 
 def run_post(
-    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation,
+    var_list,
+    start_year,
+    end_year,
+    log_dir,
+    simulation_config,
+    control_cmor,
 ):
     os.environ["OVERRIDE_SIMULATION"] = simulation
     os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
@@ -132,48 +140,84 @@ def run_post(
     os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
     log_file = generate_log_filename("post", simulation, start_year, var_list)
     spaced_var_list = " ".join(var_list.split(","))
-    test_list=['tsl','mrsol','mrsfl']
-    if [ele for ele in test_list if(ele in spaced_var_list)]:
-       timelimstr = '-t 12:00:00' #increase processing time for 3D vars
+    test_list = ["tsl", "mrsol", "mrsfl"]
+    if [ele for ele in test_list if (ele in spaced_var_list)]:
+        timelimstr = "-t 12:00:00"  # increase processing time for 3D vars
     else:
-       timelimstr = ''
+        timelimstr = ""
+
     post_command = (
-        f"sbatch -J post_{simulation}_{start_year} -W {timelimstr}"
-        f" -o {log_dir}/{log_file}"
+        f"sbatch -J post_{simulation}_{start_year} {timelimstr} -o {log_dir}/{log_file}"
         f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V"
     )
-    post_process = subprocess.run(post_command, shell=True)
-    post_process.check_returncode()
+    post_process = subprocess.run(
+        post_command, shell=True, capture_output=True, text=True
+    )
+    job_id = post_process.stdout.strip().split(" ")[-1]
+    print(f"Submitted sbatch job (post): {job_id}")
+    return job_id
 
 
 def run_cmor(
-    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation,
+    var_list,
+    start_year,
+    end_year,
+    log_dir,
+    simulation_config,
+    control_cmor,
+    job_deps=None,
 ):
     log_file = generate_log_filename("cmor", simulation, start_year, var_list)
+    deps_string = (
+        "-d afterok:" + ":".join([str(j) for j in job_deps])
+        if job_deps is not None
+        else ""
+    )
     cmor_command = (
-        f"sbatch -J cmor_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/{log_file}"
+        f"sbatch -J cmor_{simulation}_{start_year} -n 10"
+        f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V"
     )
-    cmor_process = subprocess.run(cmor_command, shell=True)
-    cmor_process.check_returncode()
+    cmor_process = subprocess.run(
+        cmor_command, shell=True, capture_output=True, text=True
+    )
+    job_id = cmor_process.stdout.strip().split(" ")[-1]
+    print(f"Submitted dependent sbatch job (cmor): {job_id}")
+    return job_id
 
 
 def run_chunk(
-    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
+    simulation,
+    var_list,
+    start_year,
+    end_year,
+    log_dir,
+    simulation_config,
+    control_cmor,
+    job_deps=None,
 ):
     log_file = generate_log_filename("chunk", simulation, start_year, var_list)
+    deps_string = (
+        "-d afterok:" + ":".join([str(j) for j in job_deps])
+        if job_deps is not None
+        else ""
+    )
     chunk_command = (
-        f"sbatch -J chunk_{simulation}_{start_year} -n 10 -W"
-        f" -o {log_dir}/{log_file}"
+        f"sbatch -J chunk_{simulation}_{start_year} -n 10"
+        f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -c --remove"
     )
-    chunk_process = subprocess.run(chunk_command, shell=True)
-    chunk_process.check_returncode()
+    chunk_process = subprocess.run(
+        chunk_command, shell=True, capture_output=True, text=True
+    )
+    job_id = chunk_process.stdout.strip().split(" ")[-1]
+    print(f"Submitted dependent sbatch job (chunk): {job_id}")
+    return job_id
 
 
 if __name__ == "__main__":
@@ -184,7 +228,9 @@ if __name__ == "__main__":
     log_dir = config["log_dir"]
     simulation_config = config["simulations"][args.simulation]
 
-    control_cmor = generate_control_cmor(args.simulation, args.variables, simulation_config)
+    control_cmor = generate_control_cmor(
+        args.simulation, args.variables, simulation_config
+    )
 
     start_year = simulation_config["start_year"]
     end_year = simulation_config["end_year"]
@@ -206,7 +252,6 @@ if __name__ == "__main__":
     ]
 
     if args.create_const:
-        start_time = time.time()
         print("Running post process and cmorization on constant fields...")
         run_constants(
             args.simulation,
@@ -217,36 +262,11 @@ if __name__ == "__main__":
             simulation_config,
             control_cmor,
         )
-        step1_time = time.time()
-        print(
-            f"Post process and cmorization of constant fields"
-            f" took {step1_time - start_time} seconds."
-        )
-
     else:
-        # Parallel sbatch post and cmor.
-        # Note: if program is stopped during run, the sbatch
-        # jobs will not be automatically stopped. Use the
-        # squeue/scancel to view and stop sbatch jobs.
-        #
-        start_time = time.time()
-
-        with Pool(parallel_processes_per_step) as p:
-            print("Running post process...")
-            p.starmap(run_post, post_process_args)
-            step1_time = time.time()
-            print(f"Post process took {step1_time - start_time} seconds.")
-
-            print("Running cmorization...")
-            p.starmap(run_cmor, post_process_args)
-            step2_time = time.time()
-            print(f"CMORization took {step2_time - step1_time} seconds.")
-
-        # Chunking could also be done in parallel, but care
-        # must be taken to parallelize over time ranges that
-        # work with chunking rules.
-        #
-        print("Chunking...")
+        post_job_ids = [run_post(*args) for args in post_process_args]
+        cmor_job_ids = [
+            run_cmor(*args, job_deps=post_job_ids) for args in post_process_args
+        ]
         run_chunk(
             args.simulation,
             args.variables,
@@ -255,8 +275,7 @@ if __name__ == "__main__":
             log_dir,
             simulation_config,
             control_cmor,
+            job_deps=cmor_job_ids,
         )
-        step3_time = time.time()
-        print(f"Chunking took {step3_time - step2_time} seconds.")
 
-    print("Done.")
+    print("All jobs submitted.")

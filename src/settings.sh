@@ -30,7 +30,7 @@ export DATADIR=${HCLIMDIR}/postprocess/HCLIM2CMOR/data       # directory where a
 SRCDIR=${BASEDIR}/src                 # directory where the post processing scripts are stored
 SRCDIR_POST=${BASEDIR}/src/hclim_post # directory where the subscripts are stored
 
-WORKDIR=${DATADIR}/work/post/${GCM}_${EXP} # work directory
+WORKDIR=${DATADIR}/work/post/${SIMULATION}_${GCM}_${EXP} # work directory
 LOGDIR=${DATADIR}/work/logs                # logging directory
 
 # input/output directories
