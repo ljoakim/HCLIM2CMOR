@@ -27,6 +27,16 @@ simulations:
     driving_experiment: "reanalysis"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "ECMWF"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1980
     end_year: 2021
 
@@ -37,6 +47,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -47,6 +67,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -57,6 +87,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f2"
     driving_institution_id: "CNRM-CERFACS"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -67,6 +107,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -77,6 +127,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -87,6 +147,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MIROC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -97,6 +167,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "NCC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -107,6 +187,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "NCC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -117,6 +207,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -127,6 +227,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r2i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -137,6 +247,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -147,6 +267,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -157,6 +287,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r2i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -167,6 +307,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r2i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -177,6 +327,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MPI-M"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -187,6 +347,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MPI-M"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -197,6 +367,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "MPI-M"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -207,6 +387,16 @@ simulations:
     driving_experiment: "all-forcing simulation of the recent past"
     driving_variant_label: "r3i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -217,6 +407,16 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r3i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -227,6 +427,16 @@ simulations:
     driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
     driving_variant_label: "r3i1p1f1"
     driving_institution_id: "EC-Earth-Consortium"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -237,5 +447,15 @@ simulations:
     driving_experiment: "update of RCP2.6 based on SSP1"
     driving_variant_label: "r1i1p1f1"
     driving_institution_id: "NCC"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution_id: "HCLIMcom-SMHI"
+    version_realisation: "v1-r1"
+    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "rossby@smhi.se"
     start_year: 2015
     end_year: 2100
