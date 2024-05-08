@@ -30,13 +30,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1980
     end_year: 2021
 
@@ -50,13 +50,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -70,13 +70,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -90,13 +90,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -110,13 +110,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -130,13 +130,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -150,13 +150,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -170,13 +170,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
-    institution_id: "HCLIMcom-SMHI"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Norwegian Meteorological Institute (METNo), Oslo, Norway"
+    institution_id: "HCLIMcom-METNo"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "cordex@met.no"
     start_year: 1951
     end_year: 2014
 
@@ -190,13 +190,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
-    institution_id: "HCLIMcom-SMHI"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Norwegian Meteorological Institute (METNo), Oslo, Norway"
+    institution_id: "HCLIMcom-METNo"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "cordex@met.no"
     start_year: 2015
     end_year: 2100
 
@@ -210,13 +210,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -230,13 +230,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -250,13 +250,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -270,13 +270,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -290,13 +290,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -310,13 +310,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -330,13 +330,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -350,13 +350,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -370,13 +370,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -390,13 +390,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
 
@@ -410,13 +410,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -430,13 +430,13 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Swedish Meteorological and Hydrological Institute (SMHI), Norrkoping, Sweden"
     institution_id: "HCLIMcom-SMHI"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
 
@@ -450,12 +450,12 @@ simulations:
     domain: "Europe"
     domain_id: "EUR-12"
     grid: "Lambert conic conformal with 12.5 km grid spacing"
-    institution: "The HARMONIE Climate Modelling Community (HCLIMcom)"
-    institution_id: "HCLIMcom-SMHI"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Norwegian Meteorological Institute (METNo), Oslo, Norway"
+    institution_id: "HCLIMcom-METNo"
     version_realisation: "v1-r1"
-    source: "HARMONIE Climate Modelling Community (HCLIM-Com)"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
     source_type: "ARCM"
     source_id: "HCLIM43-ALADIN"
-    contact: "rossby@smhi.se"
+    contact: "cordex@met.no"
     start_year: 2015
     end_year: 2100
