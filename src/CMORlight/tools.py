@@ -77,11 +77,18 @@ def set_attributes(params):
     Fill dictionaries in settings with global attributes and additional netcdf attributes
     '''
     # get global attributes from ini-file
-    for name in settings.global_attr_list :
+    for name in settings.global_attr_list:
         try:
             settings.Global_attributes[name.strip()] = config.get_sim_value(name.strip())
-        except:
+        except Exception:
             raise Exception("Global attribute %s is in global_attr_list but is not defined in the configuration file!" % name.strip())
+
+    # get optional global attributes from ini-file
+    for name in settings.optional_global_attr_list:
+        try:
+            settings.Global_attributes[name.strip()] = config.get_sim_value(name.strip())
+        except Exception:
+            pass
 
     # set addtitional netcdf attributes
     settings.netCDF_attributes['RCM_NAME'] = params[config.get_config_value('index','INDEX_VAR')]
