@@ -643,8 +643,13 @@ def add_coordinates(f_out,logger=log):
             f_coor.close()
         except IndexError:
             raise IndexError("\n Coordinates file does not have the same resolution as the input data! Change it!")
-    else:
+    elif settings.coordinates_file != "":
+        # Coordinates file was specified but not found
         raise Exception("Coordinates file %s does not exist!" % settings.coordinates_file)
+    else:
+        log.info(
+            "Coordinates file not specified, leaving coordinate data as is"
+        )
 
 # -----------------------------------------------------------------------------
 def get_derotate_vars():
