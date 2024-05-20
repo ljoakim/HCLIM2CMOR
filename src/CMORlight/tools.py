@@ -83,10 +83,6 @@ def set_attributes(params):
         except:
             raise Exception("Global attribute %s is in global_attr_list but is not defined in the configuration file!" % name.strip())
 
-    #Invariant attributes
-    #settings.Global_attributes['project_id']="CORDEX" #global attribute "project_id" should be variable, thus defined in the ini-file
-    settings.Global_attributes['product']="output"
-
     # set addtitional netcdf attributes
     settings.netCDF_attributes['RCM_NAME'] = params[config.get_config_value('index','INDEX_VAR')]
     settings.netCDF_attributes['RCM_NAME_ORG'] = params[config.get_config_value('index','INDEX_RCM_NAME_ORG')]
