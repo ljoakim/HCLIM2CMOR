@@ -65,10 +65,10 @@ def init(vartable):
     FMT = '%Y-%m-%d %H:%M:%S'
 
     global vertices_file
-    vertices_file = ("%s/%s" % (DirConfig,config.get_sim_value('vertices_file', exitprog = False)))
+    vertices_file = ("%s/%s" % (DirConfig,config.get_sim_value('vertices_file', exitprog=False)))
 
     global coordinates_file
-    coordinates_file = ("%s/%s" % (DirConfig,config.get_sim_value('coordinates_file')))
+    coordinates_file = ("%s/%s" % (DirConfig,config.get_sim_value('coordinates_file', exitprog=False)))
 
     # dictionary for global attributes
     global Global_attributes
