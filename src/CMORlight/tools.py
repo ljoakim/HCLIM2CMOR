@@ -90,6 +90,9 @@ def set_attributes(params):
         except Exception:
             pass
 
+    # Sort all global attributes
+    settings.Global_attributes = OrderedDict(sorted(settings.Global_attributes.items()))
+
     # set addtitional netcdf attributes
     settings.netCDF_attributes['RCM_NAME'] = params[config.get_config_value('index','INDEX_VAR')]
     settings.netCDF_attributes['RCM_NAME_ORG'] = params[config.get_config_value('index','INDEX_RCM_NAME_ORG')]
