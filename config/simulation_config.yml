@@ -39,6 +39,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1980
     end_year: 2021
+    comment: ""
+    history: ""
+    references: ""
 
   "202202":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist"
@@ -59,6 +62,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202203":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp370"
@@ -79,6 +85,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202204":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp126"
@@ -99,6 +108,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202205":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_hist"
@@ -119,6 +131,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202206":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp370"
@@ -139,6 +154,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202207":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp126"
@@ -159,6 +177,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202301":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_hist"
@@ -179,6 +200,9 @@ simulations:
     contact: "cordex@met.no"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202303":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp370"
@@ -199,6 +223,9 @@ simulations:
     contact: "cordex@met.no"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202304":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_hist"
@@ -219,6 +246,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202306":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_hist"
@@ -239,6 +269,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202309":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp126"
@@ -259,6 +292,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202310":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp370"
@@ -279,6 +315,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202311":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp126"
@@ -299,6 +338,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202312":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp370"
@@ -319,6 +361,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202313":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_hist"
@@ -339,6 +384,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202314":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp126"
@@ -359,6 +407,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202315":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp370"
@@ -379,6 +430,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202316":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_hist"
@@ -399,6 +453,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 1951
     end_year: 2014
+    comment: ""
+    history: ""
+    references: ""
 
   "202317":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp126"
@@ -419,6 +476,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202318":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp370"
@@ -439,6 +499,9 @@ simulations:
     contact: "rossby.cordex@smhi.se"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
 
   "202319":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp126"
@@ -459,3 +522,6 @@ simulations:
     contact: "cordex@met.no"
     start_year: 2015
     end_year: 2100
+    comment: ""
+    history: ""
+    references: ""
