@@ -538,130 +538,132 @@ def check_resolution(params,res,process_table_only):
     else:
         return True
 
+
 # -----------------------------------------------------------------------------
-def get_attr_list(var_name,args=[]):
+def get_attr_list(var_name, var_attrs={}):
     '''
     Set pre defined attributes for variables lon,lat
     '''
-    att_lst = OrderedDict()
+    att_list = OrderedDict()
     if var_name == 'lon':
-        att_lst['standard_name'] = 'longitude'
-        att_lst['long_name'] = 'longitude'
-        att_lst['units'] = 'degrees_east'
-        if config.get_config_value('boolean','add_vertices') == True:
-            att_lst['bounds'] = "lon_vertices"
+        att_list['standard_name'] = 'longitude'
+        att_list['long_name'] = 'longitude'
+        att_list['units'] = 'degrees_east'
+        if config.get_config_value('boolean', 'add_vertices'):
+            att_list['bounds'] = "lon_vertices"
             
     elif var_name == 'lat':
-        att_lst['standard_name'] = 'latitude'
-        att_lst['long_name'] = 'latitude'
-        att_lst['units'] = 'degrees_north'
-        if config.get_config_value('boolean','add_vertices') == True:
-            att_lst['bounds'] = "lat_vertices"
+        att_list['standard_name'] = 'latitude'
+        att_list['long_name'] = 'latitude'
+        att_list['units'] = 'degrees_north'
+        if config.get_config_value('boolean', 'add_vertices'):
+            att_list['bounds'] = "lat_vertices"
 
     elif var_name == 'x':
-        att_lst['standard_name'] = 'projection_x_coordinate'
-        att_lst['long_name'] = 'X Coordinate Of Projection'
-        att_lst['units'] = 'm'
-        att_lst['axis'] = 'X'
+        att_list['standard_name'] = 'projection_x_coordinate'
+        att_list['long_name'] = 'X Coordinate Of Projection'
+        att_list['units'] = 'm'
+        att_list['axis'] = 'X'
 
     elif var_name == 'y':
-        att_lst['standard_name'] = 'projection_y_coordinate'
-        att_lst['long_name'] = 'Y Coordinate Of Projection'
-        att_lst['units'] = 'm'
-        att_lst['axis'] = 'Y'
+        att_list['standard_name'] = 'projection_y_coordinate'
+        att_list['long_name'] = 'Y Coordinate Of Projection'
+        att_list['units'] = 'm'
+        att_list['axis'] = 'Y'
         
     elif var_name == 'time':
-        att_lst['standard_name'] = 'time'
-        att_lst['long_name'] = 'time'
-        att_lst['units'] = args[0]
-        att_lst['calendar'] = args[1]
-        att_lst['axis'] = 'T'
+        att_list['standard_name'] = 'time'
+        att_list['long_name'] = 'time'
+        att_list['units'] = var_attrs['units']
+        att_list['calendar'] = var_attrs['calendar']
+        att_list['axis'] = 'T'
         
-    elif var_name == 'Lambert_Conformal':
-        att_lst['grid_mapping_name'] = 'lambert_conformal_conic' ;
-        att_lst['standard_parallel'] = float(args[0]) ;
-        att_lst['longitude_of_central_meridian'] = float(args[1]) ;
-        att_lst['latitude_of_projection_origin'] = float(args[2]) ;
-        att_lst['false_easting'] = float(args[3]) ;
-        att_lst['false_northing'] = float(args[4]) ;
-        att_lst['earth_radius'] = float(args[5]) ;
-        att_lst['proj4'] = args[6] ;
+    return att_list
 
-        
-    return att_lst
 
 # -----------------------------------------------------------------------------
-def copy_var(f_in,f_out,var_name,logger=log):
+def copy_var(f_in, f_out, var_name, logger=log):
     '''
-    Copy variable with corresponding attributes from in_file to out_file if present there
+    Copy variable with corresponding attributes from in_file
+    to out_file if present there
     '''
     if var_name in f_in.variables and var_name not in f_out.variables:
         var_in = f_in.variables[var_name]
-        j = 0
-        for var_dim in var_in.dimensions:
+        for j, var_dim in enumerate(var_in.dimensions):
             if var_dim not in f_out.dimensions:
-                f_out.createDimension(var_dim,size=var_in.shape[j])
-            j = j+1
+                f_out.createDimension(var_dim, size=var_in.shape[j])
 
-        if var_name in ['x','y','lat','lon','time','time_bnds']:
+        dst_var_name = var_name
+        if var_name in ['x', 'y', 'lat', 'lon', 'time', 'time_bnds']:
             new_datatype = 'd'
-        elif var_name in ['Lambert_Conformal']:
+        elif var_name in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+            dst_var_name = 'crs'
             new_datatype = 'i'
         else:
             new_datatype = 'f'
-        var_out = f_out.createVariable(var_name,datatype=new_datatype,dimensions=var_in.dimensions )
-        # set all as character converted with str() function
-        if var_name in ['x','y','x','y','time']:
-            att_lst = get_attr_list(var_name)
-        elif var_name == 'Lambert_Conformal':
-            att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
 
+        var_out = f_out.createVariable(
+            dst_var_name,
+            datatype=new_datatype,
+            dimensions=var_in.dimensions,
+        )
+
+        # set all as character converted with str() function
+        if var_name in ['x', 'y', 'lat', 'lon', 'time']:
+            att_lst = get_attr_list(var_name, var_in.__dict__)
         else:
             att_lst = OrderedDict()
             for k in var_in.ncattrs():
-                if config.get_config_value('boolean','add_vertices') == False and k == 'bounds':
+                if k == 'bounds' and config.get_config_value('boolean', 'add_vertices') == False:
                     continue
-                att_lst[k] = var_in.getncattr(k)
+                else:
+                    att_lst[k] = var_in.getncattr(k)
 
         var_out.setncatts(att_lst)
         # copy content to new datatype
-        if var_name not in ['Lambert_Conformal']:
+        if var_name not in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
             var_out[:] = var_in[:]
         logger.info("Variable %s added" % var_name)
 
+
 # -----------------------------------------------------------------------------
-def add_coordinates(f_out,logger=log):
+def add_coordinates(f_out, logger=log):
     '''
-    Add lat,lon and Lambert_Conformal to output file from coordinates file if present there
+    Add lat,lon and crs to output file from coordinates file if present there
     '''
     if os.path.isfile(settings.coordinates_file):
         try:
-            f_coor = Dataset(settings.coordinates_file,'r')
+            f_coor = Dataset(settings.coordinates_file, 'r')
         except FileNotFoundError:
             # Coordinates file was specified but not found
-            raise Exception("Coordinates file %s does not exist!" % settings.coordinates_file)
+            raise Exception(
+                "Coordinates file %s does not exist!" % settings.coordinates_file
+            )
 
         try:
             # copy lon
-            copy_var(f_coor,f_out,'lon',logger=logger)
+            copy_var(f_coor, f_out, 'lon', logger=logger)
             # copy lat
-            copy_var(f_coor,f_out,'lat',logger=logger)
+            copy_var(f_coor, f_out, 'lat', logger=logger)
             # copy x
-            copy_var(f_coor,f_out,'x',logger=logger)
+            copy_var(f_coor, f_out, 'x', logger=logger)
             # copy y
-            copy_var(f_coor,f_out,'y',logger=logger)
-            #copy Lambert_Conformal
-            copy_var(f_coor,f_out,'Lambert_Conformal',logger=logger)
+            copy_var(f_coor, f_out, 'y', logger=logger)
+            #copy grid mapping variable
+            copy_var(f_coor, f_out, 'crs', logger=logger)
 
             # commit changes
             f_out.sync()
             f_coor.close()
         except IndexError:
-            raise IndexError("\n Coordinates file does not have the same resolution as the input data! Change it!")
+            raise IndexError(
+                "\nCoordinates file does not have the same resolution as the input data! Change it!"
+            )
     else:
         log.info(
             "Coordinates file not specified, leaving coordinate data as is"
         )
+
 
 # -----------------------------------------------------------------------------
 def get_derotate_vars():
@@ -738,18 +740,20 @@ def process_file_fix(params,in_file):
     else:
         log.info("NO COMPRESS")
     for var_name, variable in f_in.variables.items():
+        dst_var_name = var_name
         mulc_fac = mulc_factor
         if var_name in settings.varlist_reject or var_name == 'time':
             continue
         var_in = f_in.variables[var_name]
         # create output variable
-        if var_name in ['x','y','lon','lat','time']:
+        if var_name in ['x', 'y', 'lon', 'lat', 'time']:
             data_type = 'd'
             mulc_fac = 1.0
-        elif var_name == 'Lambert_Conformal':
+        elif var_name in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+            dst_var_name = 'crs'
             data_type = 'i'
             mulc_fac = 1.0
-        elif var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
+        elif var_name in [settings.netCDF_attributes['RCM_NAME_ORG'], settings.netCDF_attributes['RCM_NAME']]:
             data_type = 'f'
         else:
             continue
@@ -759,15 +763,24 @@ def process_file_fix(params,in_file):
             if dim != 'time' and dim not in settings.varlist_reject:
                 dim_lst.append(dim)
         var_dims = tuple(dim_lst)
-        log.debug("Attributes (of variable %s): %s" % (var_name,var_in.ncattrs()))
+        log.debug("Attributes (of variable %s): %s" % (var_name, var_in.ncattrs()))
         
-        if var_name in [var,settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
+        if var_name in [var, settings.netCDF_attributes['RCM_NAME_ORG'], settings.netCDF_attributes['RCM_NAME']]:
             if config.get_config_value('boolean','nc_compress') == True:
-                var_out = f_out.createVariable(var,datatype=data_type,
-                    dimensions=var_dims,complevel=4,fill_value=settings.netCDF_attributes['missing_value'])
+                var_out = f_out.createVariable(
+                    var,
+                    datatype=data_type,
+                    dimensions=var_dims,
+                    complevel=4,
+                    fill_value=settings.netCDF_attributes['missing_value'],
+                )
             else:
-                var_out = f_out.createVariable(var,datatype=data_type,
-                    dimensions=var_dims,fill_value=settings.netCDF_attributes['missing_value'])
+                var_out = f_out.createVariable(
+                    var,
+                    datatype=data_type,
+                    dimensions=var_dims,
+                    fill_value=settings.netCDF_attributes['missing_value'],
+                )
 
         else:
 #
@@ -776,22 +789,29 @@ def process_file_fix(params,in_file):
             #no conversion factor needed
 #           mulc_factor = 1.0
 #HJP, Nov 2020 END
-            if config.get_config_value('boolean','nc_compress') == True:
-                var_out = f_out.createVariable(var_name,datatype=data_type,dimensions=var_dims,complevel=4)
+            if config.get_config_value('boolean', 'nc_compress') == True:
+                var_out = f_out.createVariable(
+                    dst_var_name,
+                    datatype=data_type,
+                    dimensions=var_dims,
+                    complevel=4,
+                )
             else:
-                var_out = f_out.createVariable(var_name,datatype=data_type,dimensions=var_dims)
+                var_out = f_out.createVariable(
+                    dst_var_name,
+                    datatype=data_type,
+                    dimensions=var_dims,
+                )
 
-            change_fill=False
-            if var_name in ['lat','lon','y','x']:
+            change_fill = False
+            if var_name in ['lat', 'lon', 'y', 'x']:
                 att_lst = get_attr_list(var_name)
-            elif var_name == 'Lambert_Conformal':
-                att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
             else:
                 att_lst = OrderedDict()
                 for k in var_in.ncattrs():
-                    if config.get_config_value('boolean','add_vertices') == False and k == 'bounds':
+                    if k == 'bounds' and config.get_config_value('boolean', 'add_vertices') == False:
                         continue
-                    elif k in ["_FillValue","missing_value"]:
+                    elif k in ["_FillValue", "missing_value"]:
                         if var_in.getncattr(k) != settings.netCDF_attributes['missing_value']:
                             #fillvalue or missing_value is incorrect and needs to be changed                            
                             change_fill = True
@@ -837,7 +857,7 @@ def process_file_fix(params,in_file):
 
     # set attributes missing_value and grid_mapping
     f_var.missing_value = settings.netCDF_attributes['missing_value']
-    f_var.setncattr('grid_mapping','Lambert_Conformal')
+    f_var.setncattr('grid_mapping', 'crs')
 
     # commit changes
     f_out.sync()
@@ -989,17 +1009,21 @@ def proc_seasonal(params,year):
                 # commit changes
                 f_tmp.sync()
 
-                # now copy Lambert_Conformal variable to output
-                f_in = Dataset(f,'r')
+                # now copy coordinate variables to output
+                f_in = Dataset(f, 'r')
 
                 # variable object
                 f_var = f_tmp.variables[var]
 
                 # copy variables from input file if they got lost in cdo commands
                 var_in = f_in.variables[var]
-                for var_name in ['x','y','lat','lon','Lambert_Conformal','plev','height']:
-                    copy_var(f_in,f_tmp,var_name,logger=logger)
-                f_var.setncattr('grid_mapping','Lambert_Conformal')
+                for var_name in ['x', 'y', 'lat', 'lon', 'plev', 'height']:
+                    copy_var(f_in, f_tmp, var_name, logger=logger)
+                for var_name in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+                    # Loop over all known grid mapping types. copy_var(...)
+                    # does nothing if variable does not exist in input file.
+                    copy_var(f_in, f_tmp, var_name, logger=logger)
+                f_var.setncattr('grid_mapping', 'crs')
                 f_var.cell_methods = "time: %s" % (cm_type)
 
                 # commit changes
@@ -1246,7 +1270,7 @@ def process_file(params,in_file,var,reslist,year,firstlast):
     #check if time variable is correct
   
     #correct start and end date for averaged and instantaneous variables
-    start_date =  num2date(0,"seconds since {}-{:02d}-01".format(int(year),firstlast[0]),calendar=in_calendar)
+    start_date = num2date(0,"seconds since {}-{:02d}-01".format(int(year),firstlast[0]),calendar=in_calendar)
     endyear = int(year)
     if firstlast[1]==12:
         endyear += 1
@@ -1444,10 +1468,11 @@ is here the time resolution of the input data in hours."
 
         # copy variables from temp file
         for var_name in f_tmp.variables.keys():
-
+            dst_var_name = var_name
             if var_name in ['x','y','lon','lat','time']:
                 data_type = 'd'
-            elif var_name == 'Lambert_Conformal':
+            elif var_name in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+                dst_var_name = 'crs'
                 data_type = 'i'
             elif var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
                 data_type = 'f'
@@ -1467,29 +1492,45 @@ is here the time resolution of the input data in hours."
             logger.debug("Dimensions (of variable %s): %s" % (var_name,str(var_dims)))
             logger.debug("Attributes (of variable %s): %s" % (var_name,var_in.ncattrs()))
             
-            if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
+            if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'], settings.netCDF_attributes['RCM_NAME']]:
                 if config.get_config_value('boolean','nc_compress') == True:
-                    var_out = f_out.createVariable(var,datatype=data_type,
-                        dimensions=var_dims,complevel=4,fill_value=settings.netCDF_attributes['missing_value'])
+                    var_out = f_out.createVariable(
+                        var,
+                        datatype=data_type,
+                        dimensions=var_dims,
+                        complevel=4,
+                        fill_value=settings.netCDF_attributes['missing_value'],
+                    )
                 else:
-                    var_out = f_out.createVariable(var,datatype=data_type,
-                        dimensions=var_dims,fill_value=settings.netCDF_attributes['missing_value'])
+                    var_out = f_out.createVariable(
+                        var,
+                        datatype=data_type,
+                        dimensions=var_dims,
+                        fill_value=settings.netCDF_attributes['missing_value'],
+                    )
             else:
                 if config.get_config_value('boolean','nc_compress') == True:
-                    var_out = f_out.createVariable(var_name,datatype=data_type,dimensions=var_dims,complevel=4)
+                    var_out = f_out.createVariable(
+                        dst_var_name,
+                        datatype=data_type,
+                        dimensions=var_dims,
+                        complevel=4,
+                    )
                 else:
-                    var_out = f_out.createVariable(var_name,datatype=data_type,dimensions=var_dims)
+                    var_out = f_out.createVariable(
+                        dst_var_name,
+                        datatype=data_type,
+                        dimensions=var_dims,
+                    )
             
             # create attribute list
             change_fill=False
-            if var_name in ['lat','lon','x','y','time']:
-                att_lst = get_attr_list(var_name,[time_in_units,in_calendar])
-            elif var_name == 'Lambert_Conformal':
-                att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
+            if var_name in ['lat', 'lon', 'x', 'y', 'time']:
+                att_lst = get_attr_list(var_name, {'units': time_in_units, 'calendar': in_calendar})
             else:
                 att_lst = OrderedDict()
                 for k in var_in.ncattrs():
-                    if k in ["_FillValue","missing_value"]:
+                    if k in ["_FillValue", "missing_value"]:
                         if var_in.getncattr(k) != settings.netCDF_attributes['missing_value']:
                             #fillvalue or missing_value is incorrect and needs to be changed                            
                             change_fill = True
@@ -1501,7 +1542,7 @@ is here the time resolution of the input data in hours."
             # copy content to new datatype
             logger.debug("Copy data from tmp file: %s" % (var_out.name))
 
-            if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'],settings.netCDF_attributes['RCM_NAME']]:
+            if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'], settings.netCDF_attributes['RCM_NAME']]:
                # get the length of data array
                # Split into slices if large (to prevent segmentation faults due to too large arrays)
                data_len = var_in.shape[0]
@@ -1515,31 +1556,43 @@ is here the time resolution of the input data in hours."
                else:  
                    var_out[:] = var_in[:]
 
-            elif var_name not in ['Lambert_Conformal']:
+            elif var_name not in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
                 var_out[:] = var_in[:]
 
 
         # copy lon/lat and x/y from input if needed:
-        for var_name in f_in.variables.keys():
-            if (var_name in ['lon','lat','x','y','Lambert_Conformal'] and var_name not in f_out.variables.keys() ):
+        for var_name in ['lon', 'lat', 'x', 'y', 'crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+            if var_name in f_in.variables.keys() and var_name not in f_out.variables.keys():
+
                 var_in = f_in.variables[var_name]
-                j = 0
-                for var_dim in var_in.dimensions:
+                for j, var_dim in enumerate(var_in.dimensions):
                     if var_dim not in f_out.dimensions:
                         f_out.createDimension(var_dim,size=var_in.shape[j])
-                    j = j + 1
+
+                dst_var_name = var_name
+                if var_name in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
+                    dst_var_name = 'crs'
 
                 # create output variable
-                var_out = f_out.createVariable(var_name,datatype="d",dimensions=var_in.dimensions)
+                var_out = f_out.createVariable(
+                    dst_var_name,
+                    datatype="d",
+                    dimensions=var_in.dimensions,
+                )
                 # create attribute list
-                if var_name in ['lat','lon','y','x']:
+                if var_name in ['lat', 'lon', 'y', 'x']:
                     att_lst = get_attr_list(var_name)
-                elif var_name == 'Lambert_Conformal':
-                    att_lst = get_attr_list(var_name,[var_in.standard_parallel,var_in.longitude_of_central_meridian,var_in.latitude_of_projection_origin,var_in.false_easting,var_in.false_northing,var_in.earth_radius,var_in.proj4])
-              
+                else:
+                    att_lst = OrderedDict()
+                    for k in var_in.ncattrs():
+                        if k == 'bounds' and config.get_config_value('boolean', 'add_vertices') == False:
+                            continue
+                        else:
+                            att_lst[k] = var_in.getncattr(k)
+
                 var_out.setncatts(att_lst)
                 # copy content to new datatype
-                if var_name not in ['Lambert_Conformal']:
+                if var_name not in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
                     var_out[:] = var_in[:]
 
                 logger.debug("Copy from input: %s" % (var_out.name))
@@ -1728,7 +1781,7 @@ is here the time resolution of the input data in hours."
         
         f_var.coordinates = coordinates
         
-        # copy variables lon,lat,x,y,Lambert_Conformal from extra file if needed
+        # copy variables lon,lat,x,y,crs from extra file if needed
         add_coordinates(f_out,logger=logger)
 
         #TODO: what to do with this function?
@@ -1738,7 +1791,7 @@ is here the time resolution of the input data in hours."
         # set attribute missing_value
         f_var.missing_value = settings.netCDF_attributes['missing_value']
         
-        f_var.setncattr('grid_mapping','Lambert_Conformal')
+        f_var.setncattr('grid_mapping', 'crs')
 
        # commit changes
         f_out.sync()
