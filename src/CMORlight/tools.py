@@ -1564,6 +1564,10 @@ is here the time resolution of the input data in hours."
         for var_name in ['lon', 'lat', 'x', 'y', 'crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
             if var_name in f_in.variables.keys() and var_name not in f_out.variables.keys():
 
+                if var_name in ['Lambert_Conformal', 'Mercator', 'Polar_Stereographic'] and 'crs' in f_out.variables.keys():
+                    # Just make sure crs has not already been copied and renamed.
+                    continue
+
                 var_in = f_in.variables[var_name]
                 for j, var_dim in enumerate(var_in.dimensions):
                     if var_dim not in f_out.dimensions:
