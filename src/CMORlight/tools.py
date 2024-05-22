@@ -544,41 +544,41 @@ def get_attr_list(var_name, var_attrs={}):
     '''
     Set pre defined attributes for variables lon,lat
     '''
-    att_list = OrderedDict()
+    att_lst = OrderedDict()
     if var_name == 'lon':
-        att_list['standard_name'] = 'longitude'
-        att_list['long_name'] = 'longitude'
-        att_list['units'] = 'degrees_east'
-        if config.get_config_value('boolean', 'add_vertices'):
-            att_list['bounds'] = "lon_vertices"
+        att_lst['standard_name'] = 'longitude'
+        att_lst['long_name'] = 'longitude'
+        att_lst['units'] = 'degrees_east'
+        if config.get_config_value('boolean', 'add_vertices') == True:
+            att_lst['bounds'] = "lon_vertices"
             
     elif var_name == 'lat':
-        att_list['standard_name'] = 'latitude'
-        att_list['long_name'] = 'latitude'
-        att_list['units'] = 'degrees_north'
-        if config.get_config_value('boolean', 'add_vertices'):
-            att_list['bounds'] = "lat_vertices"
+        att_lst['standard_name'] = 'latitude'
+        att_lst['long_name'] = 'latitude'
+        att_lst['units'] = 'degrees_north'
+        if config.get_config_value('boolean', 'add_vertices') == True:
+            att_lst['bounds'] = "lat_vertices"
 
     elif var_name == 'x':
-        att_list['standard_name'] = 'projection_x_coordinate'
-        att_list['long_name'] = 'X Coordinate Of Projection'
-        att_list['units'] = 'm'
-        att_list['axis'] = 'X'
+        att_lst['standard_name'] = 'projection_x_coordinate'
+        att_lst['long_name'] = 'X Coordinate Of Projection'
+        att_lst['units'] = 'm'
+        att_lst['axis'] = 'X'
 
     elif var_name == 'y':
-        att_list['standard_name'] = 'projection_y_coordinate'
-        att_list['long_name'] = 'Y Coordinate Of Projection'
-        att_list['units'] = 'm'
-        att_list['axis'] = 'Y'
+        att_lst['standard_name'] = 'projection_y_coordinate'
+        att_lst['long_name'] = 'Y Coordinate Of Projection'
+        att_lst['units'] = 'm'
+        att_lst['axis'] = 'Y'
         
     elif var_name == 'time':
-        att_list['standard_name'] = 'time'
-        att_list['long_name'] = 'time'
-        att_list['units'] = var_attrs['units']
-        att_list['calendar'] = var_attrs['calendar']
-        att_list['axis'] = 'T'
+        att_lst['standard_name'] = 'time'
+        att_lst['long_name'] = 'time'
+        att_lst['units'] = var_attrs['units']
+        att_lst['calendar'] = var_attrs['calendar']
+        att_lst['axis'] = 'T'
         
-    return att_list
+    return att_lst
 
 
 # -----------------------------------------------------------------------------
