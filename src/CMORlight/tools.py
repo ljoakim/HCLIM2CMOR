@@ -609,7 +609,9 @@ def copy_var(f_in, f_out, var_name, logger=log):
         )
 
         # set all as character converted with str() function
-        if var_name in ['x', 'y', 'lat', 'lon', 'time']:
+        if var_name in ['x', 'y', 'lat', 'lon']:
+            att_lst = get_attr_list(var_name)
+        elif var_name == 'time':
             att_lst = get_attr_list(var_name, var_in.__dict__)
         else:
             att_lst = OrderedDict()
@@ -1525,7 +1527,9 @@ is here the time resolution of the input data in hours."
             
             # create attribute list
             change_fill=False
-            if var_name in ['lat', 'lon', 'x', 'y', 'time']:
+            if var_name in ['lat', 'lon', 'x', 'y']:
+                att_lst = get_attr_list(var_name)
+            elif var_name == 'time':
                 att_lst = get_attr_list(var_name, {'units': time_in_units, 'calendar': in_calendar})
             else:
                 att_lst = OrderedDict()
