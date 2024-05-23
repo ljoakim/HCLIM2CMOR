@@ -540,7 +540,7 @@ def check_resolution(params,res,process_table_only):
 
 
 # -----------------------------------------------------------------------------
-def get_attr_list(var_name, var_attrs={}):
+def get_attr_list(var_name, supplied_attrs={}):
     '''
     Set pre defined attributes for variables lon,lat
     '''
@@ -574,8 +574,8 @@ def get_attr_list(var_name, var_attrs={}):
     elif var_name == 'time':
         att_lst['standard_name'] = 'time'
         att_lst['long_name'] = 'time'
-        att_lst['units'] = var_attrs['units']
-        att_lst['calendar'] = var_attrs['calendar']
+        att_lst['units'] = supplied_attrs['units']
+        att_lst['calendar'] = supplied_attrs['calendar']
         att_lst['axis'] = 'T'
         
     return att_lst

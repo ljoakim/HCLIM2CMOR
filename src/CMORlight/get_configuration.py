@@ -21,7 +21,7 @@ LOGGER = logging.getLogger("cmorlight")
 # -----------------------------------------------------------------------------
 
 
-def get_config_value(section, option, exitprog=True):
+def get_config_value(section, option, exitprog = True):
     """
     Get desired value from  configuration file
 
