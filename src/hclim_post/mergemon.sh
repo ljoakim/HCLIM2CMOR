@@ -258,7 +258,8 @@ do
 
          # merging files 
          echov "Defining 3D var"
-         ncap2 -O -v -s "defdim(\"depth\",14);lon=lon;lat=lat;Lambert_Conformal=Lambert_Conformal;${FILEOUT}[\$time,\$depth,\$y,\$x]=${FILEOUT}_L01" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L01_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc
+         GRID_MAPPING=$(ncdump -h ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L01_sfx_${NAMETAG}_6hr*.nc | grep "${FILEOUT}_L01:grid_mapping" | sed "s/.*=\ //;s/\"//g;s/;//")
+         ncap2 -O -v -s "defdim(\"depth\",14);lon=lon;lat=lat;${GRID_MAPPING}=${GRID_MAPPING};${FILEOUT}[\$time,\$depth,\$y,\$x]=${FILEOUT}_L01" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L01_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc
          echov "Fetching data for soil levels"
          for i in {2..9}; do ncap2 -F -A -v -s "${FILEOUT}(:,$i,:,:)=${FILEOUT}_L0${i}" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L0${i}_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc ;done
          for i in {10..14}; do ncap2 -F -A -v -s "${FILEOUT}(:,$i,:,:)=${FILEOUT}_L${i}" ${INDIR_BASE}/${YY}/${MM}/01/00/${FILEOUT}_L${i}_sfx_${NAMETAG}_6hr*.nc ${FILEOUT}_${YY}${MM}.nc ;done
