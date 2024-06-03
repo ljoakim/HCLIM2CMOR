@@ -41,7 +41,7 @@ simulations:
     end_year: 2021
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202202":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_hist"
@@ -64,7 +64,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202203":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp370"
@@ -87,7 +87,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202204":
     name_tag: "EUR11_EUR11_ALADIN43_v1_CNRMESM21_r1i1p1f2_ssp126"
@@ -110,7 +110,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202205":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_hist"
@@ -133,7 +133,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202206":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp370"
@@ -156,7 +156,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202207":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MIROC6_r1i1p1f1_ssp126"
@@ -179,7 +179,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202301":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_hist"
@@ -202,7 +202,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202303":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp370"
@@ -225,7 +225,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202304":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_hist"
@@ -248,7 +248,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202306":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_hist"
@@ -271,7 +271,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202309":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp126"
@@ -294,7 +294,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202310":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r1i1p1f1_ssp370"
@@ -317,7 +317,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202311":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp126"
@@ -340,7 +340,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202312":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r2i1p1f1_ssp370"
@@ -363,7 +363,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202313":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_hist"
@@ -386,7 +386,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202314":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp126"
@@ -409,7 +409,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202315":
     name_tag: "EUR11_EUR11_ALADIN43_v1_MPIESM12HR_r1i1p1f1_ssp370"
@@ -432,7 +432,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202316":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_hist"
@@ -455,7 +455,7 @@ simulations:
     end_year: 2014
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202317":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp126"
@@ -478,7 +478,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202318":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ECE3Veg_r3i1p1f1_ssp370"
@@ -501,7 +501,7 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
 
   "202319":
     name_tag: "EUR11_EUR11_ALADIN43_v1_NorESM2MM_r1i1p1f1_ssp126"
@@ -524,4 +524,4 @@ simulations:
     end_year: 2100
     comment: ""
     history: ""
-    references: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
