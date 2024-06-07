@@ -1420,7 +1420,7 @@ is here the time resolution of the input data in hours."
         ftmp_name = "%s/%s-%s-%s.nc" % (settings.DirWork,year,str(uuid.uuid1()),var)
 
         # get type of cell method to create the output file: point,mean,maximum,minimum,sum
-        cm = cm_type
+        cm = cm_type[cm_type.find("time: ") + len("time: "):]
         
         #for monthly resolution: determine cell method within days time
         if res == 'mon' and 'within days time' in cm_type:
@@ -1696,7 +1696,7 @@ is here the time resolution of the input data in hours."
         f_var.standard_name = settings.netCDF_attributes['standard_name']
         f_var.long_name = settings.netCDF_attributes['long_name']
         f_var.units = settings.netCDF_attributes['units']
-        f_var.cell_methods = "time: %s" % (cm_type)
+        f_var.cell_methods = cm_type
 
         #HJP Mar 2019 Begin
         #include variable's attribute "comment" if the corresponding entry in the csv-file is not empty
