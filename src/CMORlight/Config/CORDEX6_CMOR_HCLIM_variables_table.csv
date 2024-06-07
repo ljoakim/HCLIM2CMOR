@@ -117,7 +117,7 @@ va50m;va50m;va50m;;;ModelLevel;1;;point;mean;mean;;50;m s-1;;24;i;1;;1;;;;;North
 ta50m;ta50m;ta50m;;;ModelLevel;1;;point;mean;mean;;50;K;;24;i;1;;1;;;;;Air Temperature at 50m;;air_temperature;;atmos;
 hus50m;hus50m;hus50m;;;ModelLevel;1;;point;mean;mean;;50;1;;24;i;1;;1;;;;;Specific Humidity at 50m;;specific_humidity;;atmos;
 z0;z0;z0;;;ModelLevel;1;; ;maximum;maximum within days time: mean over days;;0;m;;;i;1;;1;;;;;Surface Roughness Length;;surface_roughness_length;;;
-cape;cape;CAPE;;;ModelLevel;1;;;maximum;;;0;J kg-1;;;a;1;;;;;;;2-D Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
+cape;cape;cape;;;ModelLevel;1;;;maximum;;;0;J kg-1;;;a;1;;;;;;;2-D Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
 ua300m;ua300m;ua300m;;;ModelLevel;1;;point;mean;mean;;300;m s-1;;24;i;1;;1;;;;;Eastward wind at 300 m;;eastward_wind;;atmos;
 va300m;va300m;va300m;;;ModelLevel;1;;point;mean;mean;;300;m s-1;;24;i;1;;1;;;;;Northward wind at 300 m;;northward_wind;;atmos;
 sftgif;sftgif;sftgif;;;;1;;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Covered by Glacier;;land_ice_area_fraction;;;
