@@ -854,6 +854,15 @@ def process_file_fix(params,in_file):
     f_var.standard_name = settings.netCDF_attributes['standard_name']
     f_var.long_name = settings.netCDF_attributes['long_name']
     f_var.units = settings.netCDF_attributes['units']
+
+    cm_type = params[config.get_config_value('index', 'INDEX_VAR_CM_ASU')]
+    if cm_type:
+        f_var.cell_methods = cm_type
+
+    comment = params[config.get_config_value('index', 'INDEX_VAR_COMMENT')]
+    if comment != "":
+        f_var.comment = comment
+
     #add coordinates attribute to fx-variables
     f_var.coordinates = 'lon lat'
 

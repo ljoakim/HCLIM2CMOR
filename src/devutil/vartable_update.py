@@ -5,11 +5,13 @@ import json
 import pooch
 import pathlib
 
+INDEX_VAR_CM_ASU = 7
 INDEX_VAR_CM_SUB = 8
 INDEX_VAR_CM_DAY = 9
 INDEX_VAR_CM_MON = 10
 INDEX_UNIT = 13
 INDEX_VAR_LONG_NAME = 24
+INDEX_VAR_COMMENT = 25
 INDEX_VAR_STD_NAME = 26
 
 
@@ -77,6 +79,14 @@ def main():
         else:
             row[INDEX_VAR_CM_MON] = ""
 
+        # For fx variables, we place cell_method in the additional subdaily
+        # column (currently not used by any other type of var).
+        #
+        if var in cmor_tables["fx"]:
+            row[INDEX_VAR_CM_ASU] = cmor_tables["fx"][var]["cell_methods"]
+        else:
+            row[INDEX_VAR_CM_ASU] = ""
+
         # units, long_name and standard_name
         #
         if var in cmor_tables["day"]:
@@ -88,6 +98,7 @@ def main():
 
         row[INDEX_UNIT] = var_info["units"]
         row[INDEX_VAR_LONG_NAME] = var_info["long_name"]
+        row[INDEX_VAR_COMMENT] = var_info["comment"]
         row[INDEX_VAR_STD_NAME] = var_info["standard_name"]
 
     # Save generated table to csv
