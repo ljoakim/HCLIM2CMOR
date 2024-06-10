@@ -64,8 +64,11 @@ def init(vartable):
     global varlist
     varlist =  config.get_config_value('settings','varlist',exitprog=False).split(',')
 
-    global FMT
-    FMT = '%Y-%m-%d %H:%M:%S'
+    global DATE_FMT
+    DATE_FMT = '%Y-%m-%d %H:%M:%S'
+
+    global CREATION_DATE_FMT
+    CREATION_DATE_FMT = '%Y-%m-%dT%H:%M:%SZ'
 
     global vertices_file
     vertices_file = ("%s/%s" % (DirConfig,config.get_sim_value('vertices_file', exitprog=False)))
