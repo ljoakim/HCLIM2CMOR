@@ -236,7 +236,7 @@ def set_attributes_create(outpath,res=None,var=None,year=0,logger=log):
         f_out.setncattr("tracking_id",tracking_id)
         logger.debug("Set tracking_id: "+tracking_id)
         # set new creation_date
-        f_out.setncattr("creation_date",datetime.datetime.now().strftime(settings.FMT))
+        f_out.setncattr("creation_date",datetime.datetime.now().strftime(settings.CREATION_DATE_FMT))
 
         if 'history' in f_out.ncattrs():
             f_out.delncattr("history")
@@ -1253,8 +1253,8 @@ def process_file(params,in_file,var,reslist,year,firstlast):
     #MED<<
 
     # calculate time difference between first two time steps (in hours)
-    a = datetime.datetime.strptime(str(dt_in[0]), settings.FMT)
-    b = datetime.datetime.strptime(str(dt_in[1]), settings.FMT)
+    a = datetime.datetime.strptime(str(dt_in[0]), settings.DATE_FMT)
+    b = datetime.datetime.strptime(str(dt_in[1]), settings.DATE_FMT)
     
     time_delta_raw = np.array(time_in)[1]-np.array(time_in)[0]
     time_delta = b-a
