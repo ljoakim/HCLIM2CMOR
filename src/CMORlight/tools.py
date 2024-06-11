@@ -854,6 +854,15 @@ def process_file_fix(params,in_file):
     f_var.standard_name = settings.netCDF_attributes['standard_name']
     f_var.long_name = settings.netCDF_attributes['long_name']
     f_var.units = settings.netCDF_attributes['units']
+
+    cm_type = params[config.get_config_value('index', 'INDEX_VAR_CM_ASU')]
+    if cm_type:
+        f_var.cell_methods = cm_type
+
+    comment = params[config.get_config_value('index', 'INDEX_VAR_COMMENT')]
+    if comment != "":
+        f_var.comment = comment
+
     #add coordinates attribute to fx-variables
     f_var.coordinates = 'lon lat'
 
@@ -1411,7 +1420,7 @@ is here the time resolution of the input data in hours."
         ftmp_name = "%s/%s-%s-%s.nc" % (settings.DirWork,year,str(uuid.uuid1()),var)
 
         # get type of cell method to create the output file: point,mean,maximum,minimum,sum
-        cm = cm_type
+        cm = cm_type[cm_type.find("time: ") + len("time: "):]
         
         #for monthly resolution: determine cell method within days time
         if res == 'mon' and 'within days time' in cm_type:
@@ -1687,7 +1696,7 @@ is here the time resolution of the input data in hours."
         f_var.standard_name = settings.netCDF_attributes['standard_name']
         f_var.long_name = settings.netCDF_attributes['long_name']
         f_var.units = settings.netCDF_attributes['units']
-        f_var.cell_methods = "time: %s" % (cm_type)
+        f_var.cell_methods = cm_type
 
         #HJP Mar 2019 Begin
         #include variable's attribute "comment" if the corresponding entry in the csv-file is not empty
