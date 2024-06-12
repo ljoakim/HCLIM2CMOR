@@ -16,7 +16,7 @@
 # must be specified in this file.
 #
 ---
-log_dir: "${HCLIMDIR}/postprocess/HCLIM2CMOR/data/work/logs"
+log_dir: "${HCLIMDIR}/postprocess/HCLIM2CMOR/data_jl/work/logs/post"
 
 simulations:
 
