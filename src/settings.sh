@@ -24,7 +24,7 @@ CONSTANT_FOLDER=${OVERRIDE_CONSTANT_FOLDER:-${CONSTANT_FOLDER}}
 #-------------------------------------------
 # Directory path settings
 export BASEDIR=${HCLIM2CMORDIR}                              # directory where the HCLIM2CMOR source root is placed
-export DATADIR=${HCLIMDIR}/postprocess/HCLIM2CMOR/data       # directory where all the data will be placed (typically at /scratch/)
+export DATADIR=${HCLIMDIR}/postprocess/HCLIM2CMOR/data_jl       # directory where all the data will be placed (typically at /scratch/)
 
 # scripts directory
 SRCDIR=${BASEDIR}/src                 # directory where the post processing scripts are stored
