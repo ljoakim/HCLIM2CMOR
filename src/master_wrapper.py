@@ -4,9 +4,7 @@ import argparse
 import datetime
 import os
 import subprocess
-import time
 import yaml
-from multiprocessing import Pool
 
 
 def parse_args():
@@ -101,7 +99,7 @@ def run_constants(
     post_command = (
         f"sbatch -J post_C_{simulation}_{start_year}"
         f" -o {log_dir}/{log_file}"
-        f" master_post.sh -C"
+        f" master_post.sh -C -O"
     )
     post_process = subprocess.run(
         post_command, shell=True, capture_output=True, text=True
@@ -115,7 +113,7 @@ def run_constants(
         f" -d afterok:{post_job_id} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
-        f" -n latest -V"
+        f" -n latest -V -O"
     )
     cmor_process = subprocess.run(
         cmor_command, shell=True, capture_output=True, text=True
@@ -148,7 +146,7 @@ def run_post(
 
     post_command = (
         f"sbatch -J post_{simulation}_{start_year} {timelimstr} -o {log_dir}/{log_file}"
-        f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V"
+        f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V -O"
     )
     post_process = subprocess.run(
         post_command, shell=True, capture_output=True, text=True
@@ -179,7 +177,7 @@ def run_cmor(
         f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
-        f" -n latest -V"
+        f" -n latest -V -O"
     )
     cmor_process = subprocess.run(
         cmor_command, shell=True, capture_output=True, text=True
@@ -210,7 +208,7 @@ def run_chunk(
         f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
-        f" -n latest -V -c --remove"
+        f" -n latest -V -O -c --remove"
     )
     chunk_process = subprocess.run(
         chunk_command, shell=True, capture_output=True, text=True
