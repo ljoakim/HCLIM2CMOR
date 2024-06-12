@@ -38,7 +38,7 @@ def init(vartable):
     DirWork = ("%s/%s" % (DataPath,config.get_config_value('settings', 'DirWork')))
 
     global DirLog
-    DirLog = ("%s/%s" % (BasePath,config.get_config_value('settings', 'DirLog')))
+    DirLog = ("%s/%s" % (DataPath,config.get_config_value('settings', 'DirLog')))
 
     global DirDerotated
     DirDerotated = ("%s/%s" % (DataPath,config.get_config_value('settings', 'DirDerotated')))

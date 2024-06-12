@@ -24,18 +24,18 @@ CONSTANT_FOLDER=${OVERRIDE_CONSTANT_FOLDER:-${CONSTANT_FOLDER}}
 #-------------------------------------------
 # Directory path settings
 export BASEDIR=${HCLIM2CMORDIR}                              # directory where the HCLIM2CMOR source root is placed
-export DATADIR=${HCLIMDIR}/postprocess/HCLIM2CMOR/data       # directory where all the data will be placed (typically at /scratch/)
+export DATADIR=${HCLIMDIR}/postprocess/HCLIM2CMOR/data_jl    # directory where all the data will be placed
+WORKDIR=${SNIC_TMP}/work/post/${SIMULATION}_${GCM}_${EXP}    # work directory (typically at /scratch/)
 
 # scripts directory
 SRCDIR=${BASEDIR}/src                 # directory where the post processing scripts are stored
 SRCDIR_POST=${BASEDIR}/src/hclim_post # directory where the subscripts are stored
 
-WORKDIR=${DATADIR}/work/post/${SIMULATION}_${GCM}_${EXP} # work directory
-LOGDIR=${DATADIR}/work/logs                # logging directory
+LOGDIR=${DATADIR}/work/logs/post/${SIMULATION}                # logging directory
 
 # input/output directories
-INDIR_BASE=${HCLIMDIR}/${SIMULATION}/run/archive                         # base where the input is located (in sub-directories YYYY/MM/01/00)
-FXDIR=${HCLIMDIR}/${SIMULATION}/run/archive/${CONSTANT_FOLDER}           # location of constant files (orog etc.)
+INDIR_BASE=${CORDEX}/${SIMULATION}/run/archive                         # base where the input is located (in sub-directories YYYY/MM/01/00)
+FXDIR=${CORDEX}/${SIMULATION}/run/archive/${CONSTANT_FOLDER}           # location of constant files (orog etc.)
 OUTDIR=${DATADIR}/work/input_CMORlight/${NAMETAG}                        # output directory for the annual files (to be used as input to CMOR python tool)
 
 #-------------------------------------------
