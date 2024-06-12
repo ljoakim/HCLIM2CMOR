@@ -98,7 +98,7 @@ def run_constants(
     log_file = generate_log_filename("post_C", simulation, start_year, var_list)
     post_command = (
         f"sbatch -J post_C_{simulation}_{start_year}"
-        f" -o {log_dir}/{log_file}"
+        f" -o {log_dir}/{simulation}/{log_file}"
         f" master_post.sh -C -O"
     )
     post_process = subprocess.run(
@@ -110,7 +110,7 @@ def run_constants(
     log_file = generate_log_filename("cmor_C", simulation, start_year, var_list)
     cmor_command = (
         f"sbatch -J cmor_{simulation}_{start_year} -n 10"
-        f" -d afterok:{post_job_id} -o {log_dir}/{log_file}"
+        f" -d afterok:{post_job_id} -o {log_dir}/{simulation}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -O"
@@ -145,7 +145,7 @@ def run_post(
         timelimstr = ""
 
     post_command = (
-        f"sbatch -J post_{simulation}_{start_year} {timelimstr} -o {log_dir}/{log_file}"
+        f"sbatch -J post_{simulation}_{start_year} {timelimstr} -o {log_dir}/{simulation}/{log_file}"
         f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V -O"
     )
     post_process = subprocess.run(
@@ -174,7 +174,7 @@ def run_cmor(
     )
     cmor_command = (
         f"sbatch -J cmor_{simulation}_{start_year} -n 10"
-        f" {deps_string} -o {log_dir}/{log_file}"
+        f" {deps_string} -o {log_dir}/{simulation}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -O"
@@ -205,7 +205,7 @@ def run_chunk(
     )
     chunk_command = (
         f"sbatch -J chunk_{simulation}_{start_year} -n 10"
-        f" {deps_string} -o {log_dir}/{log_file}"
+        f" {deps_string} -o {log_dir}/{simulation}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
         f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
         f" -n latest -V -O -c --remove"

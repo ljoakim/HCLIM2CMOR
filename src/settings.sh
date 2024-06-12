@@ -31,7 +31,7 @@ SRCDIR=${BASEDIR}/src                 # directory where the post processing scri
 SRCDIR_POST=${BASEDIR}/src/hclim_post # directory where the subscripts are stored
 
 WORKDIR=${DATADIR}/work/post/${SIMULATION}_${GCM}_${EXP} # work directory
-LOGDIR=${DATADIR}/work/logs                # logging directory
+LOGDIR=${DATADIR}/work/logs/post/${SIMULATION}                # logging directory
 
 # input/output directories
 INDIR_BASE=${HCLIMDIR}/${SIMULATION}/run/archive                         # base where the input is located (in sub-directories YYYY/MM/01/00)
