@@ -22,7 +22,7 @@ simulations:
 
   "202201":
     name_tag: "EUR11_EUR11_ALADIN43_v1_ERA5_r1i1p1f1_eval"
-    driving_source_id: "ECMWF-ERA5"
+    driving_source_id: "ERA5"
     driving_experiment_id: "evaluation"
     driving_experiment: "reanalysis"
     driving_variant_label: "r1i1p1f1"
