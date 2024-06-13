@@ -2,7 +2,7 @@
 #SBATCH -J master_post
 #SBATCH -n 1
 #SBATCH --mem-per-cpu 20000
-#SBATCH -A rossby
+#SBATCH -A cordex
 #SBATCH -t 03:00:00
 #SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_post_%j.out
 

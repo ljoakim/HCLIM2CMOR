@@ -1,7 +1,7 @@
 #!/bin/ksh
 #SBATCH -J master_CMOR
 #SBATCH -n 11
-#SBATCH -A rossby
+#SBATCH -A cordex
 #SBATCH -t 12:00:00
 #SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_CMOR_%j.out
 
