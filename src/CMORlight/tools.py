@@ -232,7 +232,7 @@ def set_attributes_create(outpath,res=None,var=None,year=0,logger=log):
             pass
 
         # set new tracking_id
-        tracking_id=str(uuid.uuid1())
+        tracking_id = "hdl:21.14103/" + str(uuid.uuid4())
         f_out.setncattr("tracking_id",tracking_id)
         logger.debug("Set tracking_id: "+tracking_id)
         # set new creation_date
