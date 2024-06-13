@@ -59,7 +59,7 @@ DirDerotated=work/output_derotated
 # "global_attr_list" must not be empty.
 #
 # The 25 mandatory attributes are:
-# project_id,product,mip_era,activity_id,domain_id,institution_id,driving_source_id,driving_experiment_id,driving_variant_label,source_id,version_realisation,frequency,driving_institution_id,
+# project_id,product,mip_era,activity_id,domain_id,institution_id,driving_source_id,driving_experiment_id,driving_variant_label,source_id,version_realization,frequency,driving_institution_id,
 # contact,creation_date,driving_experiment,Conventions,institution,tracking_id,source,source_type,variable_id,domain,native_resolution,license
 #
 # All other attributes are optional.
@@ -77,7 +77,7 @@ DirDerotated=work/output_derotated
 # Optional arguments not included:
 # comment,history,references
 
-global_attr_list=Conventions,project_id,mip_era,activity_id,domain_id,institution_id,driving_source_id,driving_experiment_id,driving_variant_label,source_id,version_realisation,driving_institution_id,contact,driving_experiment,institution,source,source_type,domain,native_resolution,license
+global_attr_list=Conventions,project_id,mip_era,activity_id,domain_id,institution_id,driving_source_id,driving_experiment_id,driving_variant_label,source_id,version_realization,driving_institution_id,contact,driving_experiment,institution,source,source_type,domain,native_resolution,license
 #
 
 #global attributes that should be taken from .nc files if present; will overwrite settings from global_attr_list!
@@ -278,8 +278,8 @@ source_type=RCM
 #contact: email address
 contact=rossby@smhi.se
 
-#version_realisation: identifies version of CORDEX datasets and RCM realisations
-version_realisation=v1-r1
+#version_realization: identifies version of CORDEX datasets and RCM realizations
+version_realization=v1-r1
 
 #license: provides information about the license
 license=http://spdx.org/licenses/CC0-1.0 (CC0-1.0)

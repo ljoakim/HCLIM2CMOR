@@ -128,7 +128,7 @@ def create_outpath(res,var):
                  settings.Global_attributes["driving_experiment_id"],
                  settings.Global_attributes["driving_variant_label"],
                  settings.Global_attributes["source_id"],
-                 settings.Global_attributes["version_realisation"],
+                 settings.Global_attributes["version_realization"],
                  res,
                  var
                 )
@@ -188,7 +188,7 @@ def create_filename(var,res,dt_start,dt_stop,logger=log):
                   settings.Global_attributes["driving_variant_label"],
                   settings.Global_attributes["institution_id"],
                   settings.Global_attributes["source_id"],
-                  settings.Global_attributes["version_realisation"],
+                  settings.Global_attributes["version_realization"],
                   res,
                   trange,
                 )
