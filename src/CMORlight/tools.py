@@ -128,7 +128,7 @@ def create_outpath(res,var):
                  settings.Global_attributes["driving_experiment_id"],
                  settings.Global_attributes["driving_variant_label"],
                  settings.Global_attributes["source_id"],
-                 settings.Global_attributes["version_realisation"],
+                 settings.Global_attributes["version_realization"],
                  res,
                  var
                 )
@@ -188,7 +188,7 @@ def create_filename(var,res,dt_start,dt_stop,logger=log):
                   settings.Global_attributes["driving_variant_label"],
                   settings.Global_attributes["institution_id"],
                   settings.Global_attributes["source_id"],
-                  settings.Global_attributes["version_realisation"],
+                  settings.Global_attributes["version_realization"],
                   res,
                   trange,
                 )
@@ -232,7 +232,7 @@ def set_attributes_create(outpath,res=None,var=None,year=0,logger=log):
             pass
 
         # set new tracking_id
-        tracking_id=str(uuid.uuid1())
+        tracking_id = "hdl:21.14103/" + str(uuid.uuid4())
         f_out.setncattr("tracking_id",tracking_id)
         logger.debug("Set tracking_id: "+tracking_id)
         # set new creation_date
