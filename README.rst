@@ -1,3 +1,24 @@
+My production branch, which contains a few custom configurations. Remember to rebase on top of master before running.
+
+Instructions to get started:
+
+- create and activate a mamba evironment with python 3.11 (3.12 has deprecations which causes failure): ``mamba create -n hclim2cmor python=3.11``
+- activate environment: ``mamba activate hclim2cmor``
+- install required packages: ``mamba install cdo nco netcdf4 pyyaml "numpy<2"``
+
+Usage:
+
+- from src folder, e.g.: ``./master_wrapper.py -s 202201 -v pr,tas``
+
+Reminders:
+
+- make sure ``"numpy<2"`` is used, IT WILL NOT WORK OTHERWISE!
+- remember to set the ``$HCLIMDIR`` and ``$HCLIM2CMORDIR`` env variables (see the ``config/simulation_config.yml`` file)
+- the log folders (``work/logs/cmorlight/{SIMULATION}`` and ``work/logs/post/{SIMULATION}``) are currently not automatically created, create them before running (including simulation folder), or post processing will not work.
+
+ORIGINAL TEXT BELOW
+
+
 =========================================================================
 This is merley an adaptation of the famous CCLM2CMOR tool for the HCLIM model. It rewrites the model data to CORDEX standards. All credits go to the original developers!
 =========================================================================
