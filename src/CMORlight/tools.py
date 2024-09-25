@@ -145,13 +145,13 @@ def create_filename(var,res,dt_start,dt_stop,logger=log):
     #File naming different for instantaneous and interval representing (average,min,max) variables
     agg=settings.param[var][config.get_config_value('index','INDEX_FRE_AGG')] #subdaily aggregation method: average or instantaneous
 
-    if res in ["1hr","3hr","6hr","12hr"]:
+    if res in ["1hr","3hr","6hr"]:
         if agg=="i":
-            bounds=[["0000","2300"],["0000","2100"],["00","18"],["00","12"]]
+            bounds=[["0000","2300"],["0000","2100"],["0000","1800"]]
         elif agg=="a":
-            bounds=[["0030","2330"],["0130","2230"],["03","21"],["06","18"]]
+            bounds=[["0030","2330"],["0130","2230"],["0300","2100"]]
         else:
-            bounds=[["0000","2300"],["0000","2100"],["00","18"],["00","12"]]
+            bounds=[["0000","2300"],["0000","2100"],["0000","1800"]]
             logger.error("Subdaily aggregation method in column %s of parameter table must be 'i' or 'a'! Assumed instantaneous..." % config.get_config_value('index','INDEX_FRE_AGG'))
 
     if res == "1hr":
@@ -163,9 +163,6 @@ def create_filename(var,res,dt_start,dt_stop,logger=log):
     elif res == "6hr":
         dt_start = "%s%s" % (dt_start,bounds[2][0])
         dt_stop = "%s%s" % (dt_stop,bounds[2][1])
-    elif res == "12hr":
-        dt_start = "%s%s" % (dt_start,bounds[3][0])
-        dt_stop = "%s%s" % (dt_stop,bounds[3][1])
     elif res == "day":
         dt_start = dt_start[:8]
         dt_stop = dt_stop[:8]
