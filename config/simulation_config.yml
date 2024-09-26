@@ -38,7 +38,7 @@ simulations:
     source_id: "HCLIM43-ALADIN"
     contact: "rossby.cordex@smhi.se"
     start_year: 1980
-    end_year: 2021
+    end_year: 2023
     comment: ""
     history: ""
     references: "https://doi.org/10.5281/zenodo.11424180"
