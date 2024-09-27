@@ -112,7 +112,7 @@ cdo_nctype=nc4c
 varlist_reject=pressure,height_2m,height_10m,height_toa,soil1,soil1_bnds,height,plev,nb2,bnds,time_bnds
 
 #attributes that should no be copied to output files
-attrlist_reject=par,lvt,lev,tri
+attrlist_reject=par,lvt,lev,tri,FA_name,uvRelativeToGrid
 
 #time units of output; for CORDEX: days since 1949-12-01 00:00:00 or equivalent
 units=days since 1950-01-01T00:00:00Z
