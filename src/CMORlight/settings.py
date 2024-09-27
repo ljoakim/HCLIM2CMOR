@@ -55,6 +55,9 @@ def init(vartable):
     global varlist_reject
     varlist_reject =  config.get_config_value('settings', 'varlist_reject').split(',')
 
+    global attrlist_reject
+    attrlist_reject = config.get_config_value('settings', 'attrlist_reject').split(',')
+
     global var_skip_list
     var_skip_list =  config.get_config_value('settings', 'var_skip_list',exitprog=False).split(',')
 

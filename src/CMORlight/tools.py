@@ -1540,7 +1540,9 @@ is here the time resolution of the input data in hours."
             else:
                 att_lst = OrderedDict()
                 for k in var_in.ncattrs():
-                    if k in ["_FillValue", "missing_value"]:
+                    if k in settings.attrlist_reject:
+                        continue
+                    elif k in ["_FillValue", "missing_value"]:
                         if var_in.getncattr(k) != settings.netCDF_attributes['missing_value']:
                             #fillvalue or missing_value is incorrect and needs to be changed                            
                             change_fill = True
