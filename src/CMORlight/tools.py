@@ -99,6 +99,7 @@ def set_attributes(params):
     settings.netCDF_attributes['long_name'] = params[config.get_config_value('index','INDEX_VAR_LONG_NAME')]
     settings.netCDF_attributes['standard_name'] = params[config.get_config_value('index','INDEX_VAR_STD_NAME')]
     settings.netCDF_attributes['units'] = params[config.get_config_value('index','INDEX_UNIT')]
+    settings.netCDF_attributes['positive'] = params[config.get_config_value('index','INDEX_UP_DOWN', False)]
     settings.netCDF_attributes['missing_value'] = np.float32(config.get_config_value('float','missing_value'))
     settings.netCDF_attributes['_FillValue'] = config.get_config_value('float','missing_value')
 
@@ -1531,25 +1532,25 @@ is here the time resolution of the input data in hours."
                         dimensions=var_dims,
                     )
             
-            # create attribute list
-            change_fill=False
-            if var_name in ['lat', 'lon', 'x', 'y']:
-                att_lst = get_attr_list(var_name)
-            elif var_name == 'time':
-                att_lst = get_attr_list(var_name, {'units': time_in_units, 'calendar': in_calendar})
-            else:
-                att_lst = OrderedDict()
-                for k in var_in.ncattrs():
-                    if k in settings.attrlist_reject:
-                        continue
-                    elif k in ["_FillValue", "missing_value"]:
-                        if var_in.getncattr(k) != settings.netCDF_attributes['missing_value']:
-                            #fillvalue or missing_value is incorrect and needs to be changed                            
-                            change_fill = True
-                        att_lst[k] = settings.netCDF_attributes['missing_value']
-                    else:
-                        att_lst[k] = var_in.getncattr(k)
-            var_out.setncatts(att_lst)
+                # create attribute list
+                change_fill=False
+                if var_name in ['lat', 'lon', 'x', 'y']:
+                    att_lst = get_attr_list(var_name)
+                elif var_name == 'time':
+                    att_lst = get_attr_list(var_name, {'units': time_in_units, 'calendar': in_calendar})
+                else:
+                    att_lst = OrderedDict()
+                    for k in var_in.ncattrs():
+                        if k in settings.attrlist_reject:
+                            continue
+                        elif k in ["_FillValue", "missing_value"]:
+                            if var_in.getncattr(k) != settings.netCDF_attributes['missing_value']:
+                                #fillvalue or missing_value is incorrect and needs to be changed
+                                change_fill = True
+                            att_lst[k] = settings.netCDF_attributes['missing_value']
+                        else:
+                            att_lst[k] = var_in.getncattr(k)
+                var_out.setncatts(att_lst)
 
             # copy content to new datatype
             logger.debug("Copy data from tmp file: %s" % (var_out.name))
@@ -1696,6 +1697,8 @@ is here the time resolution of the input data in hours."
         f_var.long_name = settings.netCDF_attributes['long_name']
         f_var.units = settings.netCDF_attributes['units']
         f_var.cell_methods = cm_type
+        if settings.netCDF_attributes['positive']:
+            f_var.positive = settings.netCDF_attributes['positive']
 
         #HJP Mar 2019 Begin
         #include variable's attribute "comment" if the corresponding entry in the csv-file is not empty

@@ -13,6 +13,7 @@ INDEX_UNIT = 13
 INDEX_VAR_LONG_NAME = 24
 INDEX_VAR_COMMENT = 25
 INDEX_VAR_STD_NAME = 26
+INDEX_UP_DOWN = 27
 
 
 def main():
@@ -100,6 +101,7 @@ def main():
         row[INDEX_VAR_LONG_NAME] = var_info["long_name"]
         row[INDEX_VAR_COMMENT] = var_info["comment"]
         row[INDEX_VAR_STD_NAME] = var_info["standard_name"]
+        row[INDEX_UP_DOWN] = var_info["positive"]
 
     # Save generated table to csv
     #
