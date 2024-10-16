@@ -31,10 +31,10 @@ prsn;prsn;prsn;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mea
 mrros;mrros;mrros;;;ModelLevel;;;area: mean where land time: mean;area: mean where land time: mean;area: mean where land time: mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Surface Runoff;;surface_runoff_flux;;land;mean where land
 mrro;mrro;mrro;mrrod + mrros;;ModelLevel;;;area: mean where land time: mean;area: mean where land time: mean;area: mean where land time: mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Total Runoff;;runoff_flux;;land;mean where land
 snm;snm;snm;;;ModelLevel;;;area: mean where land time: mean;area: mean where land time: mean;area: mean where land time: mean;;0;kg m-2 s-1;;4;a;1;;1;;;;;Surface Snow Melt;;surface_snow_melt_flux;;landIce land;mean where land
-tauu;tauu;tauu;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;Pa;;4;a;1;;1;;;;;Surface Downward Eastward Wind Stress;;surface_downward_eastward_stress;;atmos;
-tauv;tauv;tauv;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;Pa;;4;a;1;;1;;;;;Surface Downward Northward Wind Stress;;surface_downward_northward_stress;;atmos;
+tauu;tauu;tauu;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;Pa;;24;a;1;;1;;;;;Surface Downward Eastward Wind Stress;;surface_downward_eastward_stress;;atmos;
+tauv;tauv;tauv;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;Pa;;24;a;1;;1;;;;;Surface Downward Northward Wind Stress;;surface_downward_northward_stress;;atmos;
 sfcWindmax;sfcWindmax;sfcWindmax;;;ModelLevel;1;;;area: mean time: maximum;area: mean time: maximum within days time: mean over days;;10;m s-1;;;a;1;;1;;;;;Daily Maximum Near-Surface Wind Speed;Maximum from all integrated time steps per day;wind_speed;;atmos;
-wsgsmax;wsgsmax;wsgsmax;;;ModelLevel;1;;;area: mean time: maximum;area: mean time: maximum within days time: mean over days;;10;m s-1;;8;a;1;;1;;;;;Daily Maximum Near-Surface Wind Speed of Gust;;wind_speed_of_gust;;atmos;
+wsgsmax;wsgsmax;wsgsmax;;;ModelLevel;1;;;area: mean time: maximum;area: mean time: maximum within days time: mean over days;;10;m s-1;;;a;1;;1;;;;;Daily Maximum Near-Surface Wind Speed of Gust;;wind_speed_of_gust;;atmos;
 sund;sund;sund;;;ModelLevel;1;;;time: sum;time: sum within days time: mean over days;;0;s;;;a;1;;1;;;;;Daily Duration of Sunshine;"The WMO definition of sunshine is that the surface incident radiative flux from the solar beam (i.e. excluding diffuse skylight) exceeds 120 W m-2. ""Duration"" is the length of time for which a condition holds.";duration_of_sunshine;;atmos;
 rsdsdir;rsdsdir;rsdsdir;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;W m-2;;24;a;1;;1;;;;;Surface Direct Downwelling Shortwave Radiation;;surface_direct_downwelling_shortwave_flux_in_air;down;;
 rsus;rsus;rsus;;;ModelLevel;1;;area: time: mean;area: time: mean;area: time: mean;;0;W m-2;;24;a;1;;1;;;;;Surface Upwelling Shortwave Radiation;;surface_upwelling_shortwave_flux_in_air;up;atmos;
@@ -55,9 +55,9 @@ snc;snc;snc;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: 
 snd;snd;snd;;;ModelLevel;1;;area: mean where land time: point;area: mean where land time: mean;area: mean where land time: mean;;0;m;;4;i;1;;1;;;;;Snow Depth;;surface_snow_thickness;;landIce land;mean where land
 siconca;siconca;siconca;;;ModelLevel;1;;;area: time: mean;area: time: mean;;0;%;;;i;1;;1;;;;;Sea-Ice Area Percentage (Atmospheric Grid);daily and monthly means;sea_ice_area_fraction;;seaIce ocean;
 zmla;zmla;zmla;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;m;;24;i;1;;1;;;;;Height of Boundary Layer;;atmosphere_boundary_layer_thickness;;atmos;
-prw;prw;prw;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;4;i;1;;1;;;;;Water Vapor Path;;atmosphere_mass_content_of_water_vapor;;atmos;
-clwvi;clwvi;clwvi;clqvi + clivi;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;4;i;1;;1;;;;;Condensed Water Path;;atmosphere_mass_content_of_cloud_condensed_water;;atmos;
-clivi;clivi;clivi;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;4;i;1;;1;;;;;Ice Water Path;;atmosphere_mass_content_of_cloud_ice;;atmos;
+prw;prw;prw;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;24;i;1;;1;;;;;Water Vapor Path;;atmosphere_mass_content_of_water_vapor;;atmos;
+clwvi;clwvi;clwvi;clqvi + clivi;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;24;i;1;;1;;;;;Condensed Water Path;;atmosphere_mass_content_of_cloud_condensed_water;;atmos;
+clivi;clivi;clivi;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;kg m-2;;24;i;1;;1;;;;;Ice Water Path;;atmosphere_mass_content_of_cloud_ice;;atmos;
 ua1000;ua1000;ua1000;;;PressureLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;100000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
 ua925;ua925;ua925;;;PressureLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;92500;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
 ua850;ua850;ua850;;;PressureLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;85000;m s-1;;4;i;1;;1;;;;;Eastward Wind;;eastward_wind;;atmos;
@@ -117,7 +117,7 @@ va50m;va50m;va50m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: 
 ta50m;ta50m;ta50m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;50;K;;24;i;1;;1;;;;;Air Temperature at 50m;requested for urban modeling;air_temperature;;atmos;
 hus50m;hus50m;hus50m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;50;1;;24;i;1;;1;;;;;Specific Humidity at 50m;requested for urban modeling;specific_humidity;;atmos;
 z0;z0;z0;;;ModelLevel;1;;;area: time: mean;area: time: mean;;0;m;;;i;1;;1;;;;;Surface Roughness Length;;surface_roughness_length;;;
-cape;cape;cape;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;J kg-1;;;a;1;;;;;;;Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
+cape;cape;cape;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;J kg-1;;24;a;1;;;;;;;Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;
 ua300m;ua300m;ua300m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;300;m s-1;;24;i;1;;1;;;;;Eastward Wind at 250m;;eastward_wind;;atmos;
 va300m;va300m;va300m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;300;m s-1;;24;i;1;;1;;;;;Northward Wind at 350m;;northward_wind;;atmos;
 sftgif;sftgif;sftgif;;;;1;area: mean;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Covered by Glacier;;land_ice_area_fraction;;;
