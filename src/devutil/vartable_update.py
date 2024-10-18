@@ -10,6 +10,7 @@ INDEX_VAR_CM_SUB = 8
 INDEX_VAR_CM_DAY = 9
 INDEX_VAR_CM_MON = 10
 INDEX_UNIT = 13
+INDEX_FRE_SUB = 15
 INDEX_VAR_LONG_NAME = 24
 INDEX_VAR_COMMENT = 25
 INDEX_VAR_STD_NAME = 26
@@ -56,6 +57,15 @@ def main():
     #
     for row in table[1:]:
         var = row[0]
+
+        # Subdaily frequency
+        #
+        if var in cmor_tables["1hr"]:
+            row[INDEX_FRE_SUB] = "24"
+        elif var in cmor_tables["6hr"]:
+            row[INDEX_FRE_SUB] = "4"
+        else:
+            row[INDEX_FRE_SUB] = ""
 
         # Subdaily cell method
         #
