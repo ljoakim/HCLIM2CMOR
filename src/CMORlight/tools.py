@@ -1756,7 +1756,8 @@ is here the time resolution of the input data in hours."
         if var in ['mrsos','mrfsos']:
             if ( not 'depth' in f_out.variables ) and ( not 'depth_bnds' in f_out.variables ):
                 ## create an additional dimension to handle depth_bnds
-                f_out.createDimension('bnds', 2)
+                if ( not 'bnds' in f_out.dimensions ):
+                    f_out.createDimension('bnds', 2)
                 # create depth and depth_bnds variables with attributes
                 var_outs = f_out.createVariable('depth',datatype="d")
                 var_outsbnd = f_out.createVariable('depth_bnds',datatype="d",dimensions=('bnds'))
