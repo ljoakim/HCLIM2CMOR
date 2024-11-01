@@ -453,7 +453,7 @@ do
   if [[ ${LFILE} -ne 1 ]] 
   then
     
-    #Additional fields for CORDEX not directly available directly available in the model output
+    #Additional fields for CORDEX not directly available in the model output
 
     # Total runoff: mrro
     create_add_vars "mrros" "mrrod" "mrro" "add" "runoff_flux"
