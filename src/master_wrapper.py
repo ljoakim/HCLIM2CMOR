@@ -10,7 +10,7 @@ from multiprocessing import Pool
 
 
 CONSTANT_VARIABLES = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
-POST_ONLY_VARIABLES = ["clqvi", "mrrod"]  # Should not be cmorized
+NO_CMOR_VARIABLES = ["clqvi", "mrrod"]  # Should not be cmorized
 MERGE_Z_VARIABLES = ["tsl", "mrsol", "mrsfl"]  # Demanding 3D vars
 
 
@@ -90,6 +90,14 @@ def generate_log_filename(prefix, simulation, start_year, var_list):
     return f"{prefix}_{simulation}_{start_year}_{varstr}_{t}.out"
 
 
+def setup_environment(simulation, simulation_config):
+    os.environ["OVERRIDE_SIMULATION"] = simulation
+    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
+    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
+    os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
+    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
+
+
 def run_constants(
     simulation,
     var_list,
@@ -99,15 +107,8 @@ def run_constants(
     simulation_config,
     control_cmor,
 ):
-    # Runs both post and cmorization for constant variables
-    #
-
-    os.environ["OVERRIDE_SIMULATION"] = simulation
-    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
-    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
-    os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
-    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
-
+    # Run both post and cmorization for constant variables
+    setup_environment(simulation, simulation_config)
     var_list = [var for var in var_list if var in CONSTANT_VARIABLES]
     log_file = generate_log_filename("post_C", simulation, start_year, var_list)
     post_command = (
@@ -143,14 +144,8 @@ def run_post(
     end_year,
     log_dir,
     simulation_config,
-    control_cmor,
 ):
-    os.environ["OVERRIDE_SIMULATION"] = simulation
-    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
-    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
-    os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
-    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
-
+    setup_environment(simulation, simulation_config)
     log_file = generate_log_filename("post", simulation, start_year, var_list)
     if [var for var in var_list if var in MERGE_Z_VARIABLES]:
         timelimstr = "-t 12:00:00"  # increase processing time for 3D vars
@@ -257,11 +252,11 @@ def main():
     else:
         total_time_range = end_year - start_year
         time_step = 10
-        parallel_processes_per_step = total_time_range // time_step + 1
+        parallel_job_count = total_time_range // time_step + 1
 
         # Submit all post jobs and get their job ids
         post_job_ids = []
-        for t in range(parallel_processes_per_step):
+        for t in range(parallel_job_count):
             post_job_ids.append(
                 run_post(
                     args.simulation,
@@ -270,15 +265,14 @@ def main():
                     min(end_year, start_year + (t + 1) * time_step - 1),
                     log_dir,
                     simulation_config,
-                    control_cmor,
                 )
             )
 
         # Submit all cmor jobs, collect their job ids,
         # and add post job ids as dependencies
         cmor_job_ids = []
-        cmor_var_list = [var for var in var_list if var not in POST_ONLY_VARIABLES]
-        for t in range(parallel_processes_per_step):
+        cmor_var_list = [var for var in var_list if var not in NO_CMOR_VARIABLES]
+        for t in range(parallel_job_count):
             cmor_job_ids.append(
                 run_cmor(
                     args.simulation,
