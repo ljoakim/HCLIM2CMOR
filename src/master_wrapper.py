@@ -9,6 +9,11 @@ import yaml
 from multiprocessing import Pool
 
 
+CONSTANT_VARIABLES = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
+NO_CMOR_VARIABLES = ["clqvi", "mrrod"]  # Should not be cmorized
+MERGE_Z_VARIABLES = ["tsl", "mrsol", "mrsfl"]  # Demanding 3D vars
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -28,15 +33,18 @@ def parse_args():
         "--variables",
         required=True,
         help=(
-            "Comma separated list of variables to CMORize."
+            "Comma separated list of variables to cmorize."
             " No spaces, e.g. 'tas,tasmin,tasmax'."
         ),
     )
     parser.add_argument(
         "-C",
-        "--create_const",
+        "--constant",
         action=argparse.BooleanOptionalAction,
-        help="CMORize constant variables.",
+        help=(
+            "Cmorize constant (fixed) variables. If this flag is set, only"
+            " constant variables in variables list will be cmorized."
+        )
     )
     return parser.parse_args()
 
@@ -61,13 +69,13 @@ def generate_control_cmor(simulation, var_list, simulation_config):
         format_dict["simulation"] = simulation
         format_dict["hclim_dir"] = os.environ["HCLIMDIR"]
         format_dict["hclim2cmor_dir"] = os.environ["HCLIM2CMORDIR"]
-        format_dict["var_list"] = var_list
+        format_dict["var_list"] = ",".join(var_list)
         control_cmor = control_cmor_template.format(**format_dict)
 
     control_cmor_folder = os.path.join(os.path.dirname(__file__), "../control_cmor/")
     if not os.path.exists(control_cmor_folder):
         os.makedirs(control_cmor_folder)
-    varstr = "_".join(var_list.split(","))
+    varstr = "_".join(var_list)
     control_cmor_filename = f"control_cmor_{simulation}_{varstr}.ini"
     control_cmor_path = os.path.join(control_cmor_folder, control_cmor_filename)
     with open(control_cmor_path, "w") as out_file:
@@ -78,25 +86,30 @@ def generate_control_cmor(simulation, var_list, simulation_config):
 
 def generate_log_filename(prefix, simulation, start_year, var_list):
     t = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    varstr = "_".join(var_list.split(","))
+    varstr = "_".join(var_list)
     return f"{prefix}_{simulation}_{start_year}_{varstr}_{t}.out"
 
 
-def run_constants(
-    simulation, var_list, start_year, end_year, log_dir, simulation_config, control_cmor
-):
-    # Runs both post and cmorization for constant variables
-    #
-
+def setup_environment(simulation, simulation_config):
     os.environ["OVERRIDE_SIMULATION"] = simulation
     os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
     os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
     os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
     os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
 
-    fixed_vars = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
-    var_list = ",".join([var for var in var_list.split(",") if var in fixed_vars])
 
+def run_constants(
+    simulation,
+    var_list,
+    start_year,
+    end_year,
+    log_dir,
+    simulation_config,
+    control_cmor,
+):
+    # Run both post and cmorization for constant variables
+    setup_environment(simulation, simulation_config)
+    var_list = [var for var in var_list if var in CONSTANT_VARIABLES]
     log_file = generate_log_filename("post_C", simulation, start_year, var_list)
     post_command = (
         f"sbatch -J post_C_{simulation}_{start_year}"
@@ -114,7 +127,7 @@ def run_constants(
         f"sbatch -J cmor_{simulation}_{start_year} -n 10"
         f" -d afterok:{post_job_id} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
-        f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
+        f" -M 10 -v {','.join(var_list)} -s {start_year} -e {end_year}"
         f" -n latest -V"
     )
     cmor_process = subprocess.run(
@@ -131,24 +144,17 @@ def run_post(
     end_year,
     log_dir,
     simulation_config,
-    control_cmor,
 ):
-    os.environ["OVERRIDE_SIMULATION"] = simulation
-    os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
-    os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
-    os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
-    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
+    setup_environment(simulation, simulation_config)
     log_file = generate_log_filename("post", simulation, start_year, var_list)
-    spaced_var_list = " ".join(var_list.split(","))
-    test_list = ["tsl", "mrsol", "mrsfl"]
-    if [ele for ele in test_list if (ele in spaced_var_list)]:
+    if [var for var in var_list if var in MERGE_Z_VARIABLES]:
         timelimstr = "-t 12:00:00"  # increase processing time for 3D vars
     else:
         timelimstr = ""
 
     post_command = (
         f"sbatch -J post_{simulation}_{start_year} {timelimstr} -o {log_dir}/{log_file}"
-        f" master_post.sh -p '{spaced_var_list}' -s {start_year} -e {end_year} -V"
+        f" master_post.sh -p \'{' '.join(var_list)}\' -s {start_year} -e {end_year} -V"
     )
     post_process = subprocess.run(
         post_command, shell=True, capture_output=True, text=True
@@ -164,7 +170,6 @@ def run_cmor(
     start_year,
     end_year,
     log_dir,
-    simulation_config,
     control_cmor,
     job_deps=None,
 ):
@@ -178,7 +183,7 @@ def run_cmor(
         f"sbatch -J cmor_{simulation}_{start_year} -n 10"
         f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
-        f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
+        f" -M 10 -v {','.join(var_list)} -s {start_year} -e {end_year}"
         f" -n latest -V"
     )
     cmor_process = subprocess.run(
@@ -195,7 +200,6 @@ def run_chunk(
     start_year,
     end_year,
     log_dir,
-    simulation_config,
     control_cmor,
     job_deps=None,
 ):
@@ -209,7 +213,7 @@ def run_chunk(
         f"sbatch -J chunk_{simulation}_{start_year} -n 10"
         f" {deps_string} -o {log_dir}/{log_file}"
         f" master_cmor.sh -i ../../control_cmor/{control_cmor} -m {simulation}"
-        f" -M 10 -v {var_list} -s {start_year} -e {end_year}"
+        f" -M 10 -v {','.join(var_list)} -s {start_year} -e {end_year}"
         f" -n latest -V -c --remove"
     )
     chunk_process = subprocess.run(
@@ -220,42 +224,25 @@ def run_chunk(
     return job_id
 
 
-if __name__ == "__main__":
-    print("HCLIM2CMOR wrapper.")
-
+def main():
     args = parse_args()
     config = read_simulation_config(args.file)
     log_dir = config["log_dir"]
     simulation_config = config["simulations"][args.simulation]
 
+    var_list = args.variables.split(",")
     control_cmor = generate_control_cmor(
-        args.simulation, args.variables, simulation_config
+        args.simulation, var_list, simulation_config
     )
 
     start_year = simulation_config["start_year"]
     end_year = simulation_config["end_year"]
-    total_time_range = end_year - start_year
-    time_step = 10
-    parallel_processes_per_step = total_time_range // time_step + 1
 
-    post_process_args = [
-        (
-            args.simulation,
-            args.variables,
-            start_year + t * time_step,
-            min(end_year, start_year + (t + 1) * time_step - 1),
-            log_dir,
-            simulation_config,
-            control_cmor,
-        )
-        for t in range(parallel_processes_per_step)
-    ]
-
-    if args.create_const:
+    if args.constant:
         print("Running post process and cmorization on constant fields...")
         run_constants(
             args.simulation,
-            args.variables,
+            var_list,
             start_year,
             end_year,
             log_dir,
@@ -263,19 +250,55 @@ if __name__ == "__main__":
             control_cmor,
         )
     else:
-        post_job_ids = [run_post(*args) for args in post_process_args]
-        cmor_job_ids = [
-            run_cmor(*args, job_deps=post_job_ids) for args in post_process_args
-        ]
+        total_time_range = end_year - start_year
+        time_step = 10
+        parallel_job_count = total_time_range // time_step + 1
+
+        # Submit all post jobs and get their job ids
+        post_job_ids = []
+        for t in range(parallel_job_count):
+            post_job_ids.append(
+                run_post(
+                    args.simulation,
+                    var_list,
+                    start_year + t * time_step,
+                    min(end_year, start_year + (t + 1) * time_step - 1),
+                    log_dir,
+                    simulation_config,
+                )
+            )
+
+        # Submit all cmor jobs, collect their job ids,
+        # and add post job ids as dependencies
+        cmor_job_ids = []
+        cmor_var_list = [var for var in var_list if var not in NO_CMOR_VARIABLES]
+        for t in range(parallel_job_count):
+            cmor_job_ids.append(
+                run_cmor(
+                    args.simulation,
+                    cmor_var_list,
+                    start_year + t * time_step,
+                    min(end_year, start_year + (t + 1) * time_step - 1),
+                    log_dir,
+                    control_cmor,
+                    job_deps=post_job_ids,
+                )
+            )
+
+        # Finally, submit chunk job, with cmor job ids as dependencies
         run_chunk(
             args.simulation,
-            args.variables,
+            cmor_var_list,
             start_year,
             end_year,
             log_dir,
-            simulation_config,
             control_cmor,
             job_deps=cmor_job_ids,
         )
 
     print("All jobs submitted.")
+
+
+if __name__ == "__main__":
+    print("HCLIM2CMOR wrapper.")
+    main()
