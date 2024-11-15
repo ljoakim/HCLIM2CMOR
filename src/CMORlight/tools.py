@@ -1435,7 +1435,10 @@ is here the time resolution of the input data in hours."
                 cmd = "cdo -L -f %s -s -selhour,%s -seltimestep,%s %s %s %s" % (config.get_config_value('settings', 'cdo_nctype'),selhour,tsteps,cmd_mul,in_file,ftmp_name)
             else:
                 cmd = "cdo -L -f %s -s -timsel%s,%s -seltimestep,%s %s %s %s" % (config.get_config_value('settings', 'cdo_nctype'),cm,int(nstep),tsteps,cmd_mul,in_file,ftmp_name)
-        
+
+        # Special case, currently only for prhmax, which has cell method "time: mean within hours time: maximum over hours"
+        elif res == 'day' and 'maximum over hours' in cm_type:
+            cmd = "cdo -L -f %s -s daymax -seltimestep,%s %s %s %s" % (config.get_config_value('settings','cdo_nctype'),tsteps,cmd_mul,in_file,ftmp_name)
         # For monthly resolution daily processing is sometimes necessary first
         elif res == 'day' or 'within days time' in cm_type:
             cmd = "cdo -L -f %s -s day%s -seltimestep,%s %s %s %s" % (config.get_config_value('settings', 'cdo_nctype'),cm,tsteps,cmd_mul,in_file,ftmp_name)
