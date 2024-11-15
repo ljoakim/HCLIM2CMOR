@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
+import datetime
 import json
 import pooch
 import pathlib
@@ -26,10 +27,11 @@ def main():
         "fx": "CORDEX-CMIP6_fx.json",
     }
 
-    # Let pooch deal with downloading and caching cmor table files
+    # Let pooch deal with downloading cmor table files
     #
+    TIME_STAMP = datetime.datetime.now().strftime("%Y%m%d.%H%M%S")
     cmor_table_file_manager = pooch.create(
-        path=pooch.os_cache("hclim2cmor"),
+        path=pooch.os_cache("hclim2cmor") / TIME_STAMP,
         base_url="https://github.com/WCRP-CORDEX/cordex-cmip6-cmor-tables/raw/main/Tables",
         registry={f: None for f in cmor_table_files.values()},
     )

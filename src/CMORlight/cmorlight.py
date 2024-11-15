@@ -365,7 +365,7 @@ def main():
         print("Create logging directory: %s" % LOG_BASE)
         os.makedirs(LOG_BASE, exist_ok=True)
     #LOG_FILENAME = os.path.join(LOG_BASE,'CMORlight.')+config.get_sim_value('driving_source_id')+"_"+config.get_sim_value('driving_experiment_id')+"."
-    LOG_FILENAME = os.path.join(LOG_BASE,'CMORlight.')+config.get_sim_value('driving_source_id')+"_"+config.get_sim_value('driving_experiment_id')+"_"+varlist[0]+"."
+    LOG_FILENAME = os.path.join(LOG_BASE,'CMORlight.')+config.get_sim_value('driving_source_id')+"_"+config.get_sim_value('driving_experiment_id')+"_"+"_".join(varlist)+"."
     logext = datetime.datetime.now().strftime("%d-%m-%Y")+'.log'
 
     # get logger and assign logging filename (many loggers for multiprocessing)
