@@ -525,3 +525,72 @@ simulations:
     comment: ""
     history: ""
     references: "https://doi.org/10.5281/zenodo.11424180"
+
+  "202401":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_IPSL_r1i1p1f1_hist "
+    driving_source_id: "IPSL-CM6A-LR"
+    driving_experiment_id: "historical"
+    driving_experiment: "all-forcing simulation of the recent past"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "IPSL"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Danish Meteorological Institute (DMI), Copenhagen, Denmark"
+    institution_id: "HCLIMcom-DMI"
+    version_realization: "v1-r1"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "cordex@dmi.dk"
+    start_year: 1951
+    end_year: 2014
+    comment: ""
+    history: ""
+    references: https://doi.org/10.5281/zenodo.11424180
+
+  "202402":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_IPSL_r1i1p1f1_ssp126"
+    driving_source_id: "IPSL-CM6A-LR"
+    driving_experiment_id: "ssp126"
+    driving_experiment: "update of RCP2.6 based on SSP1"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "IPSL"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Danish Meteorological Institute (DMI), Copenhagen, Denmark"
+    institution_id: "HCLIMcom-DMI"
+    version_realization: "v1-r1"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "cordex@dmi.dk"
+    start_year: 2015
+    end_year: 2100
+    comment: ""
+    history: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
+
+  "202403":
+    name_tag: "EUR11_EUR11_ALADIN43_v1_IPSL_r1i1p1f1_ssp370 "
+    driving_source_id: "IPSL-CM6A-LR"
+    driving_experiment_id: "ssp370"
+    driving_experiment: "gap-filling scenario reaching 7.0 based on SSP3"
+    driving_variant_label: "r1i1p1f1"
+    driving_institution_id: "IPSL"
+    domain: "Europe"
+    domain_id: "EUR-12"
+    grid: "Lambert conic conformal with 12.5 km grid spacing"
+    institution: "HARMONIE Climate Modelling Community (HCLIMcom) partner: Danish Meteorological Institute (DMI), Copenhagen, Denmark "
+    institution_id: "HCLIMcom-DMI"
+    version_realization: "v1-r1"
+    source: "HARMONIE Climate model cycle 43 with ALADIN physics"
+    source_type: "ARCM"
+    source_id: "HCLIM43-ALADIN"
+    contact: "cordex@dmi.dk"
+    start_year: 2015
+    end_year: 2100
+    comment: ""
+    history: ""
+    references: "https://doi.org/10.5281/zenodo.11424180"
