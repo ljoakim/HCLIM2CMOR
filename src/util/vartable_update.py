@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import csv
-import datetime
-import json
-import pooch
 import pathlib
+import requests
+import urllib.parse
+
 
 INDEX_VAR_CM_ASU = 7
 INDEX_VAR_CM_SUB = 8
@@ -18,7 +18,7 @@ INDEX_VAR_STD_NAME = 26
 INDEX_UP_DOWN = 27
 
 
-def main():
+def update():
     cmor_table_files = {
         "1hr": "CORDEX-CMIP6_1hr.json",
         "6hr": "CORDEX-CMIP6_6hr.json",
@@ -27,28 +27,26 @@ def main():
         "fx": "CORDEX-CMIP6_fx.json",
     }
 
-    # Let pooch deal with downloading cmor table files
-    #
-    TIME_STAMP = datetime.datetime.now().strftime("%Y%m%d.%H%M%S")
-    cmor_table_file_manager = pooch.create(
-        path=pooch.os_cache("hclim2cmor") / TIME_STAMP,
-        base_url="https://github.com/WCRP-CORDEX/cordex-cmip6-cmor-tables/raw/main/Tables",
-        registry={f: None for f in cmor_table_files.values()},
-    )
-    cmor_tables = {}
-    for freq, file in cmor_table_files.items():
-        table_file_path = cmor_table_file_manager.fetch(file)
-        with open(table_file_path) as f:
-            cmor_tables[freq] = json.load(f)["variable_entry"]
-
-    # Load current csv
-    #
     csv_path = (
         pathlib.Path(__file__).parent.parent
         / "CMORlight"
         / "Config"
         / "CORDEX6_CMOR_HCLIM_variables_table.csv"
     )
+    print(f"Updating variables table: '{csv_path}'...")
+
+    # Get files from github
+    #
+    base_url = "https://github.com/WCRP-CORDEX/cordex-cmip6-cmor-tables/raw/main/Tables/"
+    cmor_tables = {}
+    for freq, file in cmor_table_files.items():
+        table_url = urllib.parse.urljoin(base_url, file)
+        print(f"  Fetching CMOR table: {table_url}")
+        table_json = requests.get(table_url).json()
+        cmor_tables[freq] = table_json["variable_entry"]
+
+    # Load current csv
+    #
     table = []
     with open(csv_path, newline="") as f:
         reader = csv.reader(f, delimiter=";")
@@ -121,6 +119,8 @@ def main():
         writer = csv.writer(f, delimiter=";", lineterminator="\n")
         writer.writerows(table)
 
+    print("Update done.")
+
 
 if __name__ == "__main__":
-    main()
+    update()
