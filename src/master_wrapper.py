@@ -6,6 +6,8 @@ import os
 import subprocess
 import yaml
 
+import util.vartable_update
+
 
 CONSTANT_VARIABLES = ["orog", "sftlf", "sftnf", "sfturf", "sftlaf"]
 NO_CMOR_VARIABLES = ["clqvi", "mrrod"]  # Should not be cmorized
@@ -42,6 +44,14 @@ def parse_args():
         help=(
             "Cmorize constant (fixed) variables. If this flag is set, only"
             " constant variables in variables list will be cmorized."
+        )
+    )
+    parser.add_argument(
+        "-u",
+        "--update",
+        action=argparse.BooleanOptionalAction,
+        help=(
+            "Update variables table (fetches cmor tables from github)."
         )
     )
     return parser.parse_args()
@@ -224,6 +234,10 @@ def run_chunk(
 
 def main():
     args = parse_args()
+
+    if args.update:
+        util.vartable_update.update()
+
     config = read_simulation_config(args.file)
     log_dir = config["log_dir"]
     simulation_config = config["simulations"][args.simulation]
