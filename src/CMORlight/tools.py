@@ -1559,18 +1559,25 @@ is here the time resolution of the input data in hours."
             logger.debug("Copy data from tmp file: %s" % (var_out.name))
 
             if var_name in [settings.netCDF_attributes['RCM_NAME_ORG'], settings.netCDF_attributes['RCM_NAME']]:
-               # get the length of data array
-               # Split into slices if large (to prevent segmentation faults due to too large arrays)
-               data_len = var_in.shape[0]
-               if data_len > 1000:
-                   nof_slices = 10               
-                   splits = np.array_split(range(data_len),nof_slices)
 
-                   logger.debug("Split %s with length %s into %s parts" % (var_out.name,data_len,nof_slices))
-                   for s in range(nof_slices):
-                      var_out[splits[s],:,:] = var_in[splits[s],:,:]
-               else:  
-                   var_out[:] = var_in[:]
+                # Get minimum and maximum allowed values for data variable
+                valid_min = params[config.get_config_value('index','INDEX_VAR_VALID_MIN')]
+                valid_min = float(valid_min) if valid_min != '' else -np.inf
+                valid_max = params[config.get_config_value('index','INDEX_VAR_VALID_MAX')]
+                valid_max = float(valid_max) if valid_max != '' else np.inf
+
+                # get the length of data array
+                # Split into slices if large (to prevent segmentation faults due to too large arrays)
+                data_len = var_in.shape[0]
+                if data_len > 1000:
+                    nof_slices = 10
+                    splits = np.array_split(range(data_len),nof_slices)
+
+                    logger.debug("Split %s with length %s into %s parts" % (var_out.name,data_len,nof_slices))
+                    for s in range(nof_slices):
+                        var_out[splits[s],:,:] = var_in[splits[s],:,:].clip(min=valid_min, max=valid_max)
+                else:
+                    var_out[:] = var_in[:].clip(min=valid_min, max=valid_max)
 
             elif var_name not in ['crs', 'Lambert_Conformal', 'Mercator', 'Polar_Stereographic']:
                 var_out[:] = var_in[:]
