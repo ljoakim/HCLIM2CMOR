@@ -118,6 +118,7 @@ ta50m;ta50m;ta50m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: 
 hus50m;hus50m;hus50m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;50;1;;24;i;1;;1;;;;;Specific Humidity at 50m;requested for urban modeling;specific_humidity;;atmos;;;
 z0;z0;z0;;;ModelLevel;1;;;area: time: mean;area: time: mean;;0;m;;;i;1;;1;;;;;Surface Roughness Length;;surface_roughness_length;;;;;
 cape;cape;cape;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;0;J kg-1;;24;i;1;;1;;;;;Convective Available Potential Energy;;atmosphere_convective_available_potential_energy_wrt_surface;;atmos;;;
+od550aer;od550aer;od550aer;;;ModelLevel;1;;;;area: time: mean;;0;1;;;;;;1;;;;;Ambient Aerosol Optical Thickness at 550nm;long_name fixed, 2022.09.22  https://github.com/WCRP-CORDEX/cordex-cmip6-data-request/issues/6;atmosphere_optical_thickness_due_to_ambient_aerosol_particles;;atmos;;;
 ua300m;ua300m;ua300m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;300;m s-1;;24;i;1;;1;;;;;Eastward Wind at 300m;;eastward_wind;;atmos;;;
 va300m;va300m;va300m;;;ModelLevel;1;;area: mean time: point;area: time: mean;area: time: mean;;300;m s-1;;24;i;1;;1;;;;;Northward Wind at 300m;;northward_wind;;atmos;;;
 sftgif;sftgif;sftgif;;;;1;area: mean;;;;;;%;;;;;;;;;;0;Percentage of the Grid Cell Covered by Glacier;;land_ice_area_fraction;;;;;

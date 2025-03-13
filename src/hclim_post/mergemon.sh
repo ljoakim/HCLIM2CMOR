@@ -21,7 +21,7 @@ export IGNORE_ATT_COORDINATES=0
 
 #variables
 # all HCLIM variables representing a time interval (min, max, average, accumulated)
-accu_list="tasmax tasmin pr evspsbl clt rsds rlds prc prsn mrros mrrod snm tauu tauv sfcWindmax sund rsdsdir rsus rlus rlut rsdt rsut hfls hfss wsgsmax clh clm cll rsnscs rlnscs rsntcs rlntcs"
+accu_list="tasmax tasmin pr evspsbl clt rsds rlds prc prsn mrros mrrod snm tauu tauv sfcWindmax sund rsdsdir rsus rlus rlut rsdt rsut hfls hfss wsgsmax od550aer clh clm cll rsnscs rlnscs rsntcs rlntcs"
   
 #all instantaneous variables
 inst_list="tas huss hurs ps psl sfcWind uas vas ts mrfso mrso snw snc snd siconca zmla prw clivi clqvi ua1000 ua925 ua850 ua700 ua600 ua500 ua400 ua300 ua250 ua200 va1000 va925 va850 va700 va600 va500 va400 va300 va250 va200 ta1000 ta925 ta850 ta700 ta600 ta500 ta400 ta300 ta250 ta200 hus1000 hus925 hus850 hus700 hus600 hus500 hus400 hus300 hus250 hus200 zg1000 zg925 zg850 zg700 zg600 zg500 zg400 zg300 zg250 zg200 ua50m ua100m ua150m va50m va100m va150m ta50m hus50m z0 cape ua300m va300m tsl mrsos mrsol mrfsos mrsfl" #last 5 are multi-layer vars
