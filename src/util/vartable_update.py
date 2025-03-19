@@ -102,6 +102,8 @@ def update():
         #
         if var in cmor_tables["day"]:
             var_info = cmor_tables["day"][var]
+        elif var in cmor_tables["mon"]:
+            var_info = cmor_tables["mon"][var]
         elif var in cmor_tables["fx"]:
             var_info = cmor_tables["fx"][var]
         else:
