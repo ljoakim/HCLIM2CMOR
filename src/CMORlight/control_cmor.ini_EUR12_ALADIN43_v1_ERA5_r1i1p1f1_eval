@@ -231,8 +231,8 @@ Conventions=CF-1.11
 #product: product type (model-output is the only option)
 product=model-output
 
-#project_id: project identifier (CORDEX is the only option)
-project_id=CORDEX
+#project_id: project identifier (CORDEX-CMIP6 is the only option)
+project_id=CORDEX-CMIP6
 
 #mip_era: determines what cycle of CMIP defines experiment and data specifications (CMIP6 is the only option)
 mip_era=CMIP6
