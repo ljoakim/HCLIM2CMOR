@@ -119,9 +119,8 @@ def create_outpath(res,var):
     '''
     Create and return the output path string from global attributes and dependent on resolution res and variable var
     '''
-    result = "%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s" % \
+    result = "%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s" % \
                 (settings.Global_attributes["project_id"],
-                 settings.Global_attributes["mip_era"],
                  settings.Global_attributes["activity_id"],
                  settings.Global_attributes["domain_id"],
                  settings.Global_attributes["institution_id"],
