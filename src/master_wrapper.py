@@ -103,7 +103,10 @@ def setup_environment(simulation, simulation_config):
     os.environ["OVERRIDE_GCM"] = str(simulation_config["driving_source_id"])
     os.environ["OVERRIDE_EXP"] = str(simulation_config["driving_experiment_id"])
     os.environ["OVERRIDE_NAMETAG"] = str(simulation_config["name_tag"])
-    os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1)
+    if str(simulation_config["driving_experiment_id"]) in ["historical", "evaluation"]:
+        os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"] - 1) + "/08/01/00"
+    else:
+        os.environ["OVERRIDE_CONSTANT_FOLDER"] = str(simulation_config["start_year"]) + "/01/01/00"
 
 
 def run_constants(
