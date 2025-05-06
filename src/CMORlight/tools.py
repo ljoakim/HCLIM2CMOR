@@ -558,13 +558,13 @@ def get_attr_list(var_name, supplied_attrs={}):
 
     elif var_name == 'x':
         att_lst['standard_name'] = 'projection_x_coordinate'
-        att_lst['long_name'] = 'X Coordinate Of Projection'
+        att_lst['long_name'] = 'x coordinate of projection'
         att_lst['units'] = 'm'
         att_lst['axis'] = 'X'
 
     elif var_name == 'y':
         att_lst['standard_name'] = 'projection_y_coordinate'
-        att_lst['long_name'] = 'Y Coordinate Of Projection'
+        att_lst['long_name'] = 'y coordinate of projection'
         att_lst['units'] = 'm'
         att_lst['axis'] = 'Y'
         
