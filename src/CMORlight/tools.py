@@ -1771,11 +1771,9 @@ is here the time resolution of the input data in hours."
                 var_outs = f_out.createVariable('depth',datatype="d")
                 var_outsbnd = f_out.createVariable('depth_bnds',datatype="d",dimensions=('bnds'))
                 var_outs.units = "m"
-                var_outsbnd.units = "m"
                 var_outs.axis = "Z"
                 var_outs.positive = "down"
                 var_outs.long_name = "depth of soil layers"
-                var_outsbnd.long_name = "boundaries of soil layers"
                 var_outs.standard_name = "depth"
                 var_outs.bounds = "depth_bnds"
                 # set soil values
@@ -1795,11 +1793,9 @@ is here the time resolution of the input data in hours."
                 var_outs = f_out.createVariable('depth',datatype="d",dimensions=('depth'))
                 var_outsbnd = f_out.createVariable('depth_bnds',datatype="d",dimensions=('depth','bnds'))
                 var_outs.units = "m"
-                var_outsbnd.units = "m"
                 var_outs.axis = "Z"
                 var_outs.positive = "down"
                 var_outs.long_name = "depth of soil layers"
-                var_outsbnd.long_name = "boundaries of soil layers"
                 var_outs.standard_name = "depth"
                 var_outs.bounds = "depth_bnds"
                 # set soil values
