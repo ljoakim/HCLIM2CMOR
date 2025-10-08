@@ -285,31 +285,33 @@ def main():
 
         # Submit all cmor jobs, collect their job ids,
         # and add post job ids as dependencies
-        cmor_job_ids = []
         cmor_var_list = [var for var in var_list if var not in NO_CMOR_VARIABLES]
-        for t in range(parallel_job_count):
-            cmor_job_ids.append(
-                run_cmor(
-                    args.simulation,
-                    cmor_var_list,
-                    start_year + t * time_step,
-                    min(end_year, start_year + (t + 1) * time_step - 1),
-                    log_dir,
-                    control_cmor,
-                    job_deps=post_job_ids,
-                )
-            )
+        if len(cmor_var_list) > 0:
+            cmor_job_ids = []
 
-        # Finally, submit chunk job, with cmor job ids as dependencies
-        run_chunk(
-            args.simulation,
-            cmor_var_list,
-            start_year,
-            end_year,
-            log_dir,
-            control_cmor,
-            job_deps=cmor_job_ids,
-        )
+            for t in range(parallel_job_count):
+                cmor_job_ids.append(
+                    run_cmor(
+                        args.simulation,
+                        cmor_var_list,
+                        start_year + t * time_step,
+                        min(end_year, start_year + (t + 1) * time_step - 1),
+                        log_dir,
+                        control_cmor,
+                        job_deps=post_job_ids,
+                    )
+                )
+
+            # Finally, submit chunk job, with cmor job ids as dependencies
+            run_chunk(
+                args.simulation,
+                cmor_var_list,
+                start_year,
+                end_year,
+                log_dir,
+                control_cmor,
+                job_deps=cmor_job_ids,
+            )
 
     print("All jobs submitted.")
 
