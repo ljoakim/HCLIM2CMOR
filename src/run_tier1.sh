@@ -44,8 +44,6 @@ case $2 in
         # dependent on pr
         python master_wrapper.py -s $1 -v prhmax
         # 3d
-        python master_wrapper.py -s $1 -v tsl
-        # 3d
         python master_wrapper.py -s $1 -v mrfsos
         ;;
     8)
@@ -57,10 +55,13 @@ case $2 in
         python master_wrapper.py -s $1 -v mrsol
         ;;
     9)
-        # 3d, after all others are finished
-        # This run has issues, don't know why.
-        # It often just stops near the end of processing.
-        # May need more resources.
+        # These runs have issues with default resources.
+        # Modify master_post.sh and master_cmor.sh
+        #   according to comments in the files.
+        #
+        # 3d
+        python master_wrapper.py -s $1 -v tsl
+        # 3d
         python master_wrapper.py -s $1 -v mrsfl
         ;;
 esac

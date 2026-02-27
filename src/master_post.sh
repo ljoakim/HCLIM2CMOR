@@ -6,6 +6,10 @@
 #SBATCH -t 08:00:00
 #SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_post_%j.out
 
+# Use this when running 3d vars (particularly tsl, mrsfl)
+# -n 18
+# --mem-per-cpu 10000
+
 #Check if all functions are available
 funcs="ncrcat ncks ncap2 ncatted cdo"
 for f in $funcs

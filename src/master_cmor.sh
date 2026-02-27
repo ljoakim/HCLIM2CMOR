@@ -5,6 +5,10 @@
 #SBATCH -t 12:00:00
 #SBATCH -o ${HCLIMDIR}/postprocess/HCLIM2CMOR/logs/master_CMOR_%j.out
 
+# Use this when running 3d vars (particularly tsl, mrsfl)
+# -n 18
+# --mem-per-cpu 10000
+
 source ./settings.sh
 #make temp folder for batch job
 mkdir -p $SNIC_TMP/temp
