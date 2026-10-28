@@ -1,7 +1,7 @@
 import uuid
 from pathlib import Path
 
-from netCDF4 import Dataset
+from netCDF4 import Dataset  # ty: ignore[unresolved-import]
 
 DRY_RUN = True
 

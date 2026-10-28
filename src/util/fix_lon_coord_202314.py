@@ -2,7 +2,7 @@ import uuid
 from pathlib import Path
 
 import numpy as np
-from netCDF4 import Dataset
+from netCDF4 import Dataset  # ty: ignore[unresolved-import]
 
 # Path to the file that holds the correct coordinate data
 REFERENCE_FILE = Path("coordinates_HCLIM_EUR12.nc")
