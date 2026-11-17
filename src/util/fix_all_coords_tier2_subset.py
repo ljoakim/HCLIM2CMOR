@@ -16,7 +16,7 @@ INSTITUTE = "SMHI"
 VARS = ["z0", "od550aer", "sftlaf", "sfturf"]
 
 # Root of the folder tree containing the files to update
-TARGET_ROOT = Path("/nobackup/accmls1/proj/cordex_cmip6/postprocess/HCLIM2CMOR/backup/202202/netcdf/tier2")
+TARGET_ROOT = Path("/nobackup/accmls1/proj/cordex_cmip6/202202/netcdf/tier2")
 
 # Prefix for the tracking_id (a new UUID is generated per file)
 TRACKING_PREFIX = "hdl:21.14103/"
@@ -44,8 +44,9 @@ for t in VARS:
 
 # Recursive glob: every specified .nc file
 for filepath in targets:
-    print(filepath)
-    if not DRY_RUN:
+    if DRY_RUN:
+        print(filepath)
+    else:
         try:
             with Dataset(filepath, "r+") as ds:
                 lat_var = ds.variables["lat"]

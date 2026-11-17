@@ -5,10 +5,10 @@ import numpy as np
 from netCDF4 import Dataset  # ty: ignore[unresolved-import]
 
 # Path to the file that holds the correct coordinate data
-REFERENCE_FILE = Path("coordinates_HCLIM_EUR12.nc")
+REFERENCE_FILE = Path("coordinates_HCLIM_EUR12_Bi.nc")
 
 # Root of the folder tree containing the files to update
-TARGET_ROOT = Path("/nobackup/accmls1/proj/cordex_cmip6/postprocess/HCLIM2CMOR/tmp/202314/core_new")
+TARGET_ROOT = Path("/nobackup/accmls1/proj/cordex_cmip6/202314/netcdf/tier1")
 
 # Prefix for the tracking_id (a new UUID is generated per file)
 TRACKING_PREFIX = "hdl:21.14103/"
